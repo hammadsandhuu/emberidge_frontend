@@ -5,42 +5,45 @@ import "./globals.css";
 import ModalManaged from '@/components/common/modal/modalManaged';
 import Providers from "@/app/provider/provider";
 import DrawerManaged from "@/components/common/drawer/drawerManaged";
-
+import NextTopLoader from "nextjs-toploader";
 import PanelManaged from "@/components/panel/panel-managed";
 import React from "react";
 
 const rubik = Rubik({
-    subsets: ['latin'],
-    display: 'swap',
-    weight: ['400', '500', '600'],
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600"],
 });
 
-
 export const metadata: Metadata = {
-    title: {
-        template: 'Razor | %s',
-        default: 'Razor',
-    },
+  title: {
+    template: "Razor | %s",
+    default: "Razor",
+  },
 };
 
-export default function RootLayout({children}: Readonly<{
-    children: React.ReactNode;
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en" dir="ltr" suppressHydrationWarning>
-        <body className={`${rubik.className}  antialiased bg-background`}>
+  return (
+    <html lang="en" dir="ltr" suppressHydrationWarning>
+      <body className={`${rubik.className}  antialiased bg-background`}>
+        <NextTopLoader />
+
         <Providers
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-                    {children}
-                    <PanelManaged/>
-                    <ModalManaged/>
-                    <DrawerManaged/>
+          {children}
+          <PanelManaged />
+          <ModalManaged />
+          <DrawerManaged />
         </Providers>
-        </body>
-        </html>
-    );
+      </body>
+    </html>
+  );
 }
