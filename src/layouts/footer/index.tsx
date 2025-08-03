@@ -32,7 +32,7 @@ const Footer: React.FC<FooterProps> = ({
         showWidgetServices={showWidgetServices}
         showWidgetSubscription={showWidgetSubscription}
       />
-      <Copyright payment={payment} variant={variant} />
+      <Copyright payment={payment} />
     </footer>
   );
 };
