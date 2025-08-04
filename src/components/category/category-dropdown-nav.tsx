@@ -20,9 +20,7 @@ export default function CategoryDropdownNav({
     data: categories,
     isLoading: loading,
     error,
-  } = useCategoriesQuery({
-    limit: 9,
-  });
+  } = useCategoriesQuery({ limit: 9 });
   const { selectedColor } = usePanel();
   return (
     <div className={cn("absolute z-20 w-72 lg:w-full", className)}>

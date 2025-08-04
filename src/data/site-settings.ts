@@ -9,14 +9,14 @@ export const siteSettings = {
     address: "",
   },
   logo: {
-    url: "/assets/images/logo/logo.png",
+    url: "/assets/images/logo/logoWhite.png",
     alt: "Emberidge",
     href: "/",
     width: 195,
     height: 26,
   },
   logoBlack: {
-    url: "/assets/images/logo/logo-black.png",
+    url: "/assets/images/logo/logoGreen.png",
     alt: "Emberidge",
     href: "/",
     width: 195,

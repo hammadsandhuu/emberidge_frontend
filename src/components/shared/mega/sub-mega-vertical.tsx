@@ -16,12 +16,12 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
   return (
     <>
       <li
-        className={`relative transition  ${className ? className : 'text-sm '}`}
+        className={`relative transition  ${className ? className : "text-sm "}`}
       >
         <Link
-          href={`${ROUTES.CATEGORIES}`}
+          href={`/category/${item.slug}`}
           className={`flex items-center w-full hover:ps-3  ${
-            items ? 'font-semibold' : ' '
+            items ? "font-semibold" : " "
           }`}
         >
           <span className="capitalize ">{name}</span>
@@ -29,7 +29,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
         {Array.isArray(items) && (
           <div
             className={`subMenuChild w-full py-1 subMega--level${depth} ${
-              depth > 1 && ' hidden '
+              depth > 1 && " hidden "
             }`}
           >
             <ul key="content" className="text-sm">
@@ -41,7 +41,8 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
                     item={currentItem}
                     depth={childDepth}
                     className={cn(
-                      'text-sm text-brand-dark ', colorMap[selectedColor].hoverLink
+                      "text-sm text-brand-dark ",
+                      colorMap[selectedColor].hoverLink
                     )}
                   />
                 );
