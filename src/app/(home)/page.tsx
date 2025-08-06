@@ -52,29 +52,15 @@ export default async function Page() {
       <Container variant={"Large"}>
         <div className="grid grid-cols-12 gap-4 xl:gap-8">
           <div className="maincontent-left col-span-12 lg:col-span-3 2xl:col-span-2">
-            <BannerGrid
-              data={heroSidebar}
-              grid={1}
-              className="relative mb-8 lg:mb-10"
-            />
             <BestSidebarFeed />
+            <NewSidebarFeed className="mb-0" />
             <LatestblogSidebar />
-            <NewSidebarFeed />
-            <Testimonial />
+            {/* <Testimonial /> */}
           </div>
           <div className="maincontent-right col-span-12  lg:col-span-9 2xl:col-span-10">
             <BestDealsFeed />
-            <SuppercategoryCloth />
-            <BannerGrid
-              data={gridHero2}
-              grid={2}
-              className="mb-8 "
-              girdClassName="xl:gap-6 xl:grid-cols-[minmax(654px,_1fr)_1fr] 2xl:grid-cols-[minmax(935px,_1fr)_1fr] "
-            />
-            <SuppercategoryElectronic />
-            <ListingCellPhone variant={"outBorder"} showBanner={"left"} />
-            <ListingComputer variant={"outBorder"} showBanner={"right"} />
-            <GridBaseCarousel />
+            <ListingCellPhone />
+            <ListingComputer />
           </div>
         </div>
       </Container>
