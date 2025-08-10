@@ -17,8 +17,8 @@ const rubik = Rubik({
 
 export const metadata: Metadata = {
   title: {
-    template: "Razor | %s",
-    default: "Razor",
+    template: "Emberidge | %s",
+    default: "Emberidge",
   },
 };
 

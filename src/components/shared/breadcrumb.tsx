@@ -112,7 +112,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
         >
           {formarBreadcrumbTitle(breadcrumb.breadcrumb)}
         </span>
-      ))} 
+      ))}
     </BreadcrumbItems>
   );
 };

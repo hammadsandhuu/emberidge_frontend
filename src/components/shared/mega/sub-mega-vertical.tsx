@@ -19,7 +19,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
         className={`relative transition  ${className ? className : "text-sm "}`}
       >
         <Link
-          href={`/category/${item.slug}`}
+          href={`/department/category/${item.slug}`}
           className={`flex items-center w-full hover:ps-3  ${
             items ? "font-semibold" : " "
           }`}

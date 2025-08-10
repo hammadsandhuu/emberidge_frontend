@@ -22,9 +22,8 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
       <li
         className={`flex justify-between items-center transition
                 ${type != "mega" ? "relative" : ""} ${
-          className ? className : "text-sm px-3.5 2xl:px-4 "
-        }
-                `}
+          className ? className : "text-sm px-3.5 2xl:px-4"
+        }`}
       >
         <Link
           href={`/department/${item.slug}`}

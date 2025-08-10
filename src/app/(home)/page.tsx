@@ -1,35 +1,24 @@
-import { Metadata } from "next";
-
 import Container from "@/components/shared/container";
 import HeroSliderBlock from "@/components/hero/hero-slider-block";
 import BannerGrid from "@/components/banner/banner-grid";
 import BestSidebarFeed from "@/components/product/feeds/best-seller-sidebar-feed";
 import LatestblogSidebar from "@/components/blog/latestblog-sidebar";
 import NewSidebarFeed from "@/components/product/feeds/new-sidebar-feed";
-import Testimonial from "@/components/collection/testimonial";
 import BestDealsFeed from "@/components/product/feeds/best-deals-feed";
-import BrandCarousel from "@/components/brand/brand-carousel";
-import GridBaseCarousel from "@/components/collection/grid-base-carousel";
-import ListingElectronic from "@/components/product/listingtabs/listing-electronic";
-import ListingFashion from "@/components/product/listingtabs/listing-fashion";
 import { homeThreeHeroCarousel as bannerHeroCarousel } from "@/components/banner/data";
-import {
-  homeGridHero as gridHero,
-  homeTwoGridHero2 as gridHero2,
-  homeTwoSidebar as heroSidebar,
-} from "@/components/banner/data";
 import { homeThreeHeroSlider as heroSlider } from "@/components/hero/data";
-import ListingCellPhone from "@/components/product/listingtabs/listing-cellphone";
-import ListingComputer from "@/components/product/listingtabs/listing-computer";
-import SuppercategoryElectronic from "@/components/product/suppercategory/suppercategory-electronic";
-import SuppercategoryCloth from "@/components/product/suppercategory/suppercategory-cloth";
 import ServiceFeature from "@/components/common/service-featured";
+import { fetchCategories } from "@/services/category/get-all-categories";
+import CategoriesSection from "@/components/product/listingtabs/categories-section";
 
-export const metadata: Metadata = {
-  title: "Emberidge",
+export const metadata = {
+  title: "Home",
 };
 
 export default async function Page() {
+  // Server fetch
+  const categories = await fetchCategories();
+
   return (
     <>
       <Container variant={"Large"}>
@@ -37,7 +26,7 @@ export default async function Page() {
           <HeroSliderBlock
             heroBanner={heroSlider}
             showHeroContent={false}
-            className={`lg:mb-7 `}
+            className={`lg:mb-7`}
             contentClassName="p-7 sm:pb-24 xl:pb-32 sm:pt-16 xl:pt-24 xs:min-h-[150px] md:min-h-[320px] xl:min-h-[380px] 2xl:min-h-[448px]"
           />
           <BannerGrid
@@ -49,18 +38,20 @@ export default async function Page() {
         </div>
         <ServiceFeature />
       </Container>
+
       <Container variant={"Large"}>
         <div className="grid grid-cols-12 gap-4 xl:gap-8">
-          <div className="maincontent-left col-span-12 lg:col-span-3 2xl:col-span-2">
+          {/* Main Content */}
+          <div className="maincontent-right col-span-12 order-1 lg:order-2 lg:col-span-9 2xl:col-span-10">
+            <BestDealsFeed />
+            <CategoriesSection initialCategories={categories} />
+          </div>
+
+          {/* Sidebar */}
+          <div className="maincontent-left col-span-12 order-2 lg:order-1 lg:col-span-3 2xl:col-span-2">
             <BestSidebarFeed />
             <NewSidebarFeed className="mb-0" />
             <LatestblogSidebar />
-            {/* <Testimonial /> */}
-          </div>
-          <div className="maincontent-right col-span-12  lg:col-span-9 2xl:col-span-10">
-            <BestDealsFeed />
-            <ListingCellPhone />
-            <ListingComputer />
           </div>
         </div>
       </Container>

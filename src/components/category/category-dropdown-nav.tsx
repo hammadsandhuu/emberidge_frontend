@@ -4,8 +4,6 @@ import CategoryListCardLoader from "@/components/shared/loaders/category-list-ca
 import { useCategoriesQuery } from "@/services/category/get-all-categories";
 import cn from "classnames";
 import CategoryMenu from "@/components/shared/category-menu";
-import { colorMap } from "@/data/color-settings";
-import { usePanel } from "@/hooks/use-panel";
 
 interface CategoryDropdownProps {
   className?: string;
@@ -16,12 +14,9 @@ export default function CategoryDropdownNav({
   className,
   categoriesLimit = 12,
 }: CategoryDropdownProps) {
-  const {
-    data: categories,
-    isLoading: loading,
-    error,
-  } = useCategoriesQuery({ limit: 9 });
-  const { selectedColor } = usePanel();
+  const { data, isLoading, error } = useCategoriesQuery({ limit: 6 });
+  console.log("categories", data);
+
   return (
     <div className={cn("absolute z-20 w-72 lg:w-full", className)}>
       <div className="max-h-full">
@@ -29,11 +24,10 @@ export default function CategoryDropdownNav({
           <div className="2xl:ltr:pr-4 2xl:rtl:pl-4">
             <Alert message={error.message} />
           </div>
-        ) : loading ? (
+        ) : isLoading ? (
           <div
             className={cn(
-              "w-full bg-white border-t-0 border-2  rounded-b-md category-dropdown-menu",
-              colorMap[selectedColor].border
+              "w-full bg-white border-t-0 border-2  rounded-b-md category-dropdown-menu"
             )}
           >
             {Array.from({ length: 8 }).map((_, idx) => (
@@ -44,7 +38,7 @@ export default function CategoryDropdownNav({
             ))}
           </div>
         ) : (
-          <CategoryMenu items={categories} categoriesLimit={categoriesLimit} />
+          <CategoryMenu items={data} categoriesLimit={categoriesLimit} />
         )}
       </div>
     </div>
