@@ -26,6 +26,13 @@ const ServiceFeature: React.FC<Props> = ({
 }) => {
   const data = [
     {
+      id: 1,
+      icon: <RocketIcon color="text-brand-dark" />,
+      title: "Free Shipping",
+      description: "Free Shipping On All Order",
+      href: ROUTES.HOME,
+    },
+    {
       id: 2,
       icon: <SyncIcon color="text-brand-dark" />,
       title: "Money Guarantee",

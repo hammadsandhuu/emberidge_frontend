@@ -1,6 +1,6 @@
 export const API_RESOURCES = {
   CATEGORIES: "https://emberidge-backend.vercel.app/api/v1/categories",
-  PRODUCTS: "/products.json",
+  PRODUCTS: "https://emberidge-backend.vercel.app/api/v1/products",
   PRODUCT: "/product.json",
   RELATED_PRODUCTS: "/related_products.json",
 

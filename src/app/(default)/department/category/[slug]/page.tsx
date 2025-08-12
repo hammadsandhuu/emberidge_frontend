@@ -1,7 +1,7 @@
 import {Metadata} from "next";
 import Container from "@/components/shared/container";
 import Breadcrumb from "@/components/shared/breadcrumb";
-import PageContent from "@/app/(default)/category/[slug]/page-content";
+import PageContent from "./page-content";
 
 export const metadata: Metadata = {
 	title: 'Category Page',

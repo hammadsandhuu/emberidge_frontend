@@ -12,7 +12,13 @@ export type QueryOptionsType = {
   status?: string;
   id?: string;
   limit?: number;
-  sort_by?: string; // Added for newQuery
+  sort_by?: string;
+  min_price?: number;
+  price_max?: number;
+  categories?: string[];
+  colors?: string[];
+  sizes?: string[];
+  isOnSale?: boolean;
 };
 
 export interface PaginatedProduct {
