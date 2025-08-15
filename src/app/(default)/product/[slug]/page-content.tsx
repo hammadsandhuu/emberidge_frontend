@@ -18,7 +18,7 @@ export default function PageContent() {
   const pathname = useParams();
   const { slug } = pathname;
   const { data, isLoading } = useProductQuery(slug as string);
-
+  console.log("data", data);
   // Initialize attributes dynamically based on product variations
   const { initialAttributes } = useProductVariations(data);
   const [attributes, setAttributes] = React.useState<{ [key: string]: string }>(
