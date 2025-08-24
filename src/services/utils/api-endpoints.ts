@@ -1,6 +1,13 @@
 export const API_RESOURCES = {
   CATEGORIES: "https://emberidge-backend.vercel.app/api/v1/categories",
   PRODUCTS: "https://emberidge-backend.vercel.app/api/v1/products",
+  USER: "https://emberidge-backend.vercel.app/api/v1/users/me",
+  CHANGE_PASSWORD: "https://emberidge-backend.vercel.app/auth/update-password",
+  LOGIN: "https://emberidge-backend.vercel.app/auth/login",
+  SIGNUP: "https://emberidge-backend.vercel.app/auth/signup",
+  LOGOUT: "https://emberidge-backend.vercel.app/auth/logout",
+  FORGOT_PASSWORD: "https://emberidge-backend.vercel.app/auth/forgot-password",
+  RESET_PASSWORD: "https://emberidge-backend.vercel.app/auth/reset-password",
   PRODUCT: "/product.json",
   RELATED_PRODUCTS: "/related_products.json",
 

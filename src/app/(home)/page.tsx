@@ -16,7 +16,6 @@ export const metadata = {
 };
 
 export default async function Page() {
-  // Server fetch
   const categories = await fetchCategories();
 
   return (

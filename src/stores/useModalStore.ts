@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 
 export type MODAL_VIEWS =
-    | 'LOGIN_VIEW'
-    | 'SIGNUP_VIEW'
-    | 'FORGET_PASSWORD'
-    | 'PRODUCT_VIDEO'
-    | 'PRODUCT_VIEW'
-    | 'INSTAGRAM_VIEW';
+  | "LOGIN_VIEW"
+  | "SIGNUP_VIEW"
+  | "FORGET_PASSWORD"
+  | "PRODUCT_VIDEO"
+  | "RESET_PASSWORD"
+  | "PRODUCT_VIEW"
+  | "INSTAGRAM_VIEW";
 
 interface ModalState {
     view?: MODAL_VIEWS;

@@ -8,6 +8,7 @@ import DrawerManaged from "@/components/common/drawer/drawerManaged";
 import NextTopLoader from "nextjs-toploader";
 import PanelManaged from "@/components/panel/panel-managed";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 
 const rubik = Rubik({
   subsets: ["latin"],
@@ -31,7 +32,7 @@ export default function RootLayout({
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <body className={`${rubik.className}  antialiased bg-background`}>
         <NextTopLoader />
-
+        <Toaster />
         <Providers
           attribute="class"
           defaultTheme="system"

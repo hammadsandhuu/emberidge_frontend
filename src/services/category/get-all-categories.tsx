@@ -5,8 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 
 // Pure fetch function (Server & Client both)
 export const fetchCategories = async () => {
-  const res = await http.get(API_RESOURCES.CATEGORIES);
-  return res.data.data.categories as Category[];
+  try {
+    const res = await http.get(API_RESOURCES.CATEGORIES);
+    return res?.data?.data?.categories as Category[];
+  } catch (error: any) {
+    throw error;
+  }
 };
 
 // React Query hook (Client only)
@@ -20,3 +24,4 @@ export const useCategoriesQuery = (
     ...reactQueryOptions,
   });
 };
+
