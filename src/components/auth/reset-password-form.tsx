@@ -55,12 +55,12 @@ export default function ResetPasswordForm({
               type="password"
               variant="solid"
               className="mb-4"
-              {...register("confirmPassword", {
-                required: "Confirm your password",
+              {...register("passwordConfirm", {
+                required: "Please confirm your password",
                 validate: (value, { password }) =>
                   value === password || "Passwords do not match",
               })}
-              error={errors.confirmPassword?.message}
+              error={errors.passwordConfirm?.message}
               disabled={isPending}
             />
 

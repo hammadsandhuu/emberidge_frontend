@@ -85,14 +85,15 @@ export const useForgetPasswordForm = () => {
 export const useResetPasswordForm = (token: string) => {
   const formMethods = useForm<ResetPasswordInputType>({
     mode: "all",
-    defaultValues: { password: "", confirmPassword: "" },
+    defaultValues: { password: "", passwordConfirm: "" },
   });
 
   const { mutate: resetPassword, isPending } = useResetPasswordMutation(() =>
     formMethods.reset()
   );
-  const onSubmit = ({ password }: ResetPasswordInputType) =>
-    resetPassword({ token, password });
+
+  const onSubmit = ({ password, passwordConfirm }: ResetPasswordInputType) =>
+    resetPassword({ token, password, passwordConfirm });
 
   return {
     formMethods,

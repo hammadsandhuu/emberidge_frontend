@@ -9,27 +9,40 @@ import { ROUTES } from "@/utils/routes";
 
 export interface ResetPasswordInputType {
   password: string;
-  confirmPassword: string;
+  passwordConfirm: string;
 }
 
 export interface ResetPasswordResponse {
-  ok: boolean;
+  token: string;
   message: string;
 }
 
 // API function
-async function resetPasswordApi({token,password,}: {token: string;password: string;}): Promise<ResetPasswordResponse> {
-  const { data } = await http.patch(`${API_RESOURCES.RESET_PASSWORD}`, {
-    token,
-    password,
-  });
+async function resetPasswordApi({
+  token,
+  password,
+  passwordConfirm,
+}: {
+  token: string;
+  password: string;
+  passwordConfirm: string;
+}): Promise<ResetPasswordResponse> {
+  const { data } = await http.patch(
+    `${API_RESOURCES.RESET_PASSWORD}/${token}`,
+    { password, passwordConfirm }
+  );
   return data;
 }
 
 // Mutation hook
 export const useResetPasswordMutation = (onReset?: () => void) => {
   const router = useRouter();
-  return useMutation<ResetPasswordResponse,any,{ token: string; password: string }>({
+
+  return useMutation<
+    ResetPasswordResponse,
+    any,
+    { token: string; password: string; passwordConfirm: string }
+  >({
     mutationFn: resetPasswordApi,
     onSuccess: (data) => {
       toast.success(data?.message || "Password reset successfully!");
