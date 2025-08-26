@@ -17,6 +17,7 @@ export const metadata = {
 
 export default async function Page() {
   const categories = await fetchCategories();
+  console.log("categories", categories);
 
   return (
     <>
@@ -42,7 +43,7 @@ export default async function Page() {
         <div className="grid grid-cols-12 gap-4 xl:gap-8">
           {/* Main Content */}
           <div className="maincontent-right col-span-12 order-1 lg:order-2 lg:col-span-9 2xl:col-span-10">
-            <BestDealsFeed />
+            {/* <BestDealsFeed /> */}
             <CategoriesSection initialCategories={categories} />
           </div>
 

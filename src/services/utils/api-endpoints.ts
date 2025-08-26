@@ -1,6 +1,8 @@
 export const API_RESOURCES = {
   CATEGORIES: "https://emberidge-backend.vercel.app/api/v1/categories",
   PRODUCTS: "https://emberidge-backend.vercel.app/api/v1/products",
+  PRODUCTS_BY_CATEGORIES:
+    "https://emberidge-backend.vercel.app/api/v1/products/category",
   USER: "https://emberidge-backend.vercel.app/api/v1/users/me",
   CHANGE_PASSWORD: "https://emberidge-backend.vercel.app/auth/update-password",
   LOGIN: "https://emberidge-backend.vercel.app/auth/login",
