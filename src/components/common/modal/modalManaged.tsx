@@ -4,6 +4,7 @@ import Modal from "@/components/common/modal/modal";
 import dynamic from "next/dynamic";
 import { useModal } from "@/hooks/use-modal";
 import ResetPasswordForm from "@/components/auth/reset-password-form";
+import ReviewForm from "@/components/product/productDetails/review-form";
 
 const LoginForm = dynamic(() => import("@/components/auth/login-form"));
 const SignUpForm = dynamic(() => import("@/components/auth/register-form"));
@@ -26,6 +27,7 @@ export default function ModalManaged() {
       {view === "RESET_PASSWORD" && (
         <ResetPasswordForm token={data?.token || ""} />
       )}
+      {view === "WRITE_REVIEW" && <ReviewForm productId={data?.productId} />}
     </Modal>
   );
 }

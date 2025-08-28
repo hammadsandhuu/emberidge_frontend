@@ -11,6 +11,7 @@ import { useCategoriesQuery } from "@/services/category/get-all-categories";
 import { useProductsQueryByCategories } from "@/services/product/get-products";
 import { BreakpointsType } from "@/services/types";
 import useCarouselConfig from "@/hooks/use-carousel-config";
+import Loading from "@/components/shared/loading";
 
 interface Props {
   parentSlug: string;
@@ -60,24 +61,9 @@ const ListingCategory: React.FC<Props> = ({ parentSlug, subSlug }) => {
         onNavClick={handleTabClick}
         activeTab={activeTab}
       />
-      <div className="relative after-item-opacity mt-5 min-h-[320px]">
+      <div className="relative after-item-opacity mt-5">
         {loadingProducts ? (
-          <Carousel
-            spaceBetween={spaceBetween}
-            breakpoints={breakpoints || defaultBreakpoints}
-            prevActivateId={`prev-${parentSlug}`}
-            nextActivateId={`next-${parentSlug}`}
-            prevButtonClassName="start-3 xl:start-5"
-            nextButtonClassName="end-3 xl:end-5"
-          >
-            {Array.from({ length: 6 }).map((_, idx) => (
-              <SwiperSlide key={`loader-${idx}`}>
-                <div className="w-full h-[320px] p-2 flex justify-center items-center bg-white rounded">
-                  <ProductCardLoader uniqueKey={`loader-${idx}`} />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Carousel>
+          <Loading />
         ) : products && products.length > 0 ? (
           <Carousel
             spaceBetween={spaceBetween}
@@ -94,7 +80,7 @@ const ListingCategory: React.FC<Props> = ({ parentSlug, subSlug }) => {
             ))}
           </Carousel>
         ) : (
-          <div className="flex justify-center items-center h-[320px] bg-white rounded">
+          <div className="flex justify-center items-center bg-white rounded py-5">
             <p className="text-brand-dark">No products available</p>
           </div>
         )}

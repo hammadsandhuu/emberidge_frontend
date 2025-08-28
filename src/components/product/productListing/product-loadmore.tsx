@@ -2,11 +2,10 @@ import React, { FC } from "react";
 
 import Button from "@/components/shared/button";
 import ProductCard from "@/components/product/productListing/productCards/product-card";
-import ProductCardLoader from "@/components/shared/loaders/product-card-loader";
 import ProductCardList from "@/components/product/productListing/productCards/product-list";
-import { LIMITS } from "@/services/utils/limits";
 import { PaginatedProduct, Product } from "@/services/types";
 import { InfiniteData } from "@tanstack/react-query";
+import Loading from "@/components/shared/loading";
 
 interface ProductProps {
   data?: InfiniteData<PaginatedProduct, unknown>; // Use InfiniteData from useInfiniteQuery
@@ -27,7 +26,10 @@ export const ProductLoadMore: FC<ProductProps> = ({
   className = "",
   viewAs,
 }) => {
-  const limit = LIMITS.PRODUCTS_LIMITS || 15;
+  // Check if there are any products across all pages
+  const hasProducts = data?.pages?.some(
+    (page) => page.data && page.data.length > 0
+  );
 
   return (
     <>
@@ -38,32 +40,33 @@ export const ProductLoadMore: FC<ProductProps> = ({
             : "grid grid-cols-1 gap-1.5"
         } ${className}`}
       >
-        {isLoading
-          ? Array.from({ length: limit }).map((_, idx) => (
-              <div
-                className={"p-2 h-full rounded bg-white"}
-                key={`product--key-${idx}`}
-              >
-                <ProductCardLoader uniqueKey={`product--key-${idx}`} />
-              </div>
-            ))
-          : data?.pages?.map((page: PaginatedProduct) => {
-              if (viewAs) {
-                return page.data.map((product: Product) => (
-                  <ProductCard
-                    key={`product--key-${product.id}`}
-                    product={product}
-                  />
-                ));
-              } else {
-                return page.data.map((product: Product) => (
-                  <ProductCardList
-                    key={`product--key-${product.id}`}
-                    product={product}
-                  />
-                ));
-              }
-            })}
+        {isLoading ? (
+          <div className="col-span-full">
+            <Loading />
+          </div>
+        ) : hasProducts ? (
+          data?.pages?.map((page: PaginatedProduct) => {
+            if (viewAs) {
+              return page.data.map((product: Product) => (
+                <ProductCard
+                  key={`product--key-${product.id}`}
+                  product={product}
+                />
+              ));
+            } else {
+              return page.data.map((product: Product) => (
+                <ProductCardList
+                  key={`product--key-${product.id}`}
+                  product={product}
+                />
+              ));
+            }
+          })
+        ) : (
+          <div className="col-span-full flex justify-center items-center bg-white rounded py-5">
+            <p className="text-brand-dark">No products available</p>
+          </div>
+        )}
         {/* end of error state */}
       </div>
 
@@ -79,9 +82,7 @@ export const ProductLoadMore: FC<ProductProps> = ({
             Load More
           </Button>
         ) : (
-          data &&
-          data.pages &&
-          data.pages.length > 0 && (
+          hasProducts && (
             <p className="text-brand-dark">No more products to load</p>
           )
         )}

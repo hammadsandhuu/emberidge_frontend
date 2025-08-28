@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "@/components/shared/link";
 import { Product } from "@/services/types";
-import StarIcon from "@/components/icons/star-icon";
+import { Star } from "lucide-react";
 import { ROUTES } from "@/utils/routes";
 
 interface ProductDetailsProps {
@@ -11,25 +11,60 @@ interface ProductDetailsProps {
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { name, slug } = product;
 
+  // Safely extract rating values with proper fallbacks
+  const rating =
+    typeof product.ratingsAverage === "number" ? product.ratingsAverage : 0;
+  const reviewCount =
+    typeof product.ratingsQuantity === "number" ? product.ratingsQuantity : 0;
+
   return (
     <>
       <Link
         href={`${ROUTES.PRODUCT}/${slug}`}
-        className="text-brand-dark text-sm min-h-[40px] leading-5 line-clamp-2 mt-1 mb-2"
+        className="text-brand-dark text-sm leading-5 line-clamp-2 mt-1 mb-2"
       >
         {name}
       </Link>
       <div className="flex text-gray-500 space-x-2">
         <div className="flex items-center">
-          {[...Array(5)].map((_, idx) => (
-            <StarIcon
-              key={idx}
-              color={idx < 5 ? "#F3B81F" : "#DFE6ED"}
-              className="w-3 h-3 mx-px"
-            />
-          ))}
+          {[...Array(5)].map((_, idx) => {
+            const starValue = idx + 1;
+            const isFull = starValue <= rating;
+            const isHalf = !isFull && starValue - 0.5 <= rating;
+            return (
+              <div key={idx} className="relative inline-block mx-px">
+                <Star
+                  stroke="#DFE6ED"
+                  fill="white"
+                  size={12}
+                  className="relative"
+                />
+                {rating > 0 && (
+                  <>
+                    {isFull ? (
+                      <Star
+                        fill="#F3B81F"
+                        stroke="#F3B81F"
+                        size={12}
+                        className="absolute inset-0"
+                      />
+                    ) : isHalf ? (
+                      <div
+                        className="absolute inset-0 overflow-hidden"
+                        style={{ width: "50%" }}
+                      >
+                        <Star fill="#F3B81F" stroke="#F3B81F" size={12} />
+                      </div>
+                    ) : null}
+                  </>
+                )}
+              </div>
+            );
+          })}
         </div>
-        <span className="text-[13px] leading-4">(2 reviews)</span>
+        <span className="text-[13px] leading-4">
+          ({reviewCount} review{reviewCount !== 1 ? "s" : ""})
+        </span>
       </div>
     </>
   );

@@ -116,7 +116,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ className, isPopup = true }) => {
                 >
                   {isPending ? (
                     <>
-                      <Loader className="w-4 h-4 animate-spin" /> Logging in...
+                      <Loader className="w-4 h-4 animate-spin mr-1" /> Logging
+                      in...
                     </>
                   ) : (
                     "Log In"

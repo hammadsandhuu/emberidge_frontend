@@ -42,6 +42,7 @@ export const useSignUpForm = () => {
     handleSubmit: formMethods.handleSubmit(onSubmit),
   };
 };
+
 export const useLoginForm = () => {
   const formMethods = useForm<LoginInputType>({
     mode: "all",
@@ -65,6 +66,7 @@ export const useLoginForm = () => {
     handleSubmit: formMethods.handleSubmit(onSubmit),
   };
 };
+
 export const useForgetPasswordForm = () => {
   const formMethods = useForm<ForgetPasswordInput>({
     mode: "all",
@@ -153,6 +155,7 @@ export const useSocialLogin = () => {
 
   return { handleSocialLogin };
 };
+
 export const useAuthModal = () => {
   const { openModal, closeModal } = useModal();
 

@@ -15,7 +15,6 @@ export default function CategoryDropdownNav({
   categoriesLimit = 12,
 }: CategoryDropdownProps) {
   const { data, isLoading, error } = useCategoriesQuery({ limit: 6 });
-  console.log("categories", data);
 
   return (
     <div className={cn("absolute z-20 w-72 lg:w-full", className)}>

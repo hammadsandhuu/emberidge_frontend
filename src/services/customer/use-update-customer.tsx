@@ -27,10 +27,6 @@ async function updateUser(input: UpdateUserType) {
     formData.append("avatar", input.avatar);
   }
 
-  for (let [key, value] of formData.entries()) {
-    console.log(key, value);
-  }
-
   const { data } = await http.patch(API_RESOURCES.USER, formData, {
     headers: {
       "Content-Type": "multipart/form-data",

@@ -7,7 +7,8 @@ export type MODAL_VIEWS =
   | "PRODUCT_VIDEO"
   | "RESET_PASSWORD"
   | "PRODUCT_VIEW"
-  | "INSTAGRAM_VIEW";
+  | "INSTAGRAM_VIEW"
+  | "WRITE_REVIEW";
 
 interface ModalState {
     view?: MODAL_VIEWS;

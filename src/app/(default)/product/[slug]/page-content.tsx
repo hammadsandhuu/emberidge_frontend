@@ -2,8 +2,6 @@
 import React from "react";
 import { Element } from "react-scroll";
 import { useParams } from "next/navigation";
-
-import ProductDetailsTab from "@/components/product/productDetails/description-tab";
 import RelatedProductSlider from "@/components/product/feeds/related-product-feed";
 import { useProductQuery } from "@/services/product/get-product";
 import ProductGallery from "@/components/product/productDetails/product-gallery";
@@ -13,18 +11,16 @@ import Loading from "@/components/shared/loading";
 import { variationsRectangle } from "@/components/product/productView/data-variations/variations-rectangle";
 import { Variation } from "@/services/types";
 import useProductVariations from "@/hooks/use-product-variations";
+import ProductDetailsTab from "@/components/product/productDetails/ProductDetailsTab";
 
 export default function PageContent() {
   const pathname = useParams();
   const { slug } = pathname;
   const { data, isLoading } = useProductQuery(slug as string);
-  console.log("data", data);
-  // Initialize attributes dynamically based on product variations
   const { initialAttributes } = useProductVariations(data);
   const [attributes, setAttributes] = React.useState<{ [key: string]: string }>(
     initialAttributes
   );
-
   if (isLoading) return <Loading />;
 
   return (
@@ -45,7 +41,7 @@ export default function PageContent() {
             className={"mb-8 lg:mb-20 "}
             attributes={attributes}
           />
-          <ProductDetailsTab />
+          <ProductDetailsTab data={data} />
         </div>
       </Element>
 
