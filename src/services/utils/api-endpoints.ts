@@ -10,7 +10,8 @@ export const API_RESOURCES = {
   LOGOUT: "https://emberidge-backend.vercel.app/auth/logout",
   FORGOT_PASSWORD: "https://emberidge-backend.vercel.app/auth/forgot-password",
   RESET_PASSWORD: "https://emberidge-backend.vercel.app/auth/reset-password",
-  REVIEWS: "https://emberidge-backend.vercel.app/api/v1/products/reviews",
+  REVIEWS: "https://emberidge-backend.vercel.app/api/v1/products",
+  VOTE: "https://emberidge-backend.vercel.app/api/v1/products/reviews",
   PRODUCT: "/product.json",
   RELATED_PRODUCTS: "/related_products.json",
 

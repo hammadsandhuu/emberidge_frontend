@@ -45,7 +45,7 @@ async function submitReviewApi(
 // API Call for marking review as helpful
 async function markHelpfulApi(reviewId: string): Promise<HelpfulResponse> {
   const { data } = await http.patch<HelpfulResponse>(
-    `${API_RESOURCES.REVIEWS}/${reviewId}/helpful`
+    `${API_RESOURCES.VOTE}/${reviewId}/helpful`
   );
   return data;
 }
@@ -53,7 +53,7 @@ async function markHelpfulApi(reviewId: string): Promise<HelpfulResponse> {
 // API Call for marking review as not helpful
 async function markNotHelpfulApi(reviewId: string): Promise<HelpfulResponse> {
   const { data } = await http.patch<HelpfulResponse>(
-    `${API_RESOURCES.REVIEWS}/${reviewId}/not-helpful`
+    `${API_RESOURCES.VOTE}/${reviewId}/not-helpful`
   );
   return data;
 }

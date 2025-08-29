@@ -39,7 +39,7 @@ const ReviewCard: FC<ReviewProps> = ({ review, index, className = "" }) => {
     const index = name ? name.charCodeAt(0) % colors.length : 0;
     return colors[index];
   };
-
+console.log("review", review);
   return (
     <div className={`w-full ${className}`}>
       {index > 0 && (
