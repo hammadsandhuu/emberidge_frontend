@@ -10,7 +10,6 @@ interface ReviewProps {
 }
 
 const ReviewCard: FC<ReviewProps> = ({ review, index, className = "" }) => {
-  // Get the first letter of the user's name
   const userInitial = review?.user?.name
     ? review.user.name.charAt(0).toUpperCase()
     : "U";

@@ -25,25 +25,19 @@ export default function ReviewRatingTabContent({
   const { isAuthorized } = useUI();
   const isLoggedIn = isAuthorized ?? !!Cookies.get("auth_token");
   const { openModal } = useModal();
-
-  // State to track how many reviews to show
   const [visibleReviews, setVisibleReviews] = useState(10);
-
-  // Function to load more reviews
   const loadMoreReviews = () => {
     setVisibleReviews((prev) => prev + 10);
   };
 
   const handleWriteReview = () => {
     if (isLoggedIn) {
-      openModal("WRITE_REVIEW", { productId: data.id }); // Pass product ID
+      openModal("WRITE_REVIEW", { productId: data.id });
     } else {
       toast.error("Please log in first to write a review.");
       openModal("LOGIN_VIEW");
     }
   };
-
-  // Get the reviews to display (first 'visibleReviews' reviews)
   const reviewsToShow = data?.reviews?.slice(0, visibleReviews) || [];
 
   return (
@@ -64,8 +58,6 @@ export default function ReviewRatingTabContent({
               {reviewsToShow.map((review: any, index: number) => (
                 <ReviewCard key={review._id} review={review} index={index} />
               ))}
-
-              {/* Load More Button - Only show if there are more reviews to load */}
               {data?.reviews && data.reviews.length > visibleReviews && (
                 <div className="flex justify-center mt-6">
                   <Button
