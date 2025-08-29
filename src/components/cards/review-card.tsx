@@ -47,7 +47,7 @@ const ReviewCard: FC<ReviewProps> = ({ review, index, className = "" }) => {
       )}
 
       {/* Card Container */}
-      <div className="bg-gray-50/50 hover:bg-gray-50 transition-all duration-200 rounded-xl border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-md p-4 sm:p-6">
+      <div className="bg-white transition-all duration-200 rounded-xl border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-md p-4 sm:p-6">
         <div className="flex gap-3 sm:gap-4">
           {/* Avatar */}
           <div className="flex-shrink-0">
