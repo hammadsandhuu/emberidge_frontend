@@ -90,51 +90,80 @@ export default function RatingSummary({
   };
 
   return (
-    <div className={cn("bg-white p-6 rounded-lg border", className)}>
-      {/* Overall Rating */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-3">Customer reviews</h3>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="flex items-center gap-1">
-            {renderStars(averageRating, "lg")}
-          </div>
-          <span className="text-lg font-medium">
-            {averageRating.toFixed(1)} out of 5
-          </span>
-        </div>
-        <p className="text-gray-600 text-sm">
-          {totalRatings} global rating{totalRatings !== 1 ? "s" : ""}
-        </p>
-      </div>
+    <div
+      className={cn(
+        "bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200",
+        className
+      )}
+    >
+      {/* Mobile: Horizontal layout, Desktop: Vertical layout */}
+      <div className="p-4 sm:p-6">
+        {/* Overall Rating */}
+        <div className="mb-6">
+          <h3 className="text-lg sm:text-xl font-semibold mb-3 text-gray-900">
+            Customer reviews
+          </h3>
 
-      {/* Rating Distribution */}
-      <div className="mb-6 space-y-2">
-        {ratingDistribution.map(({ star, count, percentage }) => (
-          <div key={star} className="flex items-center gap-3 text-sm">
-            <span className="w-12 text-primary-500 hover:text-primary-700 cursor-pointer">
-              {star} star
-            </span>
-            <div className="flex-1 bg-gray-200 rounded-full h-4 relative overflow-hidden">
-              <div
-                className="bg-primary-500 h-full rounded-full transition-all duration-300"
-                style={{ width: `${percentage}%` }}
-              />
+          {/* Rating Display - Responsive Layout */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-2">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-0.5">
+                {renderStars(averageRating, "lg")}
+              </div>
+              <span className="text-lg sm:text-xl font-semibold text-gray-900">
+                {averageRating.toFixed(1)}
+              </span>
             </div>
-            <span className="w-8 text-primary-400 text-right">
-              {percentage}%
+            <span className="text-sm sm:text-base text-gray-500">
+              out of 5 stars
             </span>
           </div>
-        ))}
-      </div>
-      {/* Write Review Section */}
-      <div className="border-t pt-6">
-        <h4 className="text-lg font-semibold mb-2">Review this product</h4>
-        <p className="text-gray-600 text-sm mb-4">
-          Share your thoughts with other customers
-        </p>
-        <Button variant="border" onClick={onWriteReview} className="w-full">
-          Write a customer review
-        </Button>
+
+          <p className="text-gray-600 text-sm">
+            {totalRatings.toLocaleString()} global rating
+            {totalRatings !== 1 ? "s" : ""}
+          </p>
+        </div>
+
+        {/* Rating Distribution */}
+        <div className="mb-6 space-y-2">
+          {ratingDistribution.map(({ star, count, percentage }) => (
+            <div
+              key={star}
+              className="flex items-center gap-2 sm:gap-3 text-sm"
+            >
+              <button className="w-12 sm:w-14 text-left text-primary-600 hover:text-primary-700 cursor-pointer font-medium transition-colors">
+                {star} star
+              </button>
+
+              <div className="flex-1 bg-gray-200 rounded-full h-3 sm:h-4 relative overflow-hidden">
+                <div
+                  className="bg-primary-500 h-full rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${percentage}%` }}
+                />
+              </div>
+
+              <span className="w-8 sm:w-10 text-primary-600 text-right font-medium">
+                {percentage}%
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Write Review Section */}
+        <div className="border-t border-gray-100 pt-6">
+          <div className="text-center sm:text-left">
+            <h4 className="text-base sm:text-lg font-semibold mb-2 text-gray-900">
+              Review this product
+            </h4>
+            <p className="text-gray-600 text-sm mb-4">
+              Share your thoughts with other customers
+            </p>
+            <Button variant="border" onClick={onWriteReview} className="w-full">
+              Write a customer review
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

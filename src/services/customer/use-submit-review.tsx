@@ -44,7 +44,7 @@ async function submitReviewApi(
 
 // API Call for marking review as helpful
 async function markHelpfulApi(reviewId: string): Promise<HelpfulResponse> {
-  const { data } = await http.post<HelpfulResponse>(
+  const { data } = await http.patch<HelpfulResponse>(
     `${API_RESOURCES.REVIEWS}/${reviewId}/helpful`
   );
   return data;
@@ -52,7 +52,7 @@ async function markHelpfulApi(reviewId: string): Promise<HelpfulResponse> {
 
 // API Call for marking review as not helpful
 async function markNotHelpfulApi(reviewId: string): Promise<HelpfulResponse> {
-  const { data } = await http.post<HelpfulResponse>(
+  const { data } = await http.patch<HelpfulResponse>(
     `${API_RESOURCES.REVIEWS}/${reviewId}/not-helpful`
   );
   return data;
@@ -71,10 +71,7 @@ export const useSubmitReviewMutation = (config?: {
       toast.success(data?.message || "Review submitted successfully!");
       config?.onSuccess?.();
       closeModal();
-
-      // Invalidate relevant queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ["product-reviews"] });
-      queryClient.invalidateQueries({ queryKey: ["product-details"] });
+      queryClient.invalidateQueries({ queryKey: ["product"] });
     },
     onError: (error: any) => {
       const message =
@@ -95,9 +92,7 @@ export const useMarkHelpfulMutation = (config?: {
     onSuccess: (data) => {
       toast.success("Thank you for your feedback!");
       config?.onSuccess?.(data);
-
-      // Invalidate relevant queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ["product-reviews"] });
+      queryClient.invalidateQueries({ queryKey: ["product"] });
     },
     onError: (error: any) => {
       const message =
@@ -118,9 +113,7 @@ export const useMarkNotHelpfulMutation = (config?: {
     onSuccess: (data) => {
       toast.success("Thank you for your feedback!");
       config?.onSuccess?.(data);
-
-      // Invalidate relevant queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ["product-reviews"] });
+      queryClient.invalidateQueries({ queryKey: ["product"] });
     },
     onError: (error: any) => {
       const message =
