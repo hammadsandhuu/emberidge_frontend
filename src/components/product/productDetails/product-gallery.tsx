@@ -17,7 +17,6 @@ const ProductGallery: React.FC<GalleryProps> = ({
   data,
   variant = "default",
   className,
-  enableVideo = false,
   attributes,
 }) => {
   // In product-gallery.tsx
@@ -28,8 +27,8 @@ const ProductGallery: React.FC<GalleryProps> = ({
   const activeIndex = useMemo(() => {
     if (!data || !attributes || !attributes["color"]) return 0;
 
-    const matchedOption = data.variation_options?.find((option) =>
-      option.options.some(
+    const matchedOption = data?.variation_options?.find((option) =>
+      option?.options?.some(
         (o) => o.name === "color" && o.value === attributes["color"]
       )
     );

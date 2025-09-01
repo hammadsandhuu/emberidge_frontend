@@ -33,8 +33,12 @@ const ProductView: React.FC<ViewProps> = ({ data, className,variant,useVariation
 		selectedVariation,
 		selectedQuantity
 	);
-	const { isInStock, isInCart, getItemFromCart } = useCartHelpers(); // Get helpers
-	if (!data) return null;
+	const { isInStock, isInCart, getItemFromCart } = useCartHelpers();
+  console.log("variation in product view", variations);
+  console.log("isSelected in product view", isSelected);
+  console.log("selectedVariationin product view", selectedVariation);
+  console.log("errorAttributesin product view", errorAttributes);
+  if (!data) return null;
 
 	return (
 		<div className={cn("flex flex-col shrink-0", className)}>

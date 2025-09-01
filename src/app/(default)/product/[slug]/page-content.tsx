@@ -8,7 +8,6 @@ import ProductGallery from "@/components/product/productDetails/product-gallery"
 import ProductView from "@/components/product/productDetails/product-view";
 
 import Loading from "@/components/shared/loading";
-import { variationsRectangle } from "@/components/product/productView/data-variations/variations-rectangle";
 import { Variation } from "@/services/types";
 import useProductVariations from "@/hooks/use-product-variations";
 import ProductDetailsTab from "@/components/product/productDetails/ProductDetailsTab";
@@ -23,6 +22,16 @@ export default function PageContent() {
   );
   if (isLoading) return <Loading />;
 
+  if (!data) {
+    return (
+      <div className="col-span-full flex justify-center items-center bg-white rounded py-5">
+        <p className="text-brand-dark">Product not found or failed to load.</p>
+      </div>
+    );
+  }
+
+  console.log("product detail", data);
+
   return (
     <>
       <Element name="category" className="xl:flex flex-row-reverse">
@@ -32,7 +41,7 @@ export default function PageContent() {
             className={"mb-8 lg:mb-20 "}
             attributes={attributes}
             setAttributes={setAttributes}
-            useVariations={variationsRectangle.variations as Variation[]}
+            useVariations={data.variations as Variation[]}
           />
         </div>
         <div className="w-full  xl:w-[64%] xl:pe-10  xl:mb-0 mb-8">

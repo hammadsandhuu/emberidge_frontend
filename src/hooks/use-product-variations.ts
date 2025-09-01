@@ -14,9 +14,10 @@ function useProductVariations(
     if (product?.variations && Array.isArray(product.variations)) {
       product.variations.forEach((variation: Variation) => {
         const attrSlug = variation?.attribute?.slug;
-        const attrValue = variation?.value;
-        if (attrSlug && attrValue) {
-          attrs[attrSlug] = attrValue;
+        // Get the first value as default if available
+        const firstValue = variation?.attribute?.values?.[0]?.value;
+        if (attrSlug && firstValue) {
+          attrs[attrSlug] = firstValue;
         }
       });
     }
@@ -25,12 +26,10 @@ function useProductVariations(
 
   // Safely extract variations
   const variations = useMemo(() => {
-    //check condition to overwrite value variations
-    if (useVariations) return getVariations(useVariations);
     return getVariations(
       Array.isArray(product?.variations) ? product.variations : []
     );
-  }, [useVariations, product?.variations]);
+  }, [product?.variations]);
 
   // Store selected variation
   const [errorAttributes, setErrorAttributes] = useState<boolean>(false);
@@ -40,9 +39,8 @@ function useProductVariations(
 
   // Check if all required attributes are selected
   const isSelected = useMemo(() => {
-    return getVariations(
-      Array.isArray(product?.variations) ? product.variations : []
-    );
+    const variationKeys = Object.keys(variations);
+    return variationKeys.every((key) => attributes[key] !== undefined);
   }, [variations, attributes]);
 
   const sortedAttributeValues = useMemo(
@@ -59,12 +57,16 @@ function useProductVariations(
     const variationOptions = Array.isArray(product?.variation_options)
       ? product.variation_options
       : [];
+
     const newSelectedVariation = variationOptions.find((o: VariationOption) =>
-      isEqual(o.options.map((v) => v.value).sort(), sortedAttributeValues)
+      isEqual(
+        o.attributes?.map((attr: any) => attr.value).sort(),
+        sortedAttributeValues
+      )
     );
 
     setSelectedVariation(newSelectedVariation);
-  }, [isSelected, product, sortedAttributeValues]);
+  }, [isSelected, product, sortedAttributeValues, attributes]);
 
   return {
     variations,

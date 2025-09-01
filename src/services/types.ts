@@ -84,6 +84,7 @@ export type Product = {
 };
 
 interface VariationValue {
+  _id: number;
   id: number;
   attribute_id: number;
   value: string;
@@ -91,10 +92,17 @@ interface VariationValue {
 }
 
 interface Attribute {
+  _id: any;
   id: number;
   slug: string;
   name: string;
-  type: 'swatch' | 'radio' | 'rectangle' | 'rectangleColor' | 'swatchImage' | 'dropdown';
+  type:
+    | "swatch"
+    | "radio"
+    | "rectangle"
+    | "rectangleColor"
+    | "swatchImage"
+    | "dropdown";
   values: VariationValue[];
 }
 
@@ -113,7 +121,13 @@ export interface VariationItem {
 
 export interface VariationsType {
   [key: string]: {
-    type: 'swatch' | 'radio' | 'rectangle' | 'rectangleColor' | 'swatchImage' | 'dropdown';
+    type:
+      | "swatch"
+      | "radio"
+      | "rectangle"
+      | "rectangleColor"
+      | "swatchImage"
+      | "dropdown";
     options: VariationItem[];
   };
 }
@@ -125,6 +139,7 @@ export interface Option {
 }
 
 export interface VariationOption {
+  attributes: any;
   id: number;
   title: string;
   price: number;
