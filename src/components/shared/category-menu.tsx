@@ -8,12 +8,10 @@ import {
 
 import Image from "@/components/shared/image";
 import SubMegaVertical from "@/components/shared/mega/sub-mega-vertical";
-import { usePanel } from "@/hooks/use-panel";
-import { colorMap } from "@/data/color-settings";
+import Link from "next/link";
 
 function SidebarMenuItem({ className, item, depth = 0 }: any) {
-  const { name, children: items, icon, type } = item;
-  const { selectedColor } = usePanel();
+  const { name, children: items, icon, type, slug } = item;
 
   return (
     <li
@@ -23,11 +21,12 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
         className ? className : "text-sm px-3.5 2xl:px-4"
       )}
     >
-      <div
+      <Link
+        href={`/department/category/${item.slug}` || "/"}
         className={cn(
           "flex items-center w-full py-3 text-start outline-none focus:outline-none focus:ring-0",
           {
-            [`text-brand-dark border-b border-border-base ${colorMap[selectedColor].hoverLink}`]:
+            [`text-brand-dark border-b border-border-base hover:text-primary-500`]:
               depth === 0,
           }
         )}
@@ -48,7 +47,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
             <IoIosArrowForward className="text-15px text-brand-dark opacity-40 rtl:rotate-180" />
           </span>
         )}
-      </div>
+      </Link>
 
       {Array.isArray(items) ? (
         <>
@@ -65,8 +64,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
                       item={currentItem}
                       depth={childDepth}
                       className={cn(
-                        "text-sm px-3 ltr:pl-4 rtl:pr-4 text-brand-muted",
-                        colorMap[selectedColor].hoverLink
+                        "text-sm px-3 ltr:pl-4 rtl:pr-4 text-brand-muted hover:text-primary-500"
                       )}
                     />
                   );
@@ -82,11 +80,8 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
   );
 }
 
-
 function SidebarMenu({ items, className, categoriesLimit }: any) {
   const [categoryMenuToggle, setcategoryMenuToggle] = useState(Boolean(false));
-  const { selectedColor } = usePanel();
-
   function handleCategoryMenu() {
     setcategoryMenuToggle(!categoryMenuToggle);
   }
@@ -94,8 +89,7 @@ function SidebarMenu({ items, className, categoriesLimit }: any) {
   return (
     <ul
       className={cn(
-        "w-full bg-white relative border-t-0 border-2  rounded-b-md category-dropdown-menu ",
-        colorMap[selectedColor].border,
+        "w-full bg-white relative border-t-0 border-2  rounded-b-md category-dropdown-menu border-primary-500",
         className
       )}
     >

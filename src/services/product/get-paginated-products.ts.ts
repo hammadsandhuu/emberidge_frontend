@@ -12,14 +12,14 @@ const fetchPaginatedProducts = async ({
   queryKey,
   pageParam = 1,
 }: QueryFunctionContext<QueryKey, number>): Promise<PaginatedProduct> => {
-  const [, options] = queryKey as ["load-products", QueryOptionsType];
+  const [, options] = queryKey as ["products_by_category", QueryOptionsType];
   const { limit = 10, sort_by } = options;
 
   let sortParam = "";
   if (sort_by === "price") sortParam = "price";
   else if (sort_by === "name") sortParam = "name";
 
-  const { data } = await http.get(API_RESOURCES.PRODUCTS, {
+  const { data } = await http.get(API_RESOURCES.PRODUCTS_BY_CATEGORIES, {
     params: {
       page: pageParam,
       limit,
@@ -45,7 +45,7 @@ export const usePaginatedProductsQuery = (options: QueryOptionsType) => {
     QueryKey,
     number
   >({
-    queryKey: ["load-products", options],
+    queryKey: ["products_by_category", options],
     queryFn: fetchPaginatedProducts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.paginatorInfo.nextPage,

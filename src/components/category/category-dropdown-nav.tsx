@@ -16,6 +16,8 @@ export default function CategoryDropdownNav({
 }: CategoryDropdownProps) {
   const { data, isLoading, error } = useCategoriesQuery({ limit: 6 });
 
+  const noCategories = !isLoading && !error && (!data || data.length === 0);
+
   return (
     <div className={cn("absolute z-20 w-72 lg:w-full", className)}>
       <div className="max-h-full">
@@ -26,7 +28,7 @@ export default function CategoryDropdownNav({
         ) : isLoading ? (
           <div
             className={cn(
-              "w-full bg-white border-t-0 border-2  rounded-b-md category-dropdown-menu"
+              "w-full bg-white border-t-0 border-2 rounded-b-md category-dropdown-menu"
             )}
           >
             {Array.from({ length: 8 }).map((_, idx) => (
@@ -35,6 +37,10 @@ export default function CategoryDropdownNav({
                 uniqueKey="category-list-card-loader"
               />
             ))}
+          </div>
+        ) : noCategories ? (
+          <div className="w-full bg-white border-t-0 border-2 rounded-b-md p-4 text-center">
+            <p className="text-gray-600">No categories found</p>
           </div>
         ) : (
           <CategoryMenu items={data} categoriesLimit={categoriesLimit} />

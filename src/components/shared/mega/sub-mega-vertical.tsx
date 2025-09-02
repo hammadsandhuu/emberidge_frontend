@@ -1,25 +1,15 @@
-import { useRouter } from 'next/router';
-import ListMenu from '@/components/shared/mega/mega-menu';
-import Container from '@/components/shared/container';
-import Image from '@/components/shared/image';
-import { productPlaceholder } from '@/assets/placeholders';
-import Link from '@/components/shared/link';
-import cn from 'classnames';
-import { ROUTES } from '@/utils/routes';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { usePanel } from "@/hooks/use-panel";
-import { colorMap } from "@/data/color-settings";
+import Link from "@/components/shared/link";
+import cn from "classnames";
 
 function SidebarMenuItem({ className, item, depth = 0 }: any) {
   const { name, children: items, icon, type } = item;
-    const { selectedColor } = usePanel();
   return (
     <>
       <li
         className={`relative transition  ${className ? className : "text-sm "}`}
       >
         <Link
-          href={`/department/category/${item.slug}`}
+          href={`/department/category/${item.slug}` || "/"}
           className={`flex items-center w-full hover:ps-3  ${
             items ? "font-semibold" : " "
           }`}
@@ -41,8 +31,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
                     item={currentItem}
                     depth={childDepth}
                     className={cn(
-                      "text-sm text-brand-dark ",
-                      colorMap[selectedColor].hoverLink
+                      "text-sm text-brand-dark hover:text-primary-500"
                     )}
                   />
                 );
@@ -70,7 +59,7 @@ const SubMegaVertical = ({ items }: any) => {
               key={`${currentItem.name}${currentItem.slug}`}
               item={currentItem}
               depth={childDepth}
-              className={cn('text-sm  text-brand-dark ')}
+              className={cn("text-sm  text-brand-dark ")}
             />
           );
         })}

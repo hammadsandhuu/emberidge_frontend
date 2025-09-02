@@ -16,26 +16,34 @@ const VariationRectangleColor: React.FC<VariationRectangleColorProps> = ({
   onSelect,
 }) => (
   <div className="flex flex-wrap gap-3">
-    {options.map((option, index) => (
-      <button
-        key={index}
-        onClick={() => onSelect(variationName, option.value)}
-        className={cn(
-          "flex justify-center items-center gap-2 text-brand-dark min-w-[36px] h-10 px-4 rounded text-sm border transition",
-          selectedValue === option.value
-            ? "bg-white border-gray-500 drop-shadow-variant"
-            : "bg-white border-gray-300 hover:border-gray-500"
-        )}
-      >
-        <span
-          className="block w-4 h-4 rounded-full border border-brand-dark/15"
-          style={{ backgroundColor: option.value.toLowerCase() }}
+    {options.map((option, index) => {
+      const isSelected = selectedValue === option.value;
+      const color = option.value.toLowerCase();
+
+      return (
+        <button
+          key={index}
+          onClick={() => onSelect(variationName, option.value)}
+          className={cn(
+            "flex justify-center items-center gap-2 text-sm min-w-[36px] h-10 px-4 rounded border transition",
+            "bg-white dark:bg-transparent",
+            !isSelected && "hover:border-gray-500"
+          )}
+          style={{
+            borderColor: isSelected ? color : undefined,
+            boxShadow: isSelected ? `0 1px 4px ${color}` : "none",
+          }}
         >
-          <span className="sr-only">{option.value}</span>
-        </span>
-        <span>{option.value}</span>
-      </button>
-    ))}
+          <span
+            className="block w-4 h-4 rounded-full border border-brand-dark/15"
+            style={{ backgroundColor: color }}
+          >
+            <span className="sr-only">{option.value}</span>
+          </span>
+          <span className="capitalize">{option.value}</span>
+        </button>
+      );
+    })}
   </div>
 );
 
