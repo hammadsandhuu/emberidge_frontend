@@ -1,9 +1,9 @@
 "use client";
 import Alert from "@/components/shared/alert";
 import CategoryListCardLoader from "@/components/shared/loaders/category-list-card-loader";
-import { useCategoriesQuery } from "@/services/category/get-all-categories";
 import cn from "classnames";
 import CategoryMenu from "@/components/shared/category-menu";
+import { useCategories } from "@/services/category/get-all-categories";
 
 interface CategoryDropdownProps {
   className?: string;
@@ -14,7 +14,7 @@ export default function CategoryDropdownNav({
   className,
   categoriesLimit = 12,
 }: CategoryDropdownProps) {
-  const { data, isLoading, error } = useCategoriesQuery({ limit: 6 });
+  const { data, isLoading, error } = useCategories({ limit: 6 });
 
   const noCategories = !isLoading && !error && (!data || data.length === 0);
 

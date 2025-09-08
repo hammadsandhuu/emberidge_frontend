@@ -8,16 +8,13 @@ import BestDealsFeed from "@/components/product/feeds/best-deals-feed";
 import { homeThreeHeroCarousel as bannerHeroCarousel } from "@/components/banner/data";
 import { homeThreeHeroSlider as heroSlider } from "@/components/hero/data";
 import ServiceFeature from "@/components/common/service-featured";
-import { fetchCategories } from "@/services/category/get-all-categories";
-import CategoriesSection from "@/components/product/listingtabs/categories-section";
+import ListingCategory from "@/components/product/listingtabs/listing-category";
 
 export const metadata = {
   title: "Home",
 };
 
 export default async function Page() {
-  const categories = await fetchCategories();
-
   return (
     <>
       <Container variant={"Large"}>
@@ -42,7 +39,7 @@ export default async function Page() {
         <div className="grid grid-cols-12 gap-4 xl:gap-8">
           <div className="maincontent-right col-span-12 order-1 lg:order-2 lg:col-span-9 2xl:col-span-10">
             <BestDealsFeed />
-            <CategoriesSection initialCategories={categories} />
+            <ListingCategory />
           </div>
 
           {/* Sidebar */}

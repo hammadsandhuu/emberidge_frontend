@@ -1,75 +1,51 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ListingTabs from "@/components/product/listingtabs/listing-ui/listing-tabs";
 import Carousel from "@/components/shared/carousel/carousel";
 import { SwiperSlide } from "@/components/shared/carousel/slider";
-import ProductCardLoader from "@/components/shared/loaders/product-card-loader";
 import ProductCard from "@/components/product/productListing/productCards/product-card";
-import { useListingTabs } from "@/hooks/use-listing-tabs";
-import { useCategoriesQuery } from "@/services/category/get-all-categories";
-import { useProductsQueryByCategories } from "@/services/product/get-products";
-import { BreakpointsType } from "@/services/types";
+import { useCategories } from "@/services/category/get-all-categories";
 import useCarouselConfig from "@/hooks/use-carousel-config";
 import Loading from "@/components/shared/loading";
+import { useProductsByParentCategory } from "@/services/product/get-products-by-parent-category";
 
-interface Props {
-  parentSlug: string;
-  subSlug?: string;
-}
-
-const ListingCategory: React.FC<Props> = ({ parentSlug, subSlug }) => {
-  const { activeTab, handleTabClick } = useListingTabs();
-  const { data: allCategories } = useCategoriesQuery({ limit: 20 });
-  const selectedCategory = allCategories?.find(
-    (cat) => cat.slug === parentSlug
-  );
+const CategoryBlock = ({ parentCat }: { parentCat: any }) => {
+  const [activeTab, setActiveTab] = useState<string>("");
 
   useEffect(() => {
-    if (selectedCategory?.children?.length && !activeTab) {
-      handleTabClick(selectedCategory.children[0].slug);
+    if (parentCat?.children?.length && !activeTab) {
+      setActiveTab(parentCat.children[0].slug);
     }
-  }, [selectedCategory, activeTab]);
+  }, [parentCat, activeTab]);
 
-  const { data: products, isLoading: loadingProducts } =
-    useProductsQueryByCategories({
-      limit: 10,
-      categorySlug: parentSlug,
-      subCategorySlug: subSlug || activeTab || "",
-    });
+  const { data, isLoading: loadingProducts } = useProductsByParentCategory({
+    limit: 10,
+    parent: parentCat.slug,
+    child: activeTab || "",
+  });
 
-  const breakpoints: BreakpointsType = useMemo(
-    () => ({
-      "1536": { slidesPerView: 6 },
-      "1280": { slidesPerView: 5 },
-      "1024": { slidesPerView: 3 },
-      "640": { slidesPerView: 3 },
-      "360": { slidesPerView: 2 },
-      "0": { slidesPerView: 1 },
-    }),
-    []
-  );
-
-  const { spaceBetween, breakpoints: defaultBreakpoints } =
-    useCarouselConfig("default");
+  const products = data?.products ?? [];
+  const { spaceBetween, breakpoints } = useCarouselConfig("default");
 
   return (
-    <div className="mb-8 lg:mb-12">
+    <div key={parentCat.id} className="mb-8 lg:mb-12">
       {/* Tabs */}
       <ListingTabs
-        data={selectedCategory || []}
-        onNavClick={handleTabClick}
+        data={parentCat}
+        onNavClick={setActiveTab}
         activeTab={activeTab}
       />
+
       <div className="relative after-item-opacity mt-5">
         {loadingProducts ? (
           <Loading />
-        ) : products && products.length > 0 ? (
+        ) : products.length > 0 ? (
           <Carousel
             spaceBetween={spaceBetween}
-            breakpoints={breakpoints || defaultBreakpoints}
-            prevActivateId={`prev-${parentSlug}`}
-            nextActivateId={`next-${parentSlug}`}
+            breakpoints={breakpoints}
+            prevActivateId={`prev-${parentCat.slug}`}
+            nextActivateId={`next-${parentCat.slug}`}
             prevButtonClassName="start-3 xl:start-5"
             nextButtonClassName="end-3 xl:end-5"
           >
@@ -86,6 +62,20 @@ const ListingCategory: React.FC<Props> = ({ parentSlug, subSlug }) => {
         )}
       </div>
     </div>
+  );
+};
+
+const ListingCategory: React.FC = () => {
+  const { data: categories, isLoading: loadingCategories } = useCategories();
+
+  if (loadingCategories) return <Loading />;
+
+  return (
+    <>
+      {categories?.map((parentCat) => (
+        <CategoryBlock key={parentCat.id} parentCat={parentCat} />
+      ))}
+    </>
   );
 };
 

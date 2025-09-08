@@ -8,10 +8,7 @@ export const fetchProductsByCategory = async ({ queryKey }: any) => {
   const [_key, { categorySlug, subCategorySlug, limit }] = queryKey;
 
   // Choose correct endpoint
-  const endpoint = subCategorySlug
-    ? `${API_RESOURCES.PRODUCTS_BY_CATEGORIES}/${categorySlug}/${subCategorySlug}`
-    : `${API_RESOURCES.PRODUCTS_BY_CATEGORIES}/${categorySlug}`;
-
+  const endpoint = `${API_RESOURCES.PRODUCTS_BY_CATEGORIES}/${categorySlug}/${subCategorySlug}`;
   const { data } = await http.get(endpoint, { params: { limit } });
   return data?.data?.products || [];
 };

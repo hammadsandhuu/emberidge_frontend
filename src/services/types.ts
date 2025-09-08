@@ -1,4 +1,5 @@
-import type {SwiperOptions} from "swiper/types";
+import type { SwiperOptions } from "swiper/types";
+
 export type CategoriesQueryOptionsType = {
   text?: string;
   category?: string;
@@ -19,7 +20,20 @@ export type QueryOptionsType = {
   colors?: string[];
   sizes?: string[];
   isOnSale?: boolean;
+  parent?: string;
+  child?: string;
 };
+
+// 🆕 ProductsResponse type for products + pagination
+export interface ProductsResponse {
+  products: Product[];
+  pagination: {
+    total: number;
+    page: number;
+    pages: number;
+    limit: number;
+  };
+}
 
 export interface PaginatedProduct {
   data: Product[];
@@ -35,23 +49,24 @@ export type Attachment = {
   original: string;
   original2: string;
 };
+
 export type Category = {
   id: number;
   name: string;
   slug: string;
   image?: Attachment;
-  children?: [Category];
+  children?: Category[];
   products?: Product[];
   productCount?: number;
   [key: string]: unknown;
 };
-
 
 export type Tag = {
   id: string | number;
   name: string;
   slug: string;
 };
+
 export type Product = {
   id: number | string;
   name: string;
@@ -77,9 +92,9 @@ export type Product = {
   operating?: string;
   screen?: string;
   description?: string;
-  rating:number;
-  discountPercentage:number;
-  weight:number;
+  rating: number;
+  discountPercentage: number;
+  weight: number;
   [key: string]: unknown;
 };
 
@@ -132,7 +147,6 @@ export interface VariationsType {
   };
 }
 
-// Define types based on the new data structure
 export interface Option {
   name: string;
   value: string;
@@ -180,13 +194,14 @@ export type HeroItem = {
   description: string;
   btnText: string;
   btnUrl: string;
-  videoUrl?:string;
+  videoUrl?: string;
   image: HeroItemImage;
-}
+};
 export type HeroItemImage = {
   mobile: { url: string };
   desktop: { url: string };
-}
+};
+
 export type Blog = {
   id: number;
   slug: string;
@@ -228,18 +243,18 @@ export type MainMenuType = {
   mega_categoryCol: number;
   mega_bannerMode: string;
   mega_bannerImg: string;
-  mega_bannerUrl:string;
-  mega_contentBottom:string;
-  subMenu:SubMenuType[];
+  mega_bannerUrl: string;
+  mega_contentBottom: string;
+  subMenu: SubMenuType[];
 };
 
 export type SubMenuType = {
   id: number;
   path: string;
   label: string;
-  image?: Attachment,
-  badge?:string;
-  subMenu?:SubMenuType[];
+  image?: Attachment;
+  badge?: string;
+  subMenu?: SubMenuType[];
 };
 
 export type BreakpointsType = {
@@ -248,12 +263,12 @@ export type BreakpointsType = {
 };
 
 export type StoreType = {
-  id: number ;
+  id: number;
   name: string;
   image?: string;
   address?: string;
   email?: string;
-  phoneNumber?:number
+  phoneNumber?: number;
   openTime?: string;
   location?: string;
 };
@@ -265,23 +280,23 @@ export type AccordionItem = {
 };
 
 export type IconType = {
-  color?:string;
+  color?: string;
   className?: string;
   width?: number;
   height?: number;
-}
+};
 export type AccordionGroupProps = {
   items: AccordionItem[];
-  variant?: 'underline' | 'transparent';
+  variant?: "underline" | "transparent";
 };
 
 export type CollapseProps = {
   item: AccordionItem;
-  variant?: 'underline' | 'transparent';
+  variant?: "underline" | "transparent";
   isOpen: boolean;
   onToggle: () => void;
 };
 
-export type ThemeMode = "light" | "dark"
-export type ThemeDirection = "ltr" | "rtl"
-export type TabType = "COLOR" | "LAYOUT" | "THEME"
+export type ThemeMode = "light" | "dark";
+export type ThemeDirection = "ltr" | "rtl";
+export type TabType = "COLOR" | "LAYOUT" | "THEME";

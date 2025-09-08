@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Container from "@/components/shared/container";
 import Breadcrumb from "@/components/shared/breadcrumb";
-import CategoryPageContent from "@/app/(default)/category/category-page-content";
 import React, { Suspense } from "react";
 import Loading from "@/components/shared/loading";
 import ShopPageContent from "./shop-page-content";

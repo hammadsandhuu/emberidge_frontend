@@ -10,8 +10,9 @@ import Image from "@/components/shared/image";
 import SubMegaVertical from "@/components/shared/mega/sub-mega-vertical";
 import Link from "next/link";
 
-function SidebarMenuItem({ className, item, depth = 0 }: any) {
+function SidebarMenuItem({ className, item, depth = 0, parentSlug = "" }: any) {
   const { name, children: items, icon, type, slug } = item;
+  const fullSlug = parentSlug ? `${parentSlug}/${slug}` : slug;
 
   return (
     <li
@@ -22,7 +23,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
       )}
     >
       <Link
-        href={`/department/category/${item.slug}` || "/"}
+        href={`/department/${fullSlug}`}
         className={cn(
           "flex items-center w-full py-3 text-start outline-none focus:outline-none focus:ring-0",
           {
@@ -63,6 +64,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
                       key={`${currentItem.name}${currentItem.slug}`}
                       item={currentItem}
                       depth={childDepth}
+                      parentSlug={fullSlug}
                       className={cn(
                         "text-sm px-3 ltr:pl-4 rtl:pr-4 text-brand-muted hover:text-primary-500"
                       )}
@@ -81,7 +83,8 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
 }
 
 function SidebarMenu({ items, className, categoriesLimit }: any) {
-  const [categoryMenuToggle, setcategoryMenuToggle] = useState(Boolean(false));
+  const [categoryMenuToggle, setcategoryMenuToggle] = useState(false);
+
   function handleCategoryMenu() {
     setcategoryMenuToggle(!categoryMenuToggle);
   }
@@ -89,16 +92,24 @@ function SidebarMenu({ items, className, categoriesLimit }: any) {
   return (
     <ul
       className={cn(
-        "w-full bg-white relative border-t-0 border-2  rounded-b-md category-dropdown-menu border-primary-500",
+        "w-full bg-white relative border-t-0 border-2 rounded-b-md category-dropdown-menu border-primary-500",
         className
       )}
     >
       {items?.map((item: any, idx: number) =>
         idx <= categoriesLimit - 1 ? (
-          <SidebarMenuItem key={`${item.slug}-key-${item.id}`} item={item} />
+          <SidebarMenuItem
+            key={`${item.slug}-key-${item.id}`}
+            item={item}
+            parentSlug=""
+          />
         ) : (
           categoryMenuToggle && (
-            <SidebarMenuItem key={`${item.slug}-key-${item.id}`} item={item} />
+            <SidebarMenuItem
+              key={`${item.slug}-key-${item.id}`}
+              item={item}
+              parentSlug=""
+            />
           )
         )
       )}
@@ -106,7 +117,7 @@ function SidebarMenu({ items, className, categoriesLimit }: any) {
       {items.length >= categoriesLimit && (
         <li className={`px-4 relative transition text-sm hover:text-brand`}>
           <div
-            className={`flex items-center w-full py-3 text-start cursor-pointer  text-brand-dark`}
+            className={`flex items-center w-full py-3 text-start cursor-pointer text-brand-dark`}
             onClick={handleCategoryMenu}
           >
             <div className={`inline-flex flex-shrink-0 ltr:mr-2 rtl:ml-2`}>
@@ -116,7 +127,7 @@ function SidebarMenu({ items, className, categoriesLimit }: any) {
                 <IoIosAddCircleOutline className="text-xl text-brand-dark text-opacity-80" />
               )}
             </div>
-            <span className="capitalize ">Browse All Categories</span>
+            <span className="capitalize">Browse All Categories</span>
           </div>
         </li>
       )}

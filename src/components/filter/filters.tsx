@@ -50,21 +50,6 @@ const Filters = () => {
           onCategoryExpand={toggleCategoryExpand}
         />
       </FilterSection>
-
-      {/* Price Range Filter */}
-      <FilterSection
-        title="Price range"
-        isOpen={sectionsOpen.price}
-        onToggle={() => toggleSection("price")}
-      >
-        <PriceRangeFilter
-          min={MIN_PRICE}
-          max={MAX_PRICE}
-          value={priceRange}
-          onChange={handlePriceRangeChange}
-        />
-      </FilterSection>
-
       <div className="pb-8 pr-2">
         <div className="flex justify-between items-center space-x-2">
           <div>
@@ -80,6 +65,19 @@ const Filters = () => {
           </label>
         </div>
       </div>
+      {/* Price Range Filter */}
+      <FilterSection
+        title="Price range"
+        isOpen={sectionsOpen.price}
+        onToggle={() => toggleSection("price")}
+      >
+        <PriceRangeFilter
+          min={MIN_PRICE}
+          max={MAX_PRICE}
+          value={priceRange}
+          onChange={handlePriceRangeChange}
+        />
+      </FilterSection>
       {/* Colors Filter */}
       <FilterSection
         title="Colors"

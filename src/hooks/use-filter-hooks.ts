@@ -87,7 +87,7 @@ export const useFilterControls = () => {
 };
 
 export const useFilters = () => {
-    const [isOnSale, setIsOnSale] = useState(true);
+    const [isOnSale, setIsOnSale] = useState(false);
     const MIN_PRICE = 0;
     const MAX_PRICE = 1000;
     const DEFAULT_PRICE_RANGE: [number, number] = [0, 500];
