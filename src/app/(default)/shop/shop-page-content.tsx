@@ -1,7 +1,7 @@
 "use client";
 
-import { Element } from "react-scroll";
 import React, { useState } from "react";
+import { Element } from "react-scroll";
 import TopBar from "@/components/category/top-bar";
 import { ProductLoadMore } from "@/components/product/productListing/product-loadmore";
 import Filters from "@/components/filter/filters";
@@ -14,13 +14,12 @@ import { useShopProductsQuery } from "@/services/product/get-shop-products";
 export default function ShopPageContent() {
   const [isGridView, setIsGridView] = useState(true);
   const pathname = usePathname();
-  const { getParams } = useQueryParam(pathname ?? "/");
 
-  const queryParams: { sort_by?: string } = getParams(
-    `${process.env.NEXT_PUBLIC_WEBSITE_URL}`
-  );
+  const { getParams } = useQueryParam(pathname ?? "/");
+  const queryParams = getParams;
+
   const { isFetching, isFetchingNextPage, fetchNextPage, hasNextPage, data } =
-    useShopProductsQuery(LIMITS.PRODUCTS_LIMITS, queryParams.sort_by);
+    useShopProductsQuery(LIMITS.PRODUCTS_LIMITS, queryParams);
 
   return (
     <Element name="category" className="flex products-category">
