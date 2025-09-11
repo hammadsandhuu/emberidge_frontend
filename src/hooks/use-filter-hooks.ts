@@ -1,158 +1,234 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useUI } from '@/hooks/use-UI';
+import { useState, useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import useQueryParam from "@/utils/use-query-params";
 
-export const useFilterSidebar = () => {
-    const { closeFilter } = useUI();
-    return { closeFilter };
-};
-
-export const useFilterControls = () => {
-    const [isOnSale, setIsOnSale] = useState(false);
-    const MIN_PRICE = 0;
-    const MAX_PRICE = 1000;
-    const DEFAULT_PRICE_RANGE: [number, number] = [0, 500];
-
-    const [selectedFilters, setSelectedFilters] = useState<{
-        categories: { [key: string]: boolean };
-        colors: { [key: string]: boolean };
-        sizes: { [key: string]: boolean };
-        price: [number, number];
-    }>({
-        categories: {},
-        colors: {},
-        sizes: {},
-        price: DEFAULT_PRICE_RANGE,
-    });
-
-    const handleFilterChange = (
-        section: 'categories' | 'colors' | 'sizes' | 'price',
-        id: string,
-        checked: boolean
-    ) => {
-        setSelectedFilters((prev) => ({
-            ...prev,
-            [section]: {
-                ...prev[section],
-                [id]: checked,
-            },
-        }));
-    };
-
-    const handlePriceChange = (value: [number, number]) => {
-        setSelectedFilters((prev) => ({
-            ...prev,
-            price: value,
-        }));
-    };
-
-    const clearFilter = (section: keyof typeof selectedFilters) => {
-        if (section === 'price') {
-            setSelectedFilters((prev) => ({ ...prev, price: DEFAULT_PRICE_RANGE }));
-        } else {
-            setSelectedFilters((prev) => ({ ...prev, [section]: {} }));
-        }
-    };
-
-    const hasSelectedFilters = (section: keyof typeof selectedFilters) => {
-        return Object.values(selectedFilters[section]).some((value) => value);
-    };
-
-    const isPriceRangeSelected = () => {
-        return (
-            selectedFilters.price[0] !== DEFAULT_PRICE_RANGE[0] ||
-            selectedFilters.price[1] !== DEFAULT_PRICE_RANGE[1]
-        );
-    };
-
-    const getPriceRangeLabel = () => {
-        if (!isPriceRangeSelected()) return 'Price';
-        return `$${selectedFilters.price[0]} - $${selectedFilters.price[1]}`;
-    };
-
-    return {
-        isOnSale,
-        setIsOnSale,
-        selectedFilters,
-        handleFilterChange,
-        handlePriceChange,
-        clearFilter,
-        hasSelectedFilters,
-        isPriceRangeSelected,
-        getPriceRangeLabel,
-        MIN_PRICE,
-        MAX_PRICE,
-    };
-};
+const STORAGE_KEY = "filters";
+const DEFAULT_PRICE_RANGE: [number, number] = [0, 500];
+const MIN_PRICE = 0;
+const MAX_PRICE = 1000;
 
 export const useFilters = () => {
-    const [isOnSale, setIsOnSale] = useState(false);
-    const MIN_PRICE = 0;
-    const MAX_PRICE = 1000;
-    const DEFAULT_PRICE_RANGE: [number, number] = [0, 500];
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { updateQueryparams, clearQueryParam } = useQueryParam(pathname || "/");
 
-    const [sectionsOpen, setSectionsOpen] = useState({
-        categories: true,
-        colors: true,
-        sizes: true,
-        price: true,
-    });
+  // -------------------- STATES --------------------
+  const [isOnSale, setIsOnSale] = useState(false);
+  const [priceRange, setPriceRange] =
+    useState<[number, number]>(DEFAULT_PRICE_RANGE);
+  const [selectedFilters, setSelectedFilters] = useState<{
+    categories: Record<string, boolean>;
+    colors: Record<string, boolean>;
+    sizes: Record<string, boolean>;
+  }>({
+    categories: {},
+    colors: {},
+    sizes: {},
+  });
 
-    const [selectedFilters, setSelectedFilters] = useState<{
-        categories: Record<string, boolean>;
-        colors: Record<string, boolean>;
-        sizes: Record<string, boolean>;
-    }>({
-        categories: {},
-        colors: {},
-        sizes: {},
-    });
+  const [sectionsOpen, setSectionsOpen] = useState({
+    categories: true,
+    colors: true,
+    sizes: true,
+    price: true,
+  });
 
-    const [priceRange, setPriceRange] = useState<[number, number]>(DEFAULT_PRICE_RANGE);
+  const [expandedCategories, setExpandedCategories] = useState<
+    Record<string, boolean>
+  >({});
 
-    const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
-
-    const toggleSection = (section: 'categories' | 'colors' | 'sizes' | 'price') => {
-        setSectionsOpen((prev) => ({
-            ...prev,
-            [section]: !prev[section],
-        }));
+  // -------------------- INIT: URL → STATE OR LOCALSTORAGE --------------------
+  useEffect(() => {
+    const fromUrl = {
+      onSale: searchParams.get("on_sale") === "true",
+      minPrice: Number(searchParams.get("min_price")) || DEFAULT_PRICE_RANGE[0],
+      maxPrice: Number(searchParams.get("max_price")) || DEFAULT_PRICE_RANGE[1],
+      categories: Object.fromEntries(
+        (searchParams.get("categories")?.split(",") || []).map((id) => [
+          id,
+          true,
+        ])
+      ),
+      colors: Object.fromEntries(
+        (searchParams.get("colors")?.split(",") || []).map((id) => [id, true])
+      ),
+      sizes: Object.fromEntries(
+        (searchParams.get("sizes")?.split(",") || []).map((id) => [id, true])
+      ),
     };
 
-    const toggleCategoryExpand = (id: string) => {
-        setExpandedCategories((prev) => ({
-            ...prev,
-            [id]: !prev[id],
-        }));
-    };
+    const hasUrlParams =
+      searchParams.get("on_sale") ||
+      searchParams.get("min_price") ||
+      searchParams.get("max_price") ||
+      searchParams.get("categories") ||
+      searchParams.get("colors") ||
+      searchParams.get("sizes");
 
-    const handleFilterChange = (section: 'categories' | 'colors' | 'sizes', id: string, checked: boolean) => {
-        setSelectedFilters((prev) => ({
-            ...prev,
-            [section]: {
-                ...prev[section],
-                [id]: checked,
-            },
-        }));
-    };
+    if (hasUrlParams) {
+      // ✅ Prefer URL params
+      setIsOnSale(fromUrl.onSale);
+      setPriceRange([fromUrl.minPrice, fromUrl.maxPrice]);
+      setSelectedFilters({
+        categories: fromUrl.categories,
+        colors: fromUrl.colors,
+        sizes: fromUrl.sizes,
+      });
+    } else {
+      // ✅ Fallback to localStorage
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setIsOnSale(parsed.isOnSale || false);
+          setPriceRange(parsed.priceRange || DEFAULT_PRICE_RANGE);
+          setSelectedFilters(
+            parsed.selectedFilters || { categories: {}, colors: {}, sizes: {} }
+          );
+        } catch {
+          // ignore broken localStorage
+        }
+      }
+    }
+  }, []); // run only once on mount
 
-    const handlePriceRangeChange = (value: [number, number]) => {
-        setPriceRange(value);
-    };
+  // -------------------- STATE → URL + LOCALSTORAGE --------------------
+  useEffect(() => {
+    const current = searchParams.get("on_sale") || "";
+    const next = isOnSale ? "true" : "";
+    if (current !== next) {
+      updateQueryparams("on_sale", next);
+    }
 
-    return {
-        isOnSale,
-        setIsOnSale,
-        sectionsOpen,
-        toggleSection,
-        selectedFilters,
-        handleFilterChange,
-        priceRange,
-        handlePriceRangeChange,
-        expandedCategories,
-        toggleCategoryExpand,
-        MIN_PRICE,
-        MAX_PRICE,
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ isOnSale, priceRange, selectedFilters })
+    );
+  }, [isOnSale]);
+
+  useEffect(() => {
+    const currentMin = searchParams.get("min_price") || "";
+    const currentMax = searchParams.get("max_price") || "";
+
+    const nextMin = priceRange[0] !== MIN_PRICE ? priceRange[0].toString() : "";
+    const nextMax = priceRange[1] !== MAX_PRICE ? priceRange[1].toString() : "";
+
+    if (currentMin !== nextMin) updateQueryparams("min_price", nextMin);
+    if (currentMax !== nextMax) updateQueryparams("max_price", nextMax);
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ isOnSale, priceRange, selectedFilters })
+    );
+  }, [priceRange]);
+
+  useEffect(() => {
+    const updateFilterParam = (key: "categories" | "colors" | "sizes") => {
+      const selected = Object.keys(selectedFilters[key]).filter(
+        (id) => selectedFilters[key][id]
+      );
+      const current = searchParams.get(key) || "";
+      const next = selected.length > 0 ? selected.join(",") : "";
+      if (current !== next) {
+        updateQueryparams(key, next);
+      }
     };
+    updateFilterParam("categories");
+    updateFilterParam("colors");
+    updateFilterParam("sizes");
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ isOnSale, priceRange, selectedFilters })
+    );
+  }, [selectedFilters]);
+
+  // -------------------- CLEAR FUNCTIONS --------------------
+  const clearAllFilters = () => {
+    setIsOnSale(false);
+    setPriceRange(DEFAULT_PRICE_RANGE);
+    setSelectedFilters({ categories: {}, colors: {}, sizes: {} });
+    clearQueryParam([
+      "on_sale",
+      "min_price",
+      "max_price",
+      "categories",
+      "colors",
+      "sizes",
+    ]);
+    localStorage.removeItem(STORAGE_KEY);
+  };
+
+  const clearCategories = () => {
+    setSelectedFilters((prev) => ({ ...prev, categories: {} }));
+    clearQueryParam(["categories"]);
+  };
+
+  const clearColors = () => {
+    setSelectedFilters((prev) => ({ ...prev, colors: {} }));
+    clearQueryParam(["colors"]);
+  };
+
+  const clearSizes = () => {
+    setSelectedFilters((prev) => ({ ...prev, sizes: {} }));
+    clearQueryParam(["sizes"]);
+  };
+
+  const clearPriceRange = () => {
+    setPriceRange(DEFAULT_PRICE_RANGE);
+    clearQueryParam(["min_price", "max_price"]);
+  };
+
+  const clearOnSale = () => {
+    setIsOnSale(false);
+    clearQueryParam(["on_sale"]);
+  };
+
+  // -------------------- TOGGLE HANDLERS --------------------
+  const toggleSection = (section: keyof typeof sectionsOpen) => {
+    setSectionsOpen((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const toggleCategoryExpand = (id: string) => {
+    setExpandedCategories((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleFilterChange = (
+    section: "categories" | "colors" | "sizes",
+    id: string,
+    checked: boolean
+  ) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [section]: { ...prev[section], [id]: checked },
+    }));
+  };
+
+  const handlePriceRangeChange = (value: [number, number]) => {
+    setPriceRange(value);
+  };
+
+  // -------------------- RETURN --------------------
+  return {
+    isOnSale,
+    setIsOnSale,
+    sectionsOpen,
+    toggleSection,
+    selectedFilters,
+    handleFilterChange,
+    priceRange,
+    handlePriceRangeChange,
+    expandedCategories,
+    toggleCategoryExpand,
+    clearAllFilters,
+    clearCategories,
+    clearColors,
+    clearSizes,
+    clearPriceRange,
+    clearOnSale,
+    MIN_PRICE,
+    MAX_PRICE,
+  };
 };

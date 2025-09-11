@@ -30,6 +30,10 @@ const Filters = () => {
     toggleCategoryExpand,
     MIN_PRICE,
     MAX_PRICE,
+    clearCategories,
+    clearPriceRange,
+    clearColors,
+    clearSizes,
   } = useFilters();
 
   return (
@@ -39,6 +43,7 @@ const Filters = () => {
         title="Categories"
         isOpen={sectionsOpen.categories}
         onToggle={() => toggleSection("categories")}
+        onClear={clearCategories} // 👈 wire it
       >
         <CategoriesFilter
           categories={categoriesData}
@@ -65,11 +70,12 @@ const Filters = () => {
           </label>
         </div>
       </div>
-      {/* Price Range Filter */}
+      {/* Price Range */}
       <FilterSection
         title="Price range"
         isOpen={sectionsOpen.price}
         onToggle={() => toggleSection("price")}
+        onClear={clearPriceRange} // 👈 wire it
       >
         <PriceRangeFilter
           min={MIN_PRICE}
@@ -78,11 +84,13 @@ const Filters = () => {
           onChange={handlePriceRangeChange}
         />
       </FilterSection>
-      {/* Colors Filter */}
+
+      {/* Colors */}
       <FilterSection
         title="Colors"
         isOpen={sectionsOpen.colors}
         onToggle={() => toggleSection("colors")}
+        onClear={clearColors} // 👈 wire it
       >
         <ColorsFilter
           colors={colorsData}
@@ -93,11 +101,12 @@ const Filters = () => {
         />
       </FilterSection>
 
-      {/* Sizes Filter */}
+      {/* Sizes */}
       <FilterSection
         title="Size"
         isOpen={sectionsOpen.sizes}
         onToggle={() => toggleSection("sizes")}
+        onClear={clearSizes} // 👈 wire it
       >
         <SizesFilter
           sizes={sizesData}
