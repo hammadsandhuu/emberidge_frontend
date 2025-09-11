@@ -116,7 +116,7 @@ export default function useQueryParam(p0: string) {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
 
-  // ✅ Sync query atom with actual URL on load
+  //  Sync query atom with actual URL on load
   useEffect(() => {
     if (typeof window !== "undefined") {
       const currentQuery = window.location.search;
@@ -124,13 +124,13 @@ export default function useQueryParam(p0: string) {
     }
   }, [setQuery]);
 
-  // ✅ Simulated loading state (optional)
+  //  Simulated loading state (optional)
   useEffect(() => {
     const timeout = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timeout);
   }, [query]);
 
-  // ✅ Memoized getParams using searchParams
+  //  Memoized getParams using searchParams
   const getParams = useMemo(() => {
     const params: Record<string, string | string[]> = {};
 
@@ -150,7 +150,7 @@ export default function useQueryParam(p0: string) {
     return params;
   }, [searchParams]);
 
-  // ✅ Set full query string or object
+  //  Set full query string or object
   const setQueryparams = (
     data: Record<string, string | number | boolean> | string
   ) => {
@@ -160,7 +160,7 @@ export default function useQueryParam(p0: string) {
     router.push(`${pathname}?${queryString}`);
   };
 
-  // ✅ Update or remove specific param
+  //  Update or remove specific param
   const updateQueryparams = (key: string, value: string | number | boolean) => {
     if (typeof window === "undefined") return;
 
@@ -176,7 +176,7 @@ export default function useQueryParam(p0: string) {
     router.push(`${pathname}${newQuery}`);
   };
 
-  // ✅ Clear one or more keys
+  //  Clear one or more keys
   const clearQueryParam = (keys: string[]) => {
     if (typeof window === "undefined") return;
 

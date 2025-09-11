@@ -1,52 +1,36 @@
 "use client";
 
+import React, { useState } from "react";
 import { Element } from "react-scroll";
-import React, { useState, useMemo } from "react";
+import { usePathname } from "next/navigation";
+
 import TopBar from "@/components/category/top-bar";
-import { ProductLoadMore } from "@/components/product/productListing/product-loadmore";
 import Filters from "@/components/filter/filters";
 import DrawerFilter from "@/components/category/drawer-filter";
+import { ProductLoadMore } from "@/components/product/productListing/product-loadmore";
 import { LIMITS } from "@/services/utils/limits";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useSubCategoryProductsQuery } from "@/services/product/get-products-by-subCategories";
 
-export default function PageContent() {
+import useQueryParam from "@/utils/use-query-params";
+import { useDepartmentProductsQuery } from "@/services/product/get-department-products";
+
+export default function DepartmentPageContent() {
   const [isGridView, setIsGridView] = useState(true);
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const pathSegments = pathname.split("/").filter(Boolean);
+  const { getParams } = useQueryParam(pathname ?? "/");
+  const queryParams = getParams;
 
+  // Parse parent and child from path (URL segments)
+  const pathSegments = pathname?.split("/").filter(Boolean) || [];
   const parentSlug = pathSegments[1] || "";
   const childSlug = pathSegments[2] || "";
 
-  // Build query options from search params
-  const queryOptions = useMemo(() => {
-    return {
-      parent: parentSlug,
-      child: childSlug,
-      limit: LIMITS.PRODUCTS_LIMITS,
-      sort_by: searchParams.get("sort_by") || undefined,
-      colors: searchParams.getAll("color"),
-      sizes: searchParams.getAll("size"),
-      min_price: searchParams.get("min_price")
-        ? Number(searchParams.get("min_price"))
-        : undefined,
-      price_max: searchParams.get("price_max")
-        ? Number(searchParams.get("price_max"))
-        : undefined,
-      isOnSale: searchParams.get("isOnSale") === "true",
-    };
-  }, [searchParams, parentSlug, childSlug]);
-
-  const {
-    isFetching,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-    data,
-    error,
-    isError,
-  } = useSubCategoryProductsQuery(queryOptions);
+  const { isFetching, isFetchingNextPage, fetchNextPage, hasNextPage, data } =
+    useDepartmentProductsQuery(
+      parentSlug,
+      childSlug,
+      LIMITS.PRODUCTS_LIMITS,
+      queryParams
+    );
 
   return (
     <Element name="category" className="flex products-category">
@@ -54,19 +38,18 @@ export default function PageContent() {
         <Filters />
       </div>
 
-      {/* Main Content */}
       <div className="w-full">
         <DrawerFilter />
         <TopBar viewAs={isGridView} setViewAs={setIsGridView} />
 
-          <ProductLoadMore
-            data={data}
-            isLoading={isFetching}
-            fetchNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
-            loadingMore={isFetchingNextPage}
-            viewAs={isGridView}
-          />
+        <ProductLoadMore
+          data={data}
+          isLoading={isFetching}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          loadingMore={isFetchingNextPage}
+          viewAs={isGridView}
+        />
       </div>
     </Element>
   );
