@@ -5,9 +5,9 @@ import { usePathname, useSearchParams } from "next/navigation";
 import useQueryParam from "@/utils/use-query-params";
 
 const STORAGE_KEY = "filters";
-const DEFAULT_PRICE_RANGE: [number, number] = [0, 500];
 const MIN_PRICE = 0;
-const MAX_PRICE = 1000;
+const MAX_PRICE = 100000;
+const DEFAULT_PRICE_RANGE: [number, number] = [MIN_PRICE, MAX_PRICE];
 
 export const useFilters = () => {
   const pathname = usePathname();
@@ -39,89 +39,50 @@ export const useFilters = () => {
     Record<string, boolean>
   >({});
 
-  // -------------------- INIT: URL → STATE OR LOCALSTORAGE --------------------
+  // -------------------- INIT: RESTORE FROM LOCALSTORAGE --------------------
   useEffect(() => {
-    const fromUrl = {
-      onSale: searchParams.get("on_sale") === "true",
-      minPrice: Number(searchParams.get("min_price")) || DEFAULT_PRICE_RANGE[0],
-      maxPrice: Number(searchParams.get("max_price")) || DEFAULT_PRICE_RANGE[1],
-      categories: Object.fromEntries(
-        (searchParams.get("categories")?.split(",") || []).map((id) => [
-          id,
-          true,
-        ])
-      ),
-      colors: Object.fromEntries(
-        (searchParams.get("colors")?.split(",") || []).map((id) => [id, true])
-      ),
-      sizes: Object.fromEntries(
-        (searchParams.get("sizes")?.split(",") || []).map((id) => [id, true])
-      ),
-    };
-
-    const hasUrlParams =
-      searchParams.get("on_sale") ||
-      searchParams.get("min_price") ||
-      searchParams.get("max_price") ||
-      searchParams.get("categories") ||
-      searchParams.get("colors") ||
-      searchParams.get("sizes");
-
-    if (hasUrlParams) {
-      // ✅ Prefer URL params
-      setIsOnSale(fromUrl.onSale);
-      setPriceRange([fromUrl.minPrice, fromUrl.maxPrice]);
-      setSelectedFilters({
-        categories: fromUrl.categories,
-        colors: fromUrl.colors,
-        sizes: fromUrl.sizes,
-      });
-    } else {
-      // ✅ Fallback to localStorage
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          setIsOnSale(parsed.isOnSale || false);
-          setPriceRange(parsed.priceRange || DEFAULT_PRICE_RANGE);
-          setSelectedFilters(
-            parsed.selectedFilters || { categories: {}, colors: {}, sizes: {} }
-          );
-        } catch {
-          // ignore broken localStorage
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (typeof parsed.isOnSale === "boolean") {
+          setIsOnSale(parsed.isOnSale);
         }
+        if (
+          Array.isArray(parsed.priceRange) &&
+          parsed.priceRange.length === 2
+        ) {
+          setPriceRange(parsed.priceRange as [number, number]);
+        }
+        if (parsed.selectedFilters) {
+          setSelectedFilters(parsed.selectedFilters);
+        }
+      } catch (e) {
+        console.error("Failed to parse filters from storage:", e);
       }
     }
-  }, []); // run only once on mount
+  }, []);
 
   // -------------------- STATE → URL + LOCALSTORAGE --------------------
   useEffect(() => {
     const current = searchParams.get("on_sale") || "";
     const next = isOnSale ? "true" : "";
-    if (current !== next) {
-      updateQueryparams("on_sale", next);
-    }
+    if (current !== next) updateQueryparams("on_sale", next);
 
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ isOnSale, priceRange, selectedFilters })
-    );
+    persistFilters();
   }, [isOnSale]);
 
   useEffect(() => {
     const currentMin = searchParams.get("min_price") || "";
     const currentMax = searchParams.get("max_price") || "";
 
-    const nextMin = priceRange[0] !== MIN_PRICE ? priceRange[0].toString() : "";
-    const nextMax = priceRange[1] !== MAX_PRICE ? priceRange[1].toString() : "";
+    const nextMin = priceRange[0] === MIN_PRICE ? "" : priceRange[0].toString();
+    const nextMax = priceRange[1] === MAX_PRICE ? "" : priceRange[1].toString();
 
     if (currentMin !== nextMin) updateQueryparams("min_price", nextMin);
     if (currentMax !== nextMax) updateQueryparams("max_price", nextMax);
 
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ isOnSale, priceRange, selectedFilters })
-    );
+    persistFilters();
   }, [priceRange]);
 
   useEffect(() => {
@@ -131,25 +92,32 @@ export const useFilters = () => {
       );
       const current = searchParams.get(key) || "";
       const next = selected.length > 0 ? selected.join(",") : "";
-      if (current !== next) {
-        updateQueryparams(key, next);
-      }
+      if (current !== next) updateQueryparams(key, next);
     };
     updateFilterParam("categories");
     updateFilterParam("colors");
     updateFilterParam("sizes");
 
+    persistFilters();
+  }, [selectedFilters]);
+
+  // -------------------- HELPERS --------------------
+  const persistFilters = () => {
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({ isOnSale, priceRange, selectedFilters })
     );
-  }, [selectedFilters]);
+  };
 
-  // -------------------- CLEAR FUNCTIONS --------------------
-  const clearAllFilters = () => {
+  const resetState = () => {
     setIsOnSale(false);
     setPriceRange(DEFAULT_PRICE_RANGE);
     setSelectedFilters({ categories: {}, colors: {}, sizes: {} });
+  };
+
+  // -------------------- CLEAR FUNCTIONS --------------------
+  const clearAllFilters = () => {
+    resetState();
     clearQueryParam([
       "on_sale",
       "min_price",
@@ -164,26 +132,31 @@ export const useFilters = () => {
   const clearCategories = () => {
     setSelectedFilters((prev) => ({ ...prev, categories: {} }));
     clearQueryParam(["categories"]);
+    persistFilters();
   };
 
   const clearColors = () => {
     setSelectedFilters((prev) => ({ ...prev, colors: {} }));
     clearQueryParam(["colors"]);
+    persistFilters();
   };
 
   const clearSizes = () => {
     setSelectedFilters((prev) => ({ ...prev, sizes: {} }));
     clearQueryParam(["sizes"]);
+    persistFilters();
   };
 
   const clearPriceRange = () => {
     setPriceRange(DEFAULT_PRICE_RANGE);
     clearQueryParam(["min_price", "max_price"]);
+    persistFilters();
   };
 
   const clearOnSale = () => {
     setIsOnSale(false);
     clearQueryParam(["on_sale"]);
+    persistFilters();
   };
 
   // -------------------- TOGGLE HANDLERS --------------------

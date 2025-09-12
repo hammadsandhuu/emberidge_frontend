@@ -2,19 +2,32 @@
 
 import React from "react";
 import Switch from "@/components/shared/switch";
-import { CategoriesFilter } from "@/components/filter/facets/categories-filter";
+import {
+  CategoriesFilter,
+  CategoryOption,
+} from "@/components/filter/facets/categories-filter";
 import { FilterSection } from "@/components/filter/facets/filter-section";
 import { ColorsFilter } from "@/components/filter/facets/colors-filter";
-
-// Sample data
-import {
-  categoriesData,
-  colorsData,
-  sizesData,
-} from "@/components/filter/data";
 import { SizesFilter } from "@/components/filter/facets/sizes-filter";
 import { PriceRangeFilter } from "@/components/filter/facets/price-range-filter";
+
+import { colorsData, sizesData } from "@/components/filter/data";
 import { useFilters } from "@/hooks/use-filter-hooks";
+import { useCategories } from "@/services/category/get-all-categories";
+
+// 🔹 Map API categories to CategoryOption format
+const mapCategories = (apiCategories: any[]): CategoryOption[] => {
+  return apiCategories.map((cat) => ({
+    slug: cat.slug,
+    label: cat.name,
+    count: 0, // placeholder until product count comes from API
+    subCategories: cat.children?.map((child: any) => ({
+      slug: child.slug,
+      label: child.name,
+      count: 0,
+    })),
+  }));
+};
 
 const Filters = () => {
   const {
@@ -36,32 +49,18 @@ const Filters = () => {
     clearSizes,
   } = useFilters();
 
+  const { data, isLoading, error } = useCategories({ limit: 15 });
+
   return (
-    <div className="rounded ">
-      {/* Categories Filter */}
-      <FilterSection
-        title="Categories"
-        isOpen={sectionsOpen.categories}
-        onToggle={() => toggleSection("categories")}
-        onClear={clearCategories} // 👈 wire it
-      >
-        <CategoriesFilter
-          categories={categoriesData}
-          selectedCategories={selectedFilters.categories}
-          expandedCategories={expandedCategories}
-          onCategoryChange={(id, checked) =>
-            handleFilterChange("categories", id, checked)
-          }
-          onCategoryExpand={toggleCategoryExpand}
-        />
-      </FilterSection>
+    <div className="rounded">
+      {/* On Sale */}
       <div className="pb-8 pr-2">
         <div className="flex justify-between items-center space-x-2">
           <div>
-            <label className="text-base font-medium text-neutral-900 dark:text-neutral-200 ">
+            <label className="text-base font-medium text-neutral-900 dark:text-neutral-200">
               On sale!
             </label>
-            <p className="text-neutral-500 dark:text-neutral-400  text-sm">
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm">
               Products currently on sale
             </p>
           </div>
@@ -70,12 +69,36 @@ const Filters = () => {
           </label>
         </div>
       </div>
+      {/* Categories Filter */}
+      <FilterSection
+        title="Categories"
+        isOpen={sectionsOpen.categories}
+        onToggle={() => toggleSection("categories")}
+        onClear={clearCategories}
+      >
+        {isLoading ? (
+          <p className="text-sm text-gray-500">Loading categories...</p>
+        ) : error ? (
+          <p className="text-sm text-red-500">Failed to load categories</p>
+        ) : (
+          <CategoriesFilter
+            categories={mapCategories(data || [])}
+            selectedCategories={selectedFilters.categories}
+            expandedCategories={expandedCategories}
+            onCategoryChange={(slug, checked) =>
+              handleFilterChange("categories", slug, checked)
+            }
+            onCategoryExpand={toggleCategoryExpand}
+          />
+        )}
+      </FilterSection>
+
       {/* Price Range */}
       <FilterSection
         title="Price range"
         isOpen={sectionsOpen.price}
         onToggle={() => toggleSection("price")}
-        onClear={clearPriceRange} // 👈 wire it
+        onClear={clearPriceRange}
       >
         <PriceRangeFilter
           min={MIN_PRICE}
@@ -86,11 +109,11 @@ const Filters = () => {
       </FilterSection>
 
       {/* Colors */}
-      <FilterSection
+      {/* <FilterSection
         title="Colors"
         isOpen={sectionsOpen.colors}
         onToggle={() => toggleSection("colors")}
-        onClear={clearColors} // 👈 wire it
+        onClear={clearColors}
       >
         <ColorsFilter
           colors={colorsData}
@@ -99,14 +122,14 @@ const Filters = () => {
             handleFilterChange("colors", id, checked)
           }
         />
-      </FilterSection>
+      </FilterSection> */}
 
       {/* Sizes */}
-      <FilterSection
+      {/* <FilterSection
         title="Size"
         isOpen={sectionsOpen.sizes}
         onToggle={() => toggleSection("sizes")}
-        onClear={clearSizes} // 👈 wire it
+        onClear={clearSizes}
       >
         <SizesFilter
           sizes={sizesData}
@@ -115,7 +138,7 @@ const Filters = () => {
             handleFilterChange("sizes", id, checked)
           }
         />
-      </FilterSection>
+      </FilterSection> */}
     </div>
   );
 };
