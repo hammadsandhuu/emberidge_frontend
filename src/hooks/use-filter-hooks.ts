@@ -86,36 +86,48 @@ export const useFilters = () => {
   }, [priceRange]);
 
   useEffect(() => {
-    // Handle categories
+    // Handle categories by manually building the URL
     const selectedCats = Object.keys(selectedFilters.categories).filter(
       (slug) => selectedFilters.categories[slug]
     );
 
-    // Clear category params first
-    clearQueryParam(["parent", "child"]);
+    // Create a new URLSearchParams object
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    // Remove existing category params
+    newParams.delete("parent");
+    newParams.delete("child");
 
     if (selectedCats.length > 0) {
-      // Find parent categories (those that have subcategories selected)
-      const parentCats = selectedCats.filter((slug) => {
-        // This logic depends on your category structure
-        // You might need to adjust this based on how you identify parent vs child categories
-        return true; // Placeholder - adjust as needed
+      // For simplicity, we'll assume the first selected category is the parent
+      // and any subsequent ones are children
+      const parentCats: string[] = [];
+      const childCats: string[] = [];
+
+      selectedCats.forEach((slug, index) => {
+        if (index === 0) {
+          parentCats.push(slug);
+        } else {
+          childCats.push(slug);
+        }
       });
 
-      // Find child categories
-      const childCats = selectedCats.filter(
-        (slug) => !parentCats.includes(slug)
-      );
-
       if (parentCats.length > 0) {
-        updateQueryparams("parent", parentCats.join(","));
+        newParams.set("parent", parentCats.join(","));
       }
       if (childCats.length > 0) {
-        updateQueryparams("child", childCats.join(","));
+        newParams.set("child", childCats.join(","));
       }
     }
 
-    // Handle colors and sizes
+    // Update the URL
+    const newQueryString = newParams.toString();
+    const newUrl = newQueryString ? `${pathname}?${newQueryString}` : pathname;
+
+    // Use replaceState to update the URL
+    window.history.replaceState(null, "", newUrl);
+
+    // Handle colors and sizes using your existing method
     const updateFilterParam = (key: "colors" | "sizes") => {
       const selected = Object.keys(selectedFilters[key]).filter(
         (id) => selectedFilters[key][id]
@@ -133,9 +145,22 @@ export const useFilters = () => {
 
   // -------------------- HELPERS --------------------
   const persistFilters = () => {
+    // Clean up the selectedFilters before saving - remove any false values
+    const cleanedFilters = {
+      categories: Object.fromEntries(
+        Object.entries(selectedFilters.categories).filter(([_, value]) => value)
+      ),
+      colors: Object.fromEntries(
+        Object.entries(selectedFilters.colors).filter(([_, value]) => value)
+      ),
+      sizes: Object.fromEntries(
+        Object.entries(selectedFilters.sizes).filter(([_, value]) => value)
+      ),
+    };
+
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ isOnSale, priceRange, selectedFilters })
+      JSON.stringify({ isOnSale, priceRange, selectedFilters: cleanedFilters })
     );
   };
 
@@ -204,10 +229,22 @@ export const useFilters = () => {
     id: string,
     checked: boolean
   ) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [section]: { ...prev[section], [id]: checked },
-    }));
+    setSelectedFilters((prev) => {
+      const newSectionFilters = { ...prev[section] };
+
+      if (checked) {
+        // Add the filter if checked
+        newSectionFilters[id] = true;
+      } else {
+        // Remove the filter if unchecked
+        delete newSectionFilters[id];
+      }
+
+      return {
+        ...prev,
+        [section]: newSectionFilters,
+      };
+    });
   };
 
   const handlePriceRangeChange = (value: [number, number]) => {
