@@ -5,7 +5,6 @@ import { Element } from "react-scroll";
 import TopBar from "@/components/category/top-bar";
 import { ProductLoadMore } from "@/components/product/productListing/product-loadmore";
 import Filters from "@/components/filter/filters";
-import DrawerFilter from "@/components/category/drawer-filter";
 import { LIMITS } from "@/services/utils/limits";
 import { usePathname } from "next/navigation";
 import useQueryParam from "@/utils/use-query-params";
@@ -27,7 +26,6 @@ export default function ShopPageContent() {
         <Filters />
       </div>
       <div className="w-full">
-        <DrawerFilter />
         <TopBar viewAs={isGridView} setViewAs={setIsGridView} />
         <ProductLoadMore
           data={data}

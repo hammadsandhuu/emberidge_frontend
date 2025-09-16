@@ -58,22 +58,6 @@ const Filters = () => {
 
   return (
     <div className="rounded">
-      {/* On Sale */}
-      <div className="pb-8 pr-2">
-        <div className="flex justify-between items-center space-x-2">
-          <div>
-            <label className="text-base font-medium text-neutral-900 dark:text-neutral-200">
-              On sale!
-            </label>
-            <p className="text-neutral-500 dark:text-neutral-400 text-sm">
-              Products currently on sale
-            </p>
-          </div>
-          <label className="relative inline-block cursor-pointer switch">
-            <Switch checked={isOnSale} onChange={setIsOnSale} />
-          </label>
-        </div>
-      </div>
       {/* Categories Filter */}
       <FilterSection
         title="Categories"
@@ -112,9 +96,24 @@ const Filters = () => {
           onChange={handlePriceRangeChange}
         />
       </FilterSection>
-
+      {/* On Sale */}
+      <div className="pb-8 pr-2">
+        <div className="flex justify-between items-center space-x-2">
+          <div>
+            <label className="text-base font-medium text-neutral-900 dark:text-neutral-200">
+              On sale!
+            </label>
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm">
+              Products currently on sale
+            </p>
+          </div>
+          <label className="relative inline-block cursor-pointer switch">
+            <Switch checked={isOnSale} onChange={setIsOnSale} />
+          </label>
+        </div>
+      </div>
       {/* Colors */}
-      <FilterSection
+      {/* <FilterSection
         title="Colors"
         isOpen={sectionsOpen.colors}
         onToggle={() => toggleSection("colors")}
@@ -127,10 +126,10 @@ const Filters = () => {
             handleFilterChange("colors", id, checked)
           }
         />
-      </FilterSection>
+      </FilterSection> */}
 
       {/* Sizes */}
-      <FilterSection
+      {/* <FilterSection
         title="Size"
         isOpen={sectionsOpen.sizes}
         onToggle={() => toggleSection("sizes")}
@@ -143,7 +142,7 @@ const Filters = () => {
             handleFilterChange("sizes", id, checked)
           }
         />
-      </FilterSection>
+      </FilterSection> */}
     </div>
   );
 };
