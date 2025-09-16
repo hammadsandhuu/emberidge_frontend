@@ -15,17 +15,19 @@ import { colorsData, sizesData } from "@/components/filter/data";
 import { useFilters } from "@/hooks/use-filter-hooks";
 import { useCategories } from "@/services/category/get-all-categories";
 
-// 🔹 Map API categories to CategoryOption format
-const mapCategories = (apiCategories: any[]): CategoryOption[] => {
-  return apiCategories.map((cat) => ({
-    slug: cat.slug,
-    label: cat.name,
-    count: 0, // placeholder until product count comes from API
-    subCategories: cat.children?.map((child: any) => ({
-      slug: child.slug,
-      label: child.name,
-      count: 0,
-    })),
+// Transform API data to match component expectations
+const transformCategories = (apiCategories: any[]): CategoryOption[] => {
+  return apiCategories.map((category) => ({
+    slug: category.slug,
+    label: category.name,
+    count: 0, // You might want to add actual count data if available
+    subCategories: category.children
+      ? category.children.map((child: any) => ({
+          slug: child.slug,
+          label: child.name,
+          count: 0, // You might want to add actual count data if available
+        }))
+      : [],
   }));
 };
 
@@ -50,6 +52,9 @@ const Filters = () => {
   } = useFilters();
 
   const { data, isLoading, error } = useCategories({ limit: 15 });
+
+  // Transform the data to match the expected format
+  const transformedCategories = data ? transformCategories(data) : [];
 
   return (
     <div className="rounded">
@@ -82,7 +87,7 @@ const Filters = () => {
           <p className="text-sm text-red-500">Failed to load categories</p>
         ) : (
           <CategoriesFilter
-            categories={mapCategories(data || [])}
+            categories={transformedCategories}
             selectedCategories={selectedFilters.categories}
             expandedCategories={expandedCategories}
             onCategoryChange={(slug, checked) =>
@@ -109,7 +114,7 @@ const Filters = () => {
       </FilterSection>
 
       {/* Colors */}
-      {/* <FilterSection
+      <FilterSection
         title="Colors"
         isOpen={sectionsOpen.colors}
         onToggle={() => toggleSection("colors")}
@@ -122,10 +127,10 @@ const Filters = () => {
             handleFilterChange("colors", id, checked)
           }
         />
-      </FilterSection> */}
+      </FilterSection>
 
       {/* Sizes */}
-      {/* <FilterSection
+      <FilterSection
         title="Size"
         isOpen={sectionsOpen.sizes}
         onToggle={() => toggleSection("sizes")}
@@ -138,7 +143,7 @@ const Filters = () => {
             handleFilterChange("sizes", id, checked)
           }
         />
-      </FilterSection> */}
+      </FilterSection>
     </div>
   );
 };

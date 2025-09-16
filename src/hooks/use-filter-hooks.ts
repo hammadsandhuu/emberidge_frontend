@@ -86,7 +86,37 @@ export const useFilters = () => {
   }, [priceRange]);
 
   useEffect(() => {
-    const updateFilterParam = (key: "categories" | "colors" | "sizes") => {
+    // Handle categories
+    const selectedCats = Object.keys(selectedFilters.categories).filter(
+      (slug) => selectedFilters.categories[slug]
+    );
+
+    // Clear category params first
+    clearQueryParam(["parent", "child"]);
+
+    if (selectedCats.length > 0) {
+      // Find parent categories (those that have subcategories selected)
+      const parentCats = selectedCats.filter((slug) => {
+        // This logic depends on your category structure
+        // You might need to adjust this based on how you identify parent vs child categories
+        return true; // Placeholder - adjust as needed
+      });
+
+      // Find child categories
+      const childCats = selectedCats.filter(
+        (slug) => !parentCats.includes(slug)
+      );
+
+      if (parentCats.length > 0) {
+        updateQueryparams("parent", parentCats.join(","));
+      }
+      if (childCats.length > 0) {
+        updateQueryparams("child", childCats.join(","));
+      }
+    }
+
+    // Handle colors and sizes
+    const updateFilterParam = (key: "colors" | "sizes") => {
       const selected = Object.keys(selectedFilters[key]).filter(
         (id) => selectedFilters[key][id]
       );
@@ -94,7 +124,7 @@ export const useFilters = () => {
       const next = selected.length > 0 ? selected.join(",") : "";
       if (current !== next) updateQueryparams(key, next);
     };
-    updateFilterParam("categories");
+
     updateFilterParam("colors");
     updateFilterParam("sizes");
 
@@ -122,7 +152,8 @@ export const useFilters = () => {
       "on_sale",
       "min_price",
       "max_price",
-      "categories",
+      "parent",
+      "child",
       "colors",
       "sizes",
     ]);
@@ -131,7 +162,7 @@ export const useFilters = () => {
 
   const clearCategories = () => {
     setSelectedFilters((prev) => ({ ...prev, categories: {} }));
-    clearQueryParam(["categories"]);
+    clearQueryParam(["parent", "child"]);
     persistFilters();
   };
 
