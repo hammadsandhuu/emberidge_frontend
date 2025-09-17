@@ -15,10 +15,12 @@ export const API_RESOURCES = {
   RESET_PASSWORD: "https://emberidge-backend.vercel.app/auth/reset-password",
   REVIEWS: "https://emberidge-backend.vercel.app/api/v1/products",
   VOTE: "https://emberidge-backend.vercel.app/api/v1/products/reviews",
+  NEW_SELLER_PRODUCTS:
+    "https://emberidge-backend.vercel.app/api/v1/products/new-arrival",
+  BEST_SELLER_PRODUCTS:
+    "https://emberidge-backend.vercel.app/api/v1/products/best-seller",
   PRODUCT: "/product.json",
   RELATED_PRODUCTS: "/related_products.json",
-
-  BEST_SELLER_PRODUCTS: "/products_bestseller.json",
   POPULAR_PRODUCTS: "/products_popular.json",
 
   ELETRONIC_PRODUCTS: "/products_electronic.json",

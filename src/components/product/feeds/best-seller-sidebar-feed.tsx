@@ -20,7 +20,7 @@ const BestSidebarFeed: FC<ProductFeedProps> = ({
 
   return (
     <ProductsCarouselVertical
-      sectionHeading="Best Seller"
+      sectionHeading="Best Selling Products"
       products={Product}
       loading={isLoading}
       limit={LIMITS.BEST_SELLER_PRODUCTS_LIMITS}
