@@ -26,6 +26,7 @@ export type QueryOptionsType = {
 
 // 🆕 ProductsResponse type for products + pagination
 export interface ProductsResponse {
+  data: any;
   products: Product[];
   pagination: {
     total: number;

@@ -1,4 +1,5 @@
-import { PaginatedProduct } from "@/services/types";
+// services/product/get-shop-products.ts
+import { PaginatedProduct, ProductsResponse } from "@/services/types";
 import { API_RESOURCES } from "@/services/utils/api-endpoints";
 import http from "@/services/utils/http";
 import {
@@ -11,7 +12,7 @@ type QueryParams = Record<string, string | string[] | number | boolean>;
 
 const getShopProducts = async ({
   queryKey,
-  pageParam,
+  pageParam = 1,
 }: QueryFunctionContext<
   ["shop-products", number, QueryParams],
   number
@@ -33,16 +34,25 @@ const getShopProducts = async ({
   params.set("page", String(pageParam));
   params.set("limit", String(limit));
 
-  const { data } = await http.get(
+  const { data } = await http.get<ProductsResponse>(
     `${API_RESOURCES.PRODUCTS}?${params.toString()}`
   );
+  console.log("data resposnse", data);
+  // Extract data from the API response structure
+  const products = data.data.products || [];
+  console.log("products", products);
+  const pagination = data.data.pagination || {
+    total: 0,
+    page: 1,
+    pages: 1,
+    limit: 12,
+  };
 
   return {
-    data: data.data.products,
+    data: products,
     paginatorInfo: {
-      nextPage:
-        pageParam < Math.ceil(data.results / limit) ? pageParam + 1 : null,
-      total: data.results,
+      nextPage: pagination.page < pagination.pages ? pagination.page + 1 : null,
+      total: pagination.total,
     },
   };
 };
@@ -61,6 +71,8 @@ export const useShopProductsQuery = (
     queryKey: ["shop-products", limit, queryParamsObj],
     queryFn: getShopProducts,
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.paginatorInfo.nextPage,
+    getNextPageParam: (lastPage) => {
+      return lastPage.paginatorInfo.nextPage;
+    },
   });
 };
