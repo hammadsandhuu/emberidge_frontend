@@ -134,11 +134,22 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
                 />
 
                 {/* 🔹 Shop by Department Button */}
-                <div className="categories-header-button relative me-8 flex-shrink-0 w-72">
+                {/* <div className="categories-header-button relative me-8 flex-shrink-0 w-72">
                   <button
                     className="text-brand-light rounded-t min-h-[50px] focus:outline-none w-full uppercase font-medium px-[18px] py-4 flex items-center bg-primary-500 hover:bg-primary-600 transition"
                     onClick={handleCategoryMenu}
                   >
+                    <FiMenu className="text-2xl me-3" />
+                    Shop by Department
+                  </button>
+                  {toggleAllCategory && <CategoryDropdownNav />}
+                </div> */}
+                <div
+                  className="categories-header-button relative me-8 flex-shrink-0 w-72"
+                  onMouseEnter={() => setToggleAllCategory(true)}
+                  onMouseLeave={() => setToggleAllCategory(false)}
+                >
+                  <button className="text-brand-light rounded-t min-h-[50px] focus:outline-none w-full uppercase font-medium px-[18px] py-4 flex items-center bg-primary-500 hover:bg-primary-600 transition">
                     <FiMenu className="text-2xl me-3" />
                     Shop by Department
                   </button>

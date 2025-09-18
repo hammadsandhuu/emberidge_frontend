@@ -19,9 +19,12 @@ export const API_RESOURCES = {
     "https://emberidge-backend.vercel.app/api/v1/products/new-arrival",
   BEST_SELLER_PRODUCTS:
     "https://emberidge-backend.vercel.app/api/v1/products/best-seller",
+  POPULAR_PRODUCTS:
+    "https://emberidge-backend.vercel.app/api/v1/products/deals",
+  SALE_PRODUCTS: "https://emberidge-backend.vercel.app/api/v1/products/on-sale",
+
   PRODUCT: "/product.json",
   RELATED_PRODUCTS: "/related_products.json",
-  POPULAR_PRODUCTS: "/products_popular.json",
 
   ELETRONIC_PRODUCTS: "/products_electronic.json",
   FASHION_PRODUCTS: "/products_fashion.json",

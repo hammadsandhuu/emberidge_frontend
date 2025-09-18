@@ -4,11 +4,11 @@ import BannerGrid from "@/components/banner/banner-grid";
 import BestSidebarFeed from "@/components/product/feeds/best-seller-sidebar-feed";
 import LatestblogSidebar from "@/components/blog/latestblog-sidebar";
 import NewSidebarFeed from "@/components/product/feeds/new-sidebar-feed";
-import BestDealsFeed from "@/components/product/feeds/best-deals-feed";
 import { homeThreeHeroCarousel as bannerHeroCarousel } from "@/components/banner/data";
 import { homeThreeHeroSlider as heroSlider } from "@/components/hero/data";
 import ServiceFeature from "@/components/common/service-featured";
 import ListingCategory from "@/components/product/listingtabs/listing-category";
+import SaleProductsFeed from "@/components/product/feeds/on-sales-feed";
 
 export const metadata = {
   title: "Home",
@@ -38,7 +38,7 @@ export default async function Page() {
       <Container variant={"Large"}>
         <div className="grid grid-cols-12 gap-4 xl:gap-8">
           <div className="maincontent-right col-span-12 order-1 lg:order-2 lg:col-span-9 2xl:col-span-10">
-            <BestDealsFeed />
+            <SaleProductsFeed />
             <ListingCategory />
           </div>
 
