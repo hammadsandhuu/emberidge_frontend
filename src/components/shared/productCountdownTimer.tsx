@@ -13,7 +13,7 @@ const TimerRenderer = ({ days, hours, minutes, seconds, completed }: any) => {
   ];
 
   return (
-    <div className="flex items-center text-base xl:text-lg text-brand-dark font-medium -mx-2.5">
+    <div className="flex items-center text-base xl:text-lg text-brand-dark font-medium md:-mx-2">
       {timeUnits.map((unit, idx) => (
         <React.Fragment key={idx}>
           <div className="flex items-center mx-1 md:mx-1.5 lg:mx-2.5">
