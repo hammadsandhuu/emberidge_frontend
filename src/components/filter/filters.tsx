@@ -131,7 +131,7 @@ const Filters = ({ departmentSlug }: FiltersProps) => {
       </div>
 
       {/* Colors */}
-      <FilterSection
+      {/* <FilterSection
         title="Colors"
         isOpen={sectionsOpen.colors}
         onToggle={() => toggleSection("colors")}
@@ -144,10 +144,10 @@ const Filters = ({ departmentSlug }: FiltersProps) => {
             handleFilterChange("colors", id, checked)
           }
         />
-      </FilterSection>
+      </FilterSection> */}
 
       {/* Sizes */}
-      <FilterSection
+      {/* <FilterSection
         title="Size"
         isOpen={sectionsOpen.sizes}
         onToggle={() => toggleSection("sizes")}
@@ -160,7 +160,7 @@ const Filters = ({ departmentSlug }: FiltersProps) => {
             handleFilterChange("sizes", id, checked)
           }
         />
-      </FilterSection>
+      </FilterSection> */}
     </div>
   );
 };
