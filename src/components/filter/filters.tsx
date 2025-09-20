@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Switch from "@/components/shared/switch";
 import {
   CategoriesFilter,
@@ -15,23 +15,27 @@ import { colorsData, sizesData } from "@/components/filter/data";
 import { useFilters } from "@/hooks/use-filter-hooks";
 import { useCategories } from "@/services/category/get-all-categories";
 
+interface FiltersProps {
+  departmentSlug?: string; // ✅ optional
+}
+
 // Transform API data to match component expectations
 const transformCategories = (apiCategories: any[]): CategoryOption[] => {
   return apiCategories.map((category) => ({
     slug: category.slug,
     label: category.name,
-    count: 0, // You might want to add actual count data if available
+    count: 0,
     subCategories: category.children
       ? category.children.map((child: any) => ({
           slug: child.slug,
           label: child.name,
-          count: 0, // You might want to add actual count data if available
+          count: 0,
         }))
       : [],
   }));
 };
 
-const Filters = () => {
+const Filters = ({ departmentSlug }: FiltersProps) => {
   const {
     isOnSale,
     setIsOnSale,
@@ -50,12 +54,24 @@ const Filters = () => {
     clearColors,
     clearSizes,
   } = useFilters();
+  const { data, isLoading, error } = useCategories({ limit: 50 });
+  const departmentCategories = departmentSlug
+    ? data?.filter((cat: any) => cat.slug === departmentSlug)
+    : data;
 
-  const { data, isLoading, error } = useCategories({ limit: 15 });
+  const transformedCategories = departmentCategories
+    ? transformCategories(departmentCategories)
+    : [];
 
-  // Transform the data to match the expected format
-  const transformedCategories = data ? transformCategories(data) : [];
-
+  // 👇 Add this effect
+  useEffect(() => {
+    if (
+      transformedCategories.length > 0 &&
+      Object.keys(expandedCategories).length === 0
+    ) {
+      toggleCategoryExpand(transformedCategories[0].slug);
+    }
+  }, [transformedCategories, expandedCategories, toggleCategoryExpand]);
   return (
     <div className="rounded">
       {/* Categories Filter */}
@@ -96,6 +112,7 @@ const Filters = () => {
           onChange={handlePriceRangeChange}
         />
       </FilterSection>
+
       {/* On Sale */}
       <div className="pb-8 pr-2">
         <div className="flex justify-between items-center space-x-2">
@@ -112,8 +129,9 @@ const Filters = () => {
           </label>
         </div>
       </div>
+
       {/* Colors */}
-      {/* <FilterSection
+      <FilterSection
         title="Colors"
         isOpen={sectionsOpen.colors}
         onToggle={() => toggleSection("colors")}
@@ -126,10 +144,10 @@ const Filters = () => {
             handleFilterChange("colors", id, checked)
           }
         />
-      </FilterSection> */}
+      </FilterSection>
 
       {/* Sizes */}
-      {/* <FilterSection
+      <FilterSection
         title="Size"
         isOpen={sectionsOpen.sizes}
         onToggle={() => toggleSection("sizes")}
@@ -142,7 +160,7 @@ const Filters = () => {
             handleFilterChange("sizes", id, checked)
           }
         />
-      </FilterSection> */}
+      </FilterSection>
     </div>
   );
 };

@@ -68,23 +68,59 @@ export type Tag = {
   slug: string;
 };
 
+export type AdditionalInfo = {
+  key: string;
+  value: string;
+};
+
+export type RatingDistribution = {
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+};
+
+export type RatingSummary = {
+  average: number;
+  total: number;
+  distribution: RatingDistribution;
+};
+
+export type ReviewUser = {
+  _id: string;
+  name: string;
+  email?: string;
+  avatar?: string; // optional user profile picture
+};
+
+export type Review = {
+  _id: string;
+  user: ReviewUser;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  updatedAt?: string;
+};
+
 export type Product = {
   id: number | string;
+  _id?: string;
   name: string;
   slug: string;
   price: number;
   quantity: number;
   sold: number;
-  videoUrl: string;
+  videoUrl?: string;
   sale_price?: number;
   min_price?: number;
   max_price?: number;
   variation_options: VariationOption[];
   variations?: Variation[];
-  image: Attachment;
+  image?: Attachment;
   sku?: string;
   gallery?: Attachment[];
-  category: Category[];
+  category: Category[]; // can be multiple
   tag?: Tag[];
   meta?: never[];
   brand: string;
@@ -93,11 +129,25 @@ export type Product = {
   operating?: string;
   screen?: string;
   description?: string;
+  product_details?: string;
   rating: number;
   discountPercentage: number;
   weight: number;
+  on_sale?: boolean;
+  in_stock?: boolean;
+  is_active?: boolean;
+  deletedAt?: string | null;
+  ratingsAverage?: number;
+  ratingsQuantity?: number;
+  reviews?: Review[];
+  reviewsCount?: number;
+  ratingSummary?: RatingSummary;
+  additional_info?: AdditionalInfo[];
+  createdAt?: string;
+  updatedAt?: string;
   [key: string]: unknown;
 };
+
 
 interface VariationValue {
   _id: number;

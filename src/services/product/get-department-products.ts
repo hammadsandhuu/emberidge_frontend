@@ -21,7 +21,7 @@ const getDepartmentProducts = async ({
 
   const params = new URLSearchParams();
 
-  // Add filters
+  // Add all query parameters
   for (const [key, value] of Object.entries(queryParamsObj || {})) {
     if (Array.isArray(value)) {
       value.forEach((v) => params.append(key, String(v)));
@@ -30,7 +30,7 @@ const getDepartmentProducts = async ({
     }
   }
 
-  // Add pagination params
+  // Always add pagination
   params.set("page", String(pageParam));
   params.set("limit", String(limit));
 
@@ -42,12 +42,20 @@ const getDepartmentProducts = async ({
     `${API_RESOURCES.PRODUCTS_BY_SUB_CATEGORIES}?${params.toString()}`
   );
 
+  // Extract data from the API response structure (assuming similar structure to shop products)
+  const products = data.data.products || [];
+  const pagination = data.data.pagination || {
+    total: 0,
+    page: 1,
+    pages: 1,
+    limit: limit,
+  };
+
   return {
-    data: data.data.products,
+    data: products,
     paginatorInfo: {
-      nextPage:
-        pageParam < Math.ceil(data.results / limit) ? pageParam + 1 : null,
-      total: data.results,
+      nextPage: pagination.page < pagination.pages ? pagination.page + 1 : null,
+      total: pagination.total,
     },
   };
 };
@@ -74,6 +82,8 @@ export const useDepartmentProductsQuery = (
     ],
     queryFn: getDepartmentProducts,
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.paginatorInfo.nextPage,
+    getNextPageParam: (lastPage) => {
+      return lastPage.paginatorInfo.nextPage;
+    },
   });
 };

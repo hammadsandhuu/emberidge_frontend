@@ -12,14 +12,21 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({ data }) => {
   const reviewCount =
     typeof data.ratingsQuantity === "number" ? data.ratingsQuantity : 0;
 
+  // Short description (20 words max)
+  const shortDescription = data?.description
+    ? data.description.split(" ").slice(0, 20).join(" ") +
+      (data.description.split(" ").length > 20 ? "..." : "")
+    : "";
+
   return (
-    <>
-      <div className="mb-2 md:mb-2.5 block">
-        <h2 className="text-lg font-medium transition-colors duration-300 text-brand-dark md:text-xl xl:text-2xl">
-          {data.name}
-        </h2>
-      </div>
-      <div className="flex text-gray-500 space-x-2">
+    <div className="space-y-2">
+      {/* Product Name */}
+      <h2 className="text-lg font-semibold text-brand-dark md:text-xl xl:text-2xl">
+        {data.name}
+      </h2>
+
+      {/* Rating + Reviews */}
+      <div className="flex items-center space-x-2">
         <div className="flex items-center">
           {[...Array(5)].map((_, idx) => {
             const starValue = idx + 1;
@@ -31,7 +38,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({ data }) => {
                 <Star
                   stroke="#DFE6ED"
                   fill="white"
-                  size={14}
+                  size={16}
                   className="relative"
                 />
                 {rating > 0 && (
@@ -40,7 +47,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({ data }) => {
                       <Star
                         fill="#F3B81F"
                         stroke="#F3B81F"
-                        size={14}
+                        size={16}
                         className="absolute inset-0"
                       />
                     ) : isHalf ? (
@@ -48,7 +55,7 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({ data }) => {
                         className="absolute inset-0 overflow-hidden"
                         style={{ width: "50%" }}
                       >
-                        <Star fill="#F3B81F" stroke="#F3B81F" size={14} />
+                        <Star fill="#F3B81F" stroke="#F3B81F" size={16} />
                       </div>
                     ) : null}
                   </>
@@ -57,11 +64,19 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({ data }) => {
             );
           })}
         </div>
-        <span className="text-[13px] leading-4">
-          ({reviewCount} review{reviewCount !== 1 ? "s" : ""})
+        <span className="text-[13px] text-gray-600">
+          {rating.toFixed(1)} / 5 ({reviewCount} review
+          {reviewCount !== 1 ? "s" : ""})
         </span>
       </div>
-    </>
+
+      {/* Short Description */}
+      {shortDescription && (
+        <p className="text-sm text-gray-500 leading-relaxed">
+          {shortDescription}
+        </p>
+      )}
+    </div>
   );
 };
 
