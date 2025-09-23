@@ -18,7 +18,7 @@ const BtnRemoveWishlist: React.FC<ProductActionsProps> = ({
       {removeWishlist && (
         <button
           onClick={() => removeWishlist(String(id))}
-          className="hover:bg-gray-200 px-1 py-1 rounded-full absolute right-0 top-0 m-3 z-10 cursor-pointer"
+          className="bg-primary-500 hover:bg-gray-200 px-1 py-1 rounded-full absolute right-0 top-0 m-3 z-10 cursor-pointer"
         >
           <X size={20} strokeWidth={2} />
           <span className="sr-only">Remove from Wishlist</span>
