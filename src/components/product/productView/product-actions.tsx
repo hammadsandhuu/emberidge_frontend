@@ -5,6 +5,10 @@ import CartIcon from "@/components/icons/cart-icon";
 import WishlistButton from "@/components/wishlist/wishlist-button";
 import CompareButton from "@/components/compare/compare-button";
 import PaypalIconLabel from "@/components/icons/payment/paypal-text";
+import { useUI } from "@/hooks/use-UI";
+import { useModal } from "@/hooks/use-modal";
+import toast from "react-hot-toast";
+import { Loader } from "lucide-react";
 
 interface ProductActionsProps {
   data: Product;
@@ -28,28 +32,46 @@ const ProductActions: React.FC<ProductActionsProps> = ({
   targetButtonRef,
 }) => {
   const itemId = (selectedVariation?.id ?? data._id ?? "").toString();
-
   const outOfStock = isInCart(itemId) && !isInStock(itemId);
 
+  const { isAuthorized } = useUI();
+  const { openModal } = useModal();
+
+  const handleAddToCart = () => {
+    if (!isAuthorized) {
+      openModal("LOGIN_VIEW");
+      toast.error("Please login to add items to cart");
+      return;
+    }
+    addToCart();
+  };
+
   return (
-    <div className=" space-y-2.5 md:space-y-3.5">
+    <div className="space-y-2.5 md:space-y-3.5">
       <div className="flex flex-col md:flex-row gap-2.5 mt-8">
         <Button
           ref={targetButtonRef}
           variant="dark"
-          onClick={addToCart}
-          className="flex-auto px-1.5"
-          loading={addToCartLoader}
-          disabled={!isSelected || outOfStock}
+          onClick={handleAddToCart}
+          className="flex-auto px-1.5 relative"
+          disabled={!isSelected || outOfStock || addToCartLoader}
         >
-          <CartIcon width={18} className="text-white ltr:mr-3 rtl:ml-3" />
-          {outOfStock ? "Out Of Stock" : " Add To Cart"}
+          {addToCartLoader ? (
+            <Loader className="w-5 h-5 animate-spin text-white" />
+          ) : (
+            <>
+              <CartIcon width={18} className="text-white ltr:mr-3 rtl:ml-3" />
+              {outOfStock ? "Out Of Stock" : "Add To Cart"}
+            </>
+          )}
         </Button>
+
         <div className="grid grid-cols-2 gap-2.5 lg:w-[140px]">
           <WishlistButton product={data} />
           <CompareButton product={data} />
         </div>
       </div>
+
       <Button variant="paypal" className="gap-2">
         Pay with <PaypalIconLabel />
       </Button>
