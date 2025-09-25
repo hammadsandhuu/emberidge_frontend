@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
 import { useCartStore } from "@/stores/useCartStore";
 import type { CartState } from "@/stores/useCartStore";
@@ -11,6 +11,8 @@ import {
   useUpdateCartItem,
   useRemoveFromCart,
   useClearCart,
+  useApplyCoupon,
+  useRemoveCoupon,
 } from "@/services/cart/cart-api";
 import toast from "react-hot-toast";
 
@@ -22,31 +24,39 @@ export const useCart = () => {
       totalItems: state.totalItems,
       totalUniqueItems: state.totalUniqueItems,
       total: state.total,
+      discount: state.discount,
+      finalTotal: state.finalTotal,
+      coupon: state.coupon,
       addItemWithQuantity: state.addItemWithQuantity,
       updateItem: state.updateItem,
       removeItem: state.removeItem,
       resetCart: state.resetCart,
+      setCart: state.setCart,
     }))
   );
 
-  // React Query
-  const { data: cartData, isLoading: isCartLoading } = useCartQuery();
+  /** React Query Mutations */
+  const { data: cartData } = useCartQuery();
   const addMutation = useAddToCart();
   const updateMutation = useUpdateCartItem();
   const removeMutation = useRemoveFromCart();
   const clearMutation = useClearCart();
+  const applyCouponMutation = useApplyCoupon();
+  const removeCouponMutation = useRemoveCoupon();
 
-  // Sync Zustand with backend cart
+  /** Sync backend cart to Zustand */
   useEffect(() => {
-    if (cartData) {
-      cartStore?.resetCart();
-      cartData?.forEach((item: Item) => {
-        cartStore?.addItemWithQuantity(item, item.quantity || 1);
-      });
-    }
+    if (!cartData) return;
+
+    cartStore.setCart(
+      cartData.items ?? [],
+      cartData.discount ?? 0,
+      cartData.coupon ?? null,
+      cartData.finalTotal ?? undefined
+    );
   }, [cartData]);
 
-  /** 🛒 Actions */
+  /** 🛒 Cart Actions */
   const useCartActions = (
     data?: Item | Product,
     selectedVariation?: VariationOption,
@@ -54,9 +64,6 @@ export const useCart = () => {
   ) => {
     const [addToCartLoader, setAddToCartLoader] = useState(false);
 
-    // ------------------------
-    // Add item
-    // ------------------------
     const addToCart = async () => {
       if (!data) return;
       setAddToCartLoader(true);
@@ -67,47 +74,76 @@ export const useCart = () => {
           productId: item.id,
           quantity: selectedQuantity,
         });
+        cartStore.addItemWithQuantity(item, selectedQuantity);
         toast.success(`${item.name} added to cart`);
-      } catch (err) {
+      } catch {
         toast.error("Failed to add item to cart");
       } finally {
         setTimeout(() => setAddToCartLoader(false), 500);
       }
     };
 
-    // ------------------------
-    // Update quantity
-    // ------------------------
     const updateQuantity = async (productId: string, quantity: number) => {
       try {
         await updateMutation.mutateAsync({ productId, quantity });
+        cartStore.updateItem(productId, { quantity });
         toast.success("Cart updated");
-      } catch (err) {
+      } catch {
         toast.error("Failed to update item");
       }
     };
 
-    // ------------------------
-    // Remove item
-    // ------------------------
     const removeItem = async (productId: string) => {
       try {
         await removeMutation.mutateAsync(productId);
+        cartStore.removeItem(productId);
         toast.success("Item removed from cart");
-      } catch (err) {
+      } catch {
         toast.error("Failed to remove item");
       }
     };
 
-    // ------------------------
-    // Clear cart
-    // ------------------------
     const clearCart = async () => {
       try {
         await clearMutation.mutateAsync();
+        cartStore.resetCart();
         toast.success("Cart cleared");
-      } catch (err) {
+      } catch {
         toast.error("Failed to clear cart");
+      }
+    };
+
+    /** Coupon actions */
+    const applyCoupon = async (code: string) => {
+      try {
+        const updatedCart = await applyCouponMutation.mutateAsync(code);
+        cartStore.setCart(
+          updatedCart.items,
+          updatedCart.discount,
+          updatedCart.coupon,
+          updatedCart.finalTotal
+        );
+        toast.success(`Coupon "${code}" applied successfully!`);
+      } catch (error: any) {
+        // Show API error message if available
+        const msg = error?.response?.data?.message || "Failed to apply coupon";
+        toast.error(msg);
+      }
+    };
+
+    const removeCoupon = async () => {
+      try {
+        const updatedCart = await removeCouponMutation.mutateAsync();
+        cartStore.setCart(
+          updatedCart.items,
+          updatedCart.discount,
+          updatedCart.coupon,
+          updatedCart.finalTotal
+        );
+        toast.success("Coupon removed successfully!");
+      } catch (error: any) {
+        const msg = error?.response?.data?.message || "Failed to remove coupon";
+        toast.error(msg);
       }
     };
 
@@ -116,13 +152,17 @@ export const useCart = () => {
       updateQuantity,
       removeItem,
       clearCart,
+      applyCoupon,
+      removeCoupon,
       addToCartLoader,
       isUpdating: updateMutation.isPending,
       isRemoving: removeMutation.isPending,
+      isApplyingCoupon: applyCouponMutation.isPending,
+      isRemovingCoupon: removeCouponMutation.isPending,
     };
   };
 
-  /** Helpers */
+  /** 🛠️ Cart Helpers */
   const useCartHelpers = () => {
     const store = useCartStore();
 
@@ -134,10 +174,7 @@ export const useCart = () => {
 
     const isInStock = (productId: string | number) => {
       const cartItem = getItemFromCart(productId);
-      if (cartItem && cartItem.stock !== undefined) {
-        return cartItem.quantity! < cartItem.stock;
-      }
-      return true;
+      return !cartItem || cartItem.quantity! < (cartItem.stock ?? Infinity);
     };
 
     const outOfStock = (productId: string | number) =>
@@ -148,8 +185,8 @@ export const useCart = () => {
 
   return {
     ...cartStore,
-    useCartHelpers,
     useCartActions,
-    isCartLoading,
+    useCartHelpers,
+    isCartLoading: !cartData,
   };
 };
