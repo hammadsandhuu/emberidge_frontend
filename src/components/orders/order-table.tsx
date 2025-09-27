@@ -91,7 +91,10 @@ const OrderTable: React.FC<{ orders?: any; }> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [value, setValue] = useState('');
   const countPerPage = 5;
-  const [filterData, setDataValue] = useState(orders.slice(0, countPerPage));
+  const [filterData, setDataValue] = useState(
+    Array.isArray(orders) ? orders.slice(0, countPerPage) : []
+  );
+
 
   const updatePage = (p: any) => {
     setCurrentPage(p);

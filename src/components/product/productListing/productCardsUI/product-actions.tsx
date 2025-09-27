@@ -31,7 +31,7 @@ const ProductActions: React.FC<ProductActionsProps> = ({
           Choose Options
         </Link>
       ) : (
-        <AddToCart data={product} variant={variant} />
+        <AddToCart data={product} />
       )}
     </div>
   );

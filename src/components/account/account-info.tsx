@@ -21,7 +21,7 @@ import {
 } from "@/services/customer/use-update-customer";
 import { useCustomerQuery } from "@/services/customer/use-customer";
 import Loading from "../shared/loading";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 
 const people = [
   { id: 1, name: "Male" },
@@ -46,7 +46,6 @@ const AccountInfo: React.FC = () => {
     if (user) {
       reset({
         name: user.name,
-        address: user.address,
         dateOfBirth: user.dateOfBirth
           ? new Date(user.dateOfBirth).toISOString().split("T")[0]
           : "",
@@ -76,6 +75,7 @@ const AccountInfo: React.FC = () => {
       setAvatar(e.target.files[0]);
     }
   }
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[300px]">
@@ -129,7 +129,9 @@ const AccountInfo: React.FC = () => {
                   Welcome {user?.name}.
                 </h4>
                 <p className="text-base mb-0">
-                  {user?.email} · {user?.address}
+                  {user?.email} ·{" "}
+                  {user?.completeAddress ||
+                    "please add address in address book section"}
                 </p>
               </div>
             </div>
@@ -140,7 +142,7 @@ const AccountInfo: React.FC = () => {
       <Divider />
 
       {/* Form */}
-      <Heading variant="titleMedium" className="mb-5 md:mb-6 lg:mb-7 ">
+      <Heading variant="titleMedium" className="mb-5 md:mb-6 lg:mb-7">
         Account information
       </Heading>
 
@@ -173,16 +175,8 @@ const AccountInfo: React.FC = () => {
               />
             </div>
 
-            {/* Row 2: Address + DOB */}
+            {/* Row 2: DOB + Gender */}
             <div className="flex flex-col sm:flex-row -mx-1.5 md:-mx-2.5 space-y-4 sm:space-y-0">
-              <Input
-                id="account-address"
-                label="Address"
-                {...register("address", { required: "Address is required" })}
-                variant="solid"
-                className="w-full sm:w-1/2 px-1.5 md:px-2.5"
-                error={errors.address?.message}
-              />
               <Input
                 label="Date of birth"
                 {...register("dateOfBirth", {
@@ -193,10 +187,7 @@ const AccountInfo: React.FC = () => {
                 className="w-full sm:w-1/2 px-1.5 md:px-2.5"
                 error={errors.dateOfBirth?.message}
               />
-            </div>
 
-            {/* Row 3: Gender + Phone */}
-            <div className="flex flex-col sm:flex-row -mx-1.5 md:-mx-2.5 space-y-4 sm:space-y-0">
               <div className="w-full sm:w-1/2 px-1.5 md:px-2.5">
                 <label
                   htmlFor="gender"
@@ -230,7 +221,10 @@ const AccountInfo: React.FC = () => {
                   </ListboxOptions>
                 </Listbox>
               </div>
+            </div>
 
+            {/* Row 3: Phone number */}
+            <div className="flex flex-col sm:flex-row -mx-1.5 md:-mx-2.5">
               <Input
                 type="tel"
                 label="Phone number"

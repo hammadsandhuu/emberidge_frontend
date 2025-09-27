@@ -14,16 +14,9 @@ interface Props {
   variation?: VariationOption;
   disabled?: boolean;
   className?: string;
-  variant?: string;
 }
 
-const AddToCart = ({
-  data,
-  variation,
-  disabled,
-  className,
-  variant = "mercury",
-}: Props) => {
+const AddToCart = ({ data, variation, disabled, className }: Props) => {
   const { useCartActions, useCartHelpers } = useCart();
   const { isInStock, isInCart } = useCartHelpers();
   const { addToCart, addToCartLoader } = useCartActions(data, variation);
@@ -46,14 +39,10 @@ const AddToCart = ({
   return (
     <button
       className={cn(
-        "min-w-[150px] px-4 py-2 flex relative leading-6 font-medium text-brand-light rounded-full text-[13px] items-center justify-center transition-all",
+        "min-w-[150px] px-4 py-2 flex relative leading-6 font-medium text-brand-light rounded-full text-[13px] items-center justify-center transition-all bg-primary-500 hover:bg-primary-400",
         className,
         {
           "sm:text-white/30": addToCartLoader,
-          [`xs:rounded-none w-full  bg-primary-500 hover:bg-primary-400`]:
-            variant === "furni",
-          "bg-brand-dark xs:rounded-md hover:bg-gray-800": variant === "dark",
-          [`bg-primary-500 hover:bg-primary-400`]: variant === "mercury",
         }
       )}
       aria-label="Add to Cart Button"

@@ -3,10 +3,19 @@ import http from "@/services/utils/http";
 import { API_RESOURCES } from "../utils/api-endpoints";
 
 export interface User {
+  defaultAddress: boolean;
+  postalCode: string;
+  apartment: string;
+  streetAddress: string;
+  area: string;
+  city: string;
+  state: string;
+  country: string;
   id: string;
   name: string;
   email: string;
   address: string;
+  completeAddress: string;
   dateOfBirth: string;
   gender?: string;
   phoneNumber: string;

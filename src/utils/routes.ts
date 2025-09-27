@@ -3,6 +3,7 @@ type RouteType = string; // Simplified, or use Route if available
 
 export const ROUTES: Record<string, RouteType> = {
   HOME: "/",
+  ADDRESS_BOOK: "/address-book",
   CHECKOUT: "/checkout",
   CART: "/cart",
   CONTACT: "/contact-us",

@@ -36,8 +36,8 @@ export default function CartDrawer() {
         <>
           <Scrollbar className="flex-grow w-full cart-scrollbar ">
             <div className="w-full  h-[calc(100vh_-_300px)]">
-              {items?.map((item) => (
-                <CartItemDrawer item={item} key={item.id} />
+              {items?.map((item, index) => (
+                <CartItemDrawer item={item} key={`${item.id}-${index}`} />
               ))}
             </div>
           </Scrollbar>

@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 
 export interface UpdateUserType {
   name: string;
-  address: string;
   dateOfBirth: string;
   phoneNumber: string;
   gender: string;
@@ -16,23 +15,14 @@ export interface UpdateUserType {
 
 async function updateUser(input: UpdateUserType) {
   const formData = new FormData();
-
   formData.append("name", input.name);
-  formData.append("address", input.address);
   formData.append("dateOfBirth", input.dateOfBirth);
   formData.append("phoneNumber", input.phoneNumber);
   formData.append("gender", input.gender);
-
   if (input.avatar) {
     formData.append("avatar", input.avatar);
   }
-
-  const { data } = await http.patch(API_RESOURCES.USER, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-
+  const { data } = await http.patch(API_RESOURCES.USER, formData);
   return data.user;
 }
 
@@ -40,17 +30,16 @@ export const useUpdateUserMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: UpdateUserType) => updateUser(input),
-    onSuccess: (data) => {
+    mutationFn: updateUser,
+    onSuccess: () => {
       toast.success("Profile updated successfully");
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },
     onError: (error: any) => {
       const message =
         error?.response?.data?.message ||
-        "Something went wrong while updating!";
+        "Something went wrong while updating profile!";
       toast.error(message);
-      console.error("Update error:", error);
     },
   });
 };
