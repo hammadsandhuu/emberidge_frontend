@@ -11,6 +11,7 @@ import {
   Trash2,
   Pencil,
   Mail,
+  Building2, // <-- Office icon
 } from "lucide-react";
 import Button from "@/components/shared/button";
 import Loading from "@/components/shared/loading";
@@ -55,6 +56,16 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
     });
   };
 
+  // helper: return icon based on label
+  const getAddressIcon = (label: string) => {
+    if (!label) return <Home className="w-4 h-4 text-primary-500" />;
+    const normalized = label.toLowerCase();
+    if (normalized.includes("office") || normalized.includes("work")) {
+      return <Building2 className="w-4 h-4 text-primary-500" />;
+    }
+    return <Home className="w-4 h-4 text-primary-500" />;
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[200px]">
@@ -88,7 +99,7 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
               {/* Header with Label + Actions */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Home className="w-4 h-4 text-primary-500" />
+                  {getAddressIcon(address.label)}
                   <span className="font-semibold text-sm capitalize">
                     {address.label || "Address"}
                   </span>
@@ -133,7 +144,7 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
               </div>
 
               {/* Contact info */}
-              <div className="mb-4  rounded-lg">
+              <div className="mb-4 rounded-lg">
                 <h4 className="text-sm font-semibold text-card-foreground mb-2">
                   Contact Information
                 </h4>
@@ -152,6 +163,7 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                   </div>
                 </div>
               </div>
+
               {/* Address Details */}
               <div className="space-y-4">
                 <h4 className="text-sm font-semibold text-card-foreground">
