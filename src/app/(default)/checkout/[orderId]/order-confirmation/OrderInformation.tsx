@@ -10,13 +10,14 @@ import { useParams } from "next/navigation";
 
 export default function OrderInformation() {
   const params = useParams();
-  const orderId = params?.orderId as string; // 👈 must match folder [orderId]
-
-  console.log("✅ Order ID from params:", orderId);
+  const orderId = params?.orderId as string;
 
   const { data, isLoading } = useOrderQuery(orderId);
+  console.log("API Response:", data);
 
   if (isLoading) return <Loading />;
+
+  const order = data?.order; // ✅ Extract order object
 
   return (
     <div className="py-10 lg:py-10">
@@ -24,11 +25,11 @@ export default function OrderInformation() {
         {/* Left Section */}
         <div className="bg-white w-full px-5 md:px-8 py-8 rounded-lg space-y-6 border border-border-base">
           <h2 className="text-base md:text-lg xl:text-[20px] font-semibold text-brand-dark lg:pt-0">
-            Thank you {data?.shippingAddress?.fullName || "Customer"}!
+            Thank you {order?.shippingAddress?.fullName || "Customer"}!
           </h2>
           <p>
             Your order number is{" "}
-            <span className="font-medium">{data?._id}</span>
+            <span className="font-medium">{order?._id}</span>
           </p>
 
           <p className="leading-8">
@@ -59,7 +60,7 @@ export default function OrderInformation() {
 
         {/* Right Section - Order Summary */}
         <div className="bg-white rounded-lg border border-border-base">
-          <OrderDetails order={data || []} />
+          {order ? <OrderDetails order={order} /> : <p>No order found.</p>}
         </div>
       </div>
     </div>

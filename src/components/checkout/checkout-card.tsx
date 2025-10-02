@@ -26,7 +26,7 @@ const CheckoutCard: React.FC = () => {
 
   const orderHeader = () => {
     if (!isEmpty) {
-      router.push(ROUTES.ORDER as any);
+      router.push(ROUTES.ORDERS as any);
     }
   };
 

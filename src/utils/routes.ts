@@ -1,7 +1,5 @@
-
-type RouteType = string; // Simplified, or use Route if available
-
-export const ROUTES: Record<string, RouteType> = {
+// ----------------- Static Routes -----------------
+const STATIC_ROUTES = {
   HOME: "/",
   ADDRESS_BOOK: "/address-book",
   CHECKOUT: "/checkout",
@@ -18,12 +16,28 @@ export const ROUTES: Record<string, RouteType> = {
   LOGIN: "#",
   REGISTER: "#",
   CATEGORIES: "/categories",
-  PRODUCT: `/product`,
+  PRODUCT: "/product",
   PRODUCTS: "/products",
   COMPARE: "/compare",
   CATEGORY: "/category",
   ORDERS: "/account-order",
-  ORDER: "/checkout/order-confirmation",
-  BLOG: `/blog`,
-  SEARCH: `/search`,
+  BLOG: "/blog",
+  SEARCH: "/search",
+} as const;
+
+// ----------------- Dynamic Routes -----------------
+const DYNAMIC_ROUTES = {
+  ORDER_CONFIRMATION: (orderId: string) =>
+    `/checkout/${orderId}/order-confirmation`,
+} as const;
+
+// ----------------- Merge -----------------
+export const ROUTES = {
+  ...STATIC_ROUTES,
+  ...DYNAMIC_ROUTES,
 };
+
+// ----------------- Types -----------------
+export type StaticRouteKey = keyof typeof STATIC_ROUTES;
+export type DynamicRouteKey = keyof typeof DYNAMIC_ROUTES;
+export type RouteKey = StaticRouteKey | DynamicRouteKey;

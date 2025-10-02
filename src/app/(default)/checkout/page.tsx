@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   title: "Checkout Page",
 };
 
-export default async function CheckoutPage() {
+export default function CheckoutPage() {
   return (
-    <Container className="py-10  checkout">
+    <Container className="py-10 checkout">
       <Breadcrumb />
       <div className="pt-7 lg:pt-8 grid grid-cols-1 xl:grid-cols-[1fr_400px] gap-4 xl:gap-8">
-        <div className="w-full ">
+        <div className="w-full">
           <CheckoutDetails />
         </div>
         <div className="w-full">

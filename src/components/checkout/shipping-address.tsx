@@ -10,8 +10,7 @@ import {
   Loader,
   Trash2,
   Pencil,
-  Mail,
-  Building2, // <-- Office icon
+  Building2,
 } from "lucide-react";
 import Button from "@/components/shared/button";
 import Loading from "@/components/shared/loading";
@@ -83,20 +82,17 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
             <div
               key={address._id}
               onClick={() => handleAddressSelect(address._id)}
-              className={`relative bg-card border rounded-xl shadow-sm p-6 cursor-pointer transition-all duration-200 ${
+              className={`relative border rounded-xl shadow-sm p-6 cursor-pointer transition-all duration-200 flex  flex-col justify-between ${
                 selectedAddressId === address._id
-                  ? "border-primary ring-2 ring-primary/30 bg-primary/5"
-                  : "border-border hover:border-muted-foreground/40"
+                  ? "border-primary-500 ring-2 ring-primary-500/30 bg-primary-500/5"
+                  : "border-border hover:border-primary-500/40"
               }`}
             >
-              {/* Selected indicator */}
               {selectedAddressId === address._id && (
-                <div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow">
+                <div className="absolute top-1 right-1 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center shadow">
                   <Check className="w-3.5 h-3.5 text-white" />
                 </div>
               )}
-
-              {/* Header with Label + Actions */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   {getAddressIcon(address.label)}
@@ -142,8 +138,6 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                   </IconButton>
                 </div>
               </div>
-
-              {/* Contact info */}
               <div className="mb-4 rounded-lg">
                 <h4 className="text-sm font-semibold text-card-foreground mb-2">
                   Contact Information
@@ -163,105 +157,17 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                   </div>
                 </div>
               </div>
-
-              {/* Address Details */}
-              <div className="space-y-4">
+              <div className="space-y-1">
                 <h4 className="text-sm font-semibold text-card-foreground">
                   Address Details
                 </h4>
-
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Country */}
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">
-                        Country
-                      </p>
-                      <p className="text-sm text-card-foreground capitalize truncate">
-                        {address.country}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* State */}
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">
-                        State
-                      </p>
-                      <p className="text-sm text-card-foreground capitalize truncate">
-                        {address.state}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* City */}
-                  <div className="flex items-start gap-2">
-                    <Home className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">
-                        City
-                      </p>
-                      <p className="text-sm text-card-foreground capitalize truncate">
-                        {address.city}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Area */}
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">
-                        Area
-                      </p>
-                      <p className="text-sm text-card-foreground capitalize truncate">
-                        {address.area}
-                      </p>
-                    </div>
-                  </div>
-                  {/* Postal Code */}
-                  <div className="flex items-start gap-2">
-                    <Mail className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">
-                        Postal Code
-                      </p>
-                      <p className="text-sm text-card-foreground">
-                        {address.postalCode}
-                      </p>
-                    </div>
-                  </div>
-                  {/* Street Address */}
-                  <div className="flex items-start gap-2 col-span-2">
-                    <Home className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">
-                        Street Address
-                      </p>
-                      <p className="text-sm text-card-foreground">
-                        {address.streetAddress}
-                        {address.apartment && `, ${address.apartment}`}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Complete Address Summary */}
-                <div className="pt-4 mt-4 border-t border-border bg-muted/30 -mx-6 -mb-6 px-6 py-4 rounded-b-xl">
-                  <p className="text-xs font-medium text-muted-foreground mb-2">
-                    Complete Address
-                  </p>
-                  <p className="text-sm text-card-foreground leading-relaxed">
-                    {`${address.streetAddress}${
-                      address.apartment ? `, ${address.apartment}` : ""
-                    }, ${address.area}, ${address.city}, ${address.state}, ${
-                      address.postalCode
-                    }, ${address.country}`}
-                  </p>
-                </div>
+                <p className="text-sm text-card-foreground leading-normal mb-0">
+                  {`${address.streetAddress}${
+                    address.apartment ? `, ${address.apartment}` : ""
+                  }, ${address.area}, ${address.city}, ${address.state}, ${
+                    address.postalCode
+                  }, ${address.country}`}
+                </p>
               </div>
             </div>
           ))}
