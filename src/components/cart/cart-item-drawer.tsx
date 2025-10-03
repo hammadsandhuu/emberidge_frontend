@@ -22,7 +22,6 @@ const CartItemDrawer: React.FC<CartItemProps> = ({ item }) => {
   const quantity = item.quantity ?? 1;
   const { price: totalPrice } = usePrice({
     amount: item?.itemTotal ?? item.price * quantity,
-    currencyCode: "USD",
   });
 
   const outOfStock = isInCart(item.id) && !isInStock(item.id);

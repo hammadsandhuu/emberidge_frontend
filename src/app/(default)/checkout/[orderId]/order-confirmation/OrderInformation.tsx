@@ -11,13 +11,9 @@ import { useParams } from "next/navigation";
 export default function OrderInformation() {
   const params = useParams();
   const orderId = params?.orderId as string;
-
   const { data, isLoading } = useOrderQuery(orderId);
-  console.log("API Response:", data);
-
   if (isLoading) return <Loading />;
-
-  const order = data?.order; // ✅ Extract order object
+  const order = data?.order;
 
   return (
     <div className="py-10 lg:py-10">
@@ -57,8 +53,6 @@ export default function OrderInformation() {
             </Link>
           </div>
         </div>
-
-        {/* Right Section - Order Summary */}
         <div className="bg-white rounded-lg border border-border-base">
           {order ? <OrderDetails order={order} /> : <p>No order found.</p>}
         </div>

@@ -61,7 +61,7 @@ export default function usePrice(
 } {
   const { amount, baseAmount } = data ?? {};
   const locale = "en";
-  const currencyCode = "AED"; // ✅ Always AED
+  const currencyCode = "AED";
 
   const value = useMemo(() => {
     if (typeof amount !== "number") return "";

@@ -63,7 +63,11 @@ const OrderDetails: React.FC<{ order: Order; className?: string }> = ({
 
       {/* Items */}
       <div className="border-b border-border-base pb-5">
-        <div className="space-y-4">
+        <div
+          className={`space-y-4 ${
+            order?.items?.length >= 5 ? "max-h-64 overflow-y-auto pr-2" : ""
+          }`}
+        >
           {order?.items?.map((item, index) => (
             <OrderItemCard key={index} item={item} />
           ))}

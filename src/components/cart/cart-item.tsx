@@ -27,21 +27,17 @@ export function CartItem({ item }: CartItemProps) {
   const { price, basePrice } = usePrice({
     amount: item?.sale_price ? item?.sale_price : item?.price,
     baseAmount: item?.price,
-    currencyCode: "USD",
   });
 
   const { price: minPrice } = usePrice({
     amount: item?.min_price ?? 0,
-    currencyCode: "USD",
   });
   const { price: maxPrice } = usePrice({
     amount: item?.max_price ?? 0,
-    currencyCode: "USD",
   });
 
   const { price: totalPrice } = usePrice({
     amount: item?.itemTotal ?? item.price * quantity,
-    currencyCode: "USD",
   });
 
   const outOfStock = isInCart(item?.id) && !isInStock(item.id);

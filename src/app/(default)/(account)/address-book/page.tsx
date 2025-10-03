@@ -208,7 +208,18 @@ export default function AddressCard() {
                     </p>
                   </div>
                 </div>
-
+                {/* Postal Code */}
+                <div className="flex items-start gap-2">
+                  <Mail className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-muted-foreground mb-1">
+                      Postal Code
+                    </p>
+                    <p className="text-sm text-card-foreground">
+                      {address.postalCode}
+                    </p>
+                  </div>
+                </div>
                 {/* Street Address */}
                 <div className="flex items-start gap-2 col-span-2">
                   <Home className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
@@ -219,19 +230,6 @@ export default function AddressCard() {
                     <p className="text-sm text-card-foreground">
                       {address.streetAddress}
                       {address.apartment && `, ${address.apartment}`}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Postal Code */}
-                <div className="flex items-start gap-2">
-                  <Mail className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-xs font-medium text-muted-foreground mb-1">
-                      Postal Code
-                    </p>
-                    <p className="text-sm text-card-foreground">
-                      {address.postalCode}
                     </p>
                   </div>
                 </div>

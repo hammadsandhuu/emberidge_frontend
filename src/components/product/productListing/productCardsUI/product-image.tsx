@@ -17,7 +17,6 @@ const ProductImage: React.FC<ProductImageProps> = ({ product, outOfStock }) => {
   const { discount } = usePrice({
     amount: sale_price ? sale_price : price,
     baseAmount: price,
-    currencyCode: "USD",
   });
 
   const handlePopupView = () => {

@@ -15,7 +15,6 @@ export default function CartDrawer() {
   const { items, total, isEmpty } = useCart();
   const { price: cartTotal } = usePrice({
     amount: total,
-    currencyCode: "USD",
   });
   return (
     <div className="flex flex-col  w-full h-full px-5 md:px-8 pt-0">

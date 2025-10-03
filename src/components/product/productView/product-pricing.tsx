@@ -19,7 +19,6 @@ const ProductPricing: React.FC<ProductPricingProps> = ({
   const { price, basePrice, discount } = usePrice({
     amount: data.sale_price ? data.sale_price : data.price,
     baseAmount: data.price,
-    currencyCode: "USD",
   });
   const { selectedColor } = usePanel();
   const variations = data.variations;

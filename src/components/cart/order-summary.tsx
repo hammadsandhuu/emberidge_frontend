@@ -1,9 +1,12 @@
+"use client";
+
 import React, { useState } from "react";
 import Link from "@/components/shared/link";
 import { ROUTES } from "@/utils/routes";
 import Input from "../shared/form/input";
 import { Loader, Trash2 } from "lucide-react";
 import { useCartStore } from "@/stores/useCartStore";
+import usePrice from "@/services/product/use-price"; // ✅ usePrice import
 
 interface OrderSummaryProps {
   subtotal: number;
@@ -27,6 +30,11 @@ export function OrderSummary({
   const [coupon, setCoupon] = useState("");
   const { coupon: appliedCoupon } = useCartStore();
 
+  // ✅ usePrice hooks (same as in CartItem)
+  const { price: formattedSubtotal } = usePrice({ amount: subtotal });
+  const { price: formattedDiscount } = usePrice({ amount: discount });
+  const { price: formattedTotal } = usePrice({ amount: total });
+
   const handleApply = () => {
     if (coupon.trim() && !appliedCoupon) {
       onApplyCoupon(coupon.trim());
@@ -43,7 +51,7 @@ export function OrderSummary({
       {/* Subtotal */}
       <div className="flex items-center justify-between pb-4 mb-5 border-b border-border-base font-medium text-brand-dark">
         <h2 className="text-lg">Subtotal</h2>
-        <span className="text-lg">${subtotal?.toFixed(2) ?? "0.00"}</span>
+        <span className="text-lg">{formattedSubtotal}</span>
       </div>
 
       {/* Coupon Section */}
@@ -90,8 +98,11 @@ export function OrderSummary({
               disabled={isApplying}
               className="px-4 py-2 bg-black text-white rounded-md flex items-center justify-center gap-2"
             >
-              {isApplying && <Loader className="w-4 h-4 animate-spin" />}
-              {isApplying ? "Applying..." : "Apply"}
+              {isApplying ? (
+                <Loader className="w-4 h-4 animate-spin" />
+              ) : (
+                "Apply"
+              )}
             </button>
           </div>
         )}
@@ -101,14 +112,14 @@ export function OrderSummary({
       {discount > 0 && (
         <div className="flex justify-between text-green-600 font-medium mb-4">
           <span>Discount</span>
-          <span>- ${discount?.toFixed(2) ?? "0.00"}</span>
+          <span>- {formattedDiscount}</span>
         </div>
       )}
 
       {/* Total */}
       <div className="flex justify-between font-bold text-lg pt-6 border-t border-border-base">
         <span>Total</span>
-        <span>${total?.toFixed(2) ?? "0.00"}</span>
+        <span>{formattedTotal}</span>
       </div>
 
       <div className="mt-2">

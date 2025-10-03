@@ -1,10 +1,10 @@
 @theme {
 
   /* Begin with a custom primary color */
-  --color-primary-400: #ff8f26; /* Lighter for hover */
-  --color-primary-500: #ff7e00; /* Base color */
-  --color-primary-700: #e67000; /* Darker for links */
-  --color-primary-900: #b35900; /* Darkest for header */
+  --color-primary-400: #ff8f26; 
+  --color-primary-500: #ff7e00;
+  --color-primary-700: #e67000;
+  --color-primary-900: #b35900;
   /* End  */
 
   --color-background: #ffffff;

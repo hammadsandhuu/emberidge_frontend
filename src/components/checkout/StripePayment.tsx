@@ -27,7 +27,7 @@ const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
       fontSize: "16px",
-      color: "#000",
+      color: "#ffffff", // ✅ white text
       "::placeholder": { color: "#a0aec0" },
     },
     invalid: { color: "#fa755a" },
@@ -41,12 +41,18 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
+  const [cardName, setCardName] = useState(""); // ✅ state for card name
   const { mutateAsync: createOrder } = useCreateOrderMutation();
   const router = useRouter();
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!stripe || !elements) return;
+
+    if (!cardName.trim()) {
+      toast.error("Please enter the cardholder name");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -63,6 +69,7 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
         {
           payment_method: {
             card: elements.getElement(CardNumberElement)!,
+            billing_details: { name: cardName }, // ✅ include cardholder name
           },
         }
       );
@@ -70,7 +77,7 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
       if (error) throw error;
 
       if (paymentIntent?.status === "succeeded") {
-        toast.success("🎉 Payment successful!");
+        toast.success("Payment successful!");
         router.push(ROUTES.ORDER_CONFIRMATION(order._id));
       }
     } catch (err: any) {
@@ -81,11 +88,25 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
   };
 
   return (
-    <form onSubmit={handlePayment} className="space-y-6">
+    <form onSubmit={handlePayment} className="space-y-6 text-brand-white">
+      {/* ✅ Cardholder Name */}
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Cardholder Name
+        </label>
+        <input
+          type="text"
+          value={cardName}
+          onChange={(e) => setCardName(e.target.value)}
+          placeholder="Enter cardholder name"
+          className="w-full border rounded-md p-3 bg-transparent text-brand-white placeholder-gray-400"
+        />
+      </div>
+
       {/* Card Number */}
       <div>
         <label className="block text-sm font-medium mb-1">Card Number</label>
-        <div className="border rounded-md p-3">
+        <div className="border rounded-md p-3 text-brand-white">
           <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
         </div>
       </div>
@@ -94,13 +115,13 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium mb-1">Expiry</label>
-          <div className="border rounded-md p-3">
+          <div className="border rounded-md p-3 text-brand-white">
             <CardExpiryElement options={CARD_ELEMENT_OPTIONS} />
           </div>
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">CVC</label>
-          <div className="border rounded-md p-3">
+          <div className="border rounded-md p-3 text-brand-white">
             <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
           </div>
         </div>

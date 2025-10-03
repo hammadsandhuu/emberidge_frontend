@@ -61,7 +61,12 @@ const CheckoutCard: React.FC = () => {
         <h2 className="text-lg font-medium text-brand-dark">Order Summary</h2>
       </div>
 
-      <div className="space-y-4 pb-5">
+      {/* Items list with scroll after 5 */}
+      <div
+        className={`space-y-4 pb-5 ${
+          items.length > 5 ? "max-h-80 overflow-y-auto pr-2" : ""
+        }`}
+      >
         {isEmpty ? (
           <p className="py-4 text-center text-gray-500">Your cart is empty.</p>
         ) : (
@@ -69,7 +74,7 @@ const CheckoutCard: React.FC = () => {
         )}
       </div>
 
-      {!isEmpty && (
+      {/* {!isEmpty && (
         <>
           <div className="space-y-2 pt-5 border-t border-border-base">
             {checkoutFooter.map((item) => (
@@ -88,7 +93,7 @@ const CheckoutCard: React.FC = () => {
             Order Now
           </Button>
         </>
-      )}
+      )} */}
     </div>
   );
 };

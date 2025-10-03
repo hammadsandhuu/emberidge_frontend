@@ -8,7 +8,6 @@ import { productPlaceholder } from "@/assets/placeholders";
 export const CheckoutItem: React.FC<{ item: Item }> = ({ item }) => {
   const { price } = usePrice({
     amount: item.itemTotal,
-    currencyCode: "USD",
   });
 
   return (

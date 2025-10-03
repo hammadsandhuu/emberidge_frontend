@@ -15,17 +15,14 @@ const ProductPricing: React.FC<ProductPricingProps> = ({ product }) => {
   const { price: displayPrice, basePrice } = usePrice({
     amount: sale_price ? sale_price : price,
     baseAmount: price,
-    currencyCode: "USD",
   });
 
   const { price: minPrice } = usePrice({
     amount: min_price ?? 0,
-    currencyCode: "USD",
   });
 
   const { price: maxPrice } = usePrice({
     amount: max_price ?? 0,
-    currencyCode: "USD",
   });
 
   return (
