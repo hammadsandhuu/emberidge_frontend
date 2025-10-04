@@ -61,11 +61,9 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
       >
         <div
           className={cn(
-            "innerSticky z-20 w-full transition duration-200 ease-in-out body-font",
-            { "bg-fill-one text-brand-light": variant === "home5" }
+            "innerSticky z-20 w-full transition duration-200 ease-in-out body-font"
           )}
         >
-          {/* 🔹 Top Bar */}
           <Search
             searchId="mobile-search"
             className="topbar-search hidden lg:max-w-[600px] absolute z-30 px-4 md:px-6 top-12 xl:top-1"
@@ -89,12 +87,9 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
               </div>
             </Container>
           </div>
-
-          {/* 🔹 Main Header */}
           <div className="border-b border-brand-light/8">
             <Container variant={"Large"}>
               <div className="flex items-center justify-between py-2 md:py-5">
-                {/* Mobile Menu Button */}
                 <div className="relative flex-shrink-0 lg:hidden">
                   <button
                     aria-label="Menu"
@@ -104,18 +99,12 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
                     <MenuIcon />
                   </button>
                 </div>
-
-                {/* Logo */}
                 <Logo variant={"dark"} className="logo ps-3 md:ps-0 lg:mx-0" />
-
-                {/* Desktop Search */}
                 <Search
                   searchId="top-search"
                   variant={"dark"}
                   className="hidden lg:flex lg:max-w-[450px] xl:max-w-[650px] 2xl:max-w-[900px] lg:mx-10"
                 />
-
-                {/* Auth & Cart */}
                 <div className="text-brand-light flex text-sm space-x-5 xl:space-x-10 lg:max-w-[33%] xl:min-w-[240px]">
                   <AuthDropdown />
                   <CartButton className="hidden lg:flex" />
@@ -123,8 +112,6 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
               </div>
             </Container>
           </div>
-
-          {/* 🔹 Navbar */}
           <div className="hidden navbar lg:block bg-fill-one">
             <Container variant={"Large"}>
               <div className="flex justify-between items-center">
@@ -132,18 +119,6 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
                   variant={"dark"}
                   className="navbar-logo w-0 opacity-0 transition-all duration-200 ease-in-out"
                 />
-
-                {/* 🔹 Shop by Department Button */}
-                {/* <div className="categories-header-button relative me-8 flex-shrink-0 w-72">
-                  <button
-                    className="text-brand-light rounded-t min-h-[50px] focus:outline-none w-full uppercase font-medium px-[18px] py-4 flex items-center bg-primary-500 hover:bg-primary-600 transition"
-                    onClick={handleCategoryMenu}
-                  >
-                    <FiMenu className="text-2xl me-3" />
-                    Shop by Department
-                  </button>
-                  {toggleAllCategory && <CategoryDropdownNav />}
-                </div> */}
                 <div
                   className="categories-header-button relative me-8 flex-shrink-0 w-72"
                   onMouseEnter={() => setToggleAllCategory(true)}
@@ -155,22 +130,16 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
                   </button>
                   {toggleAllCategory && <CategoryDropdownNav />}
                 </div>
-
-                {/* 🔹 Main Menu */}
                 <MainMenu
                   navigations={siteNavigation.menu as MainMenuType[]}
                   className="flex transition-all duration-200 ease-in-out"
                   classLink="md:text-brand-light group-hover:text-primary-500"
                 />
-
-                {/* 🔹 Search Overlay */}
                 {displaySearch && (
                   <div className="sticky-search w-full absolute top-0 left-0 px-4 flex items-center justify-center h-full">
                     <Search className="max-w-[780px] xl:max-w-[830px]" />
                   </div>
                 )}
-
-                {/* 🔹 Right Side */}
                 <div className="text-brand-light ms-auto flex items-center xl:min-w-[200px] flex-shrink-0">
                   <div className="navbar-right flex items-center w-0 opacity-0">
                     <button
@@ -193,8 +162,6 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
           </div>
         </div>
       </header>
-
-      {/* 🔹 Category Menu Overlay */}
       {toggleAllCategory && (
         <div
           className="shadow_bkg_show fixed w-full h-full inset-0 bg-black/60 z-40 backdrop-blur-xs"

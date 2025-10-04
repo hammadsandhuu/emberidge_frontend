@@ -40,7 +40,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <PanelManaged />
           <ModalManaged />
           <DrawerManaged />
         </Providers>

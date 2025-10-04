@@ -23,12 +23,7 @@ export const siteNavigation = {
       label: "Shop",
     },
     {
-      id: 6,
-      path: "/blog",
-      label: "Blog",
-    },
-    {
-      id: 7,
+      id: 3,
       path: "/contact-us",
       label: "Contact Us",
     },

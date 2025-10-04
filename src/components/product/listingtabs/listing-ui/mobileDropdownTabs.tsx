@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { Category } from "@/services/types";
-import { colorMap } from "@/data/color-settings";
-import { usePanel } from "@/hooks/use-panel";
 
 const MobileDropdownTabs = ({
   childrenData,
@@ -14,8 +12,6 @@ const MobileDropdownTabs = ({
   activeTab: string;
 }) => {
   const [categoryMenu, setCategoryMenu] = useState(false);
-  const { selectedColor } = usePanel();
-
   // Determine the selected tab name
   const activeTabLabel = useMemo(() => {
     const active = childrenData.find((cat) => cat.slug === activeTab);
@@ -39,11 +35,11 @@ const MobileDropdownTabs = ({
         >
           <ul className="py-2 text-[14px] leading-6">
             {childrenData.slice(0, 4).map((currentItem, idx) => (
-              <li className={colorMap[selectedColor].hoverLink} key={`${idx}`}>
+              <li className={"hover:text-primary-500"} key={`${idx}`}>
                 <button
                   onClick={() => {
                     onNavClick(currentItem.slug);
-                    setCategoryMenu(false); // Close after selection
+                    setCategoryMenu(false);
                   }}
                   className="py-2 px-4 block whitespace-no-wrap"
                 >

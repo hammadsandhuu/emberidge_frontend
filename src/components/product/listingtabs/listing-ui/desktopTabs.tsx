@@ -1,7 +1,5 @@
 import cn from "classnames";
-import { colorMap } from "@/data/color-settings";
 import { Category } from "@/services/types";
-import { usePanel } from "@/hooks/use-panel";
 
 const DesktopTabs = ({
   childrenData,
@@ -12,8 +10,6 @@ const DesktopTabs = ({
   activeTab: string | null;
   onNavClick: (slug: string) => void;
 }) => {
-  const { selectedColor } = usePanel();
-
   return (
     <div className="ltabs-tabs-wrap flex flex-wrap justify-end xl:basis-[70%]">
       <ul className="flex text-sm">
@@ -31,8 +27,8 @@ const DesktopTabs = ({
               className={cn(
                 "px-4 py-2 rounded-full",
                 activeTab === currentItem.slug
-                  ? `${colorMap[selectedColor].bg} text-brand-light`
-                  : `text-gray-700 ${colorMap[selectedColor].hoverLink}`
+                  ? `bg-primary-500 text-brand-light`
+                  : `text-gray-700 hover:text-primary-500`
               )}
             >
               {currentItem.name}
