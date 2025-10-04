@@ -6,7 +6,7 @@ import { ROUTES } from "@/utils/routes";
 import Input from "../shared/form/input";
 import { Loader, Trash2 } from "lucide-react";
 import { useCartStore } from "@/stores/useCartStore";
-import usePrice from "@/services/product/use-price"; // ✅ usePrice import
+import usePrice from "@/services/product/use-price";
 
 interface OrderSummaryProps {
   subtotal: number;
@@ -29,9 +29,6 @@ export function OrderSummary({
 }: OrderSummaryProps) {
   const [coupon, setCoupon] = useState("");
   const { coupon: appliedCoupon } = useCartStore();
-
-  // ✅ usePrice hooks (same as in CartItem)
-  const { price: formattedSubtotal } = usePrice({ amount: subtotal });
   const { price: formattedDiscount } = usePrice({ amount: discount });
   const { price: formattedTotal } = usePrice({ amount: total });
 
@@ -48,16 +45,11 @@ export function OrderSummary({
 
   return (
     <div className="p-5 md:p-8 bg-white rounded-lg border border-border-base">
-      {/* Subtotal */}
-      <div className="flex items-center justify-between pb-4 mb-5 border-b border-border-base font-medium text-brand-dark">
-        <h2 className="text-lg">Subtotal</h2>
-        <span className="text-lg">{formattedSubtotal}</span>
-      </div>
-
-      {/* Coupon Section */}
+      <h2 className="text-lg font-semibold text-brand-dark mb-5">
+        Order Summary
+      </h2>
       <div className="space-y-3 mb-5">
         <h3 className="text-brand-dark mb-2 font-medium">Coupon</h3>
-
         {appliedCoupon ? (
           <div className="flex justify-between items-center p-4 bg-green-50 rounded-sm">
             <div className="space-y-2">
@@ -107,28 +99,19 @@ export function OrderSummary({
           </div>
         )}
       </div>
-
-      {/* Discount */}
       {discount > 0 && (
         <div className="flex justify-between text-green-600 font-medium mb-4">
           <span>Discount</span>
           <span>- {formattedDiscount}</span>
         </div>
       )}
-
-      {/* Total */}
       <div className="flex justify-between font-bold text-lg pt-6 border-t border-border-base">
         <span>Total</span>
         <span>{formattedTotal}</span>
       </div>
-
-      <div className="mt-2">
-        <Link
-          href={ROUTES.CHECKOUT}
-          variant={"button-black"}
-          className="w-full"
-        >
-          <span className="py-0.5">Check Out</span>
+      <div className="mt-4">
+        <Link href={ROUTES.CHECKOUT} variant="button-black" className="w-full">
+          <span>Proceed to Checkout</span>
         </Link>
       </div>
     </div>

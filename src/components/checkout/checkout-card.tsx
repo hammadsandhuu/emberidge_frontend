@@ -60,8 +60,6 @@ const CheckoutCard: React.FC = () => {
       <div className="flex items-center justify-between pb-4 mb-5 border-b border-border-base">
         <h2 className="text-lg font-medium text-brand-dark">Order Summary</h2>
       </div>
-
-      {/* Items list with scroll after 5 */}
       <div
         className={`space-y-4 pb-5 ${
           items.length > 5 ? "max-h-80 overflow-y-auto pr-2" : ""
@@ -74,26 +72,15 @@ const CheckoutCard: React.FC = () => {
         )}
       </div>
 
-      {/* {!isEmpty && (
+      {!isEmpty && (
         <>
           <div className="space-y-2 pt-5 border-t border-border-base">
             {checkoutFooter.map((item) => (
               <CheckoutCardFooterItem item={item} key={item.id} />
             ))}
           </div>
-
-          <Button
-            variant="dark"
-            className={cn("w-full mt-8 uppercase px-4 py-3 transition-all", {
-              "opacity-50 cursor-not-allowed": isEmpty,
-            })}
-            onClick={orderHeader}
-            disabled={isEmpty}
-          >
-            Order Now
-          </Button>
         </>
-      )} */}
+      )}
     </div>
   );
 };

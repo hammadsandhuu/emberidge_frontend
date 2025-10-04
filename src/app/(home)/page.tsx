@@ -46,7 +46,6 @@ export default async function Page() {
           <div className="maincontent-left col-span-12 order-2 lg:order-1 lg:col-span-3 2xl:col-span-2">
             <BestSidebarFeed />
             <NewSidebarFeed className="mb-0" />
-            <LatestblogSidebar className="mt-5" />
           </div>
         </div>
       </Container>

@@ -12,11 +12,6 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({ data }) => {
   const reviewCount =
     typeof data.ratingsQuantity === "number" ? data.ratingsQuantity : 0;
 
-  // Short description (20 words max)
-  const shortDescription = data?.description
-    ? data.description.split(" ").slice(0, 20).join(" ") +
-      (data.description.split(" ").length > 20 ? "..." : "")
-    : "";
 
   return (
     <div className="space-y-2">
@@ -71,9 +66,9 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({ data }) => {
       </div>
 
       {/* Short Description */}
-      {shortDescription && (
+      {data?.description && (
         <p className="text-sm text-gray-500 leading-relaxed">
-          {shortDescription}
+          {data?.description}
         </p>
       )}
     </div>

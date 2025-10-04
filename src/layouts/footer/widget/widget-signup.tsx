@@ -22,7 +22,7 @@ const defaultValues = {
   email: "",
 };
 
-const WidgetSignup: React.FC<Props> = ({ className, variant = "default" }) => {
+const WidgetSignup: React.FC<Props> = ({ className }) => {
   const {
     register,
     handleSubmit,
@@ -47,10 +47,7 @@ const WidgetSignup: React.FC<Props> = ({ className, variant = "default" }) => {
 
   return (
     <div
-      className={cn(
-        "flex flex-col text-fill-footer border-t border-white/5 dark:border-black/5 pt-18 lg:pt-24",
-        className
-      )}
+      className={cn("flex flex-col text-fill-footer pt-18 lg:pt-36", className)}
     >
       <Heading
         variant="mediumHeading"

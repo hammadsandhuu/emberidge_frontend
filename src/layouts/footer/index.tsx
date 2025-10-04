@@ -14,26 +14,15 @@ interface FooterProps {
   showWidgetSubscription?: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({
-  variant = "default",
-  className,
-  showWidgetServices = false,
-  showWidgetSubscription = false,
-}) => {
+const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
-    <footer className={cn("", className)}>
-      <WidgetSignup
-        variant={variant}
-        className="newsletterFooter items-center p-4 pt-10 md:pt-16"
-      />
-      <Widgets
-        widgets={widgets}
-        variant={variant}
-        showWidgetServices={showWidgetServices}
-        showWidgetSubscription={showWidgetSubscription}
-      />
-      <Copyright payment={payment} />
-    </footer>
+    <>
+      <WidgetSignup className="newsletterFooter items-center" />
+      <footer className={cn("bg-fill-one", className)}>
+        <Widgets widgets={widgets} />
+        <Copyright payment={payment} />
+      </footer>
+    </>
   );
 };
 

@@ -72,9 +72,9 @@ const ProductActions: React.FC<ProductActionsProps> = ({
         </div>
       </div>
 
-      <Button variant="paypal" className="gap-2">
+      {/* <Button variant="paypal" className="gap-2">
         Pay with <PaypalIconLabel />
-      </Button>
+      </Button> */}
     </div>
   );
 };

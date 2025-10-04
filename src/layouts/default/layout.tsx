@@ -19,7 +19,7 @@ export default function ModernLayout({
       >
         {children}
       </main>
-      <Footer className="bg-fill-one" />
+      <Footer />
       <BottomNavigation />
       <BackToTopButton />
     </div>

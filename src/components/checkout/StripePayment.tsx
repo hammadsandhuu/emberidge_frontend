@@ -27,7 +27,7 @@ const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
       fontSize: "16px",
-      color: "#ffffff", // ✅ white text
+      color: "#ffffff",
       "::placeholder": { color: "#a0aec0" },
     },
     invalid: { color: "#fa755a" },
@@ -41,7 +41,7 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
-  const [cardName, setCardName] = useState(""); // ✅ state for card name
+  const [cardName, setCardName] = useState("");
   const { mutateAsync: createOrder } = useCreateOrderMutation();
   const router = useRouter();
 
@@ -69,7 +69,7 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
         {
           payment_method: {
             card: elements.getElement(CardNumberElement)!,
-            billing_details: { name: cardName }, // ✅ include cardholder name
+            billing_details: { name: cardName },
           },
         }
       );
@@ -89,7 +89,6 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
 
   return (
     <form onSubmit={handlePayment} className="space-y-6 text-brand-white">
-      {/* ✅ Cardholder Name */}
       <div>
         <label className="block text-sm font-medium mb-1">
           Cardholder Name
