@@ -1,19 +1,15 @@
 "use client";
 
 import React from "react";
-import cn from "classnames";
 import { useRouter } from "next/navigation";
-import { ROUTES } from "@/utils/routes";
 import { useIsMounted } from "@/utils/use-is-mounted";
 
 import { useCart } from "@/hooks/use-cart";
-import Button from "@/components/shared/button";
 import Loading from "@/components/shared/loading";
 import { CheckoutItem } from "@/components/checkout/checkout-card-item";
 import { CheckoutCardFooterItem } from "./checkout-card-footer-item";
 
 const CheckoutCard: React.FC = () => {
-  const router = useRouter();
   const {
     items,
     total = 0,
@@ -24,24 +20,18 @@ const CheckoutCard: React.FC = () => {
   } = useCart();
   const mounted = useIsMounted();
 
-  const orderHeader = () => {
-    if (!isEmpty) {
-      router.push(ROUTES.ORDERS as any);
-    }
-  };
-
   const checkoutFooter = [
-    { id: 1, name: "Subtotal", price: `$${total.toFixed(2)}` },
+    { id: 1, name: "Subtotal", price: total },
     ...(coupon
       ? [
           {
             id: 2,
-            name: `Discount`,
-            price: `- $${discount.toFixed(2)}`,
+            name: "Discount",
+            price: discount,
           },
         ]
       : []),
-    { id: 3, name: "Order total", price: `$${finalTotal.toFixed(2)}` },
+    { id: 3, name: "Order total", price: finalTotal },
   ];
 
   if (!mounted) {

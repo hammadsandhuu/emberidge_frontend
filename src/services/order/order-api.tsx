@@ -54,7 +54,7 @@ export interface Order {
 
 export interface CreateOrderPayload {
   addressId: string;
-  paymentMethod: "stripe" | "applepay" | "cod";
+  paymentMethod: "stripe" | "applepay" | "COD";
   metadata?: object;
 }
 

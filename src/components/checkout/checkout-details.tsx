@@ -4,7 +4,7 @@ import { useState } from "react";
 import Heading from "@/components/shared/heading";
 import ShippingAddress from "./shipping-address";
 import { MapPinHouse, CreditCard } from "lucide-react";
-import StripeCustomWrapper from "./StripePayment";
+import PaymentMethodSelector from "./paymentm-method-selector";
 
 type CheckoutStep = "shipping" | "payment";
 
@@ -15,13 +15,11 @@ const CheckoutDetails: React.FC = () => {
     payment: null,
   });
 
-  // Shipping complete → go to payment
   const handleShippingComplete = (data: any) => {
     setFormData((prev: any) => ({ ...prev, shipping: data }));
     setActiveStep("payment");
   };
 
-  // Steps
   const steps = [
     {
       id: 1,
@@ -37,7 +35,7 @@ const CheckoutDetails: React.FC = () => {
       title: "Payment Method",
       sub: "Choose your payment method",
       component: (
-        <StripeCustomWrapper
+        <PaymentMethodSelector
           addressId={formData.shipping?._id}
           metadata={{ note: "checkout metadata" }}
         />
@@ -53,7 +51,6 @@ const CheckoutDetails: React.FC = () => {
           key={step.id}
           className="accordion__panel expanded overflow-hidden rounded-md border border-border-base"
         >
-          {/* Header */}
           <div className="bg-white flex items-center p-4 sm:pt-5 sm:px-6 pb-7">
             <span className="flex justify-center h-9 w-9 text-brand-dark ltr:mr-5 rtl:ml-5">
               {step.icon}
@@ -67,14 +64,13 @@ const CheckoutDetails: React.FC = () => {
             {formData[step.key] && (
               <button
                 onClick={() => setActiveStep(step.key)}
-                className="py-2 px-4 bg-slate-100 hover:bg-slate-200 mt-5 sm:mt-0 sm:ms-auto text-sm rounded-lg"
+                className="py-2 px-4 border mt-5 sm:mt-0 sm:ms-auto text-sm rounded-lg"
               >
                 Change
               </button>
             )}
           </div>
 
-          {/* Content */}
           {activeStep === step.key && (
             <div className="pb-6 ltr:pl-5 rtl:pr-5 sm:ltr:pl-5 sm:rtl:pr-5 lg:ltr:pl-7 lg:rtl:pr-7 ltr:pr-7 rtl:pl-5 bg-white">
               <div className="border-t border-border-two pt-7">
