@@ -20,6 +20,7 @@ const CheckoutCard: React.FC = () => {
     shippingFee = 0,
     shippingMethod = "standard",
     useCartActions,
+    codFee = 0, // <-- add codFee from cart
   } = useCart();
 
   const mounted = useIsMounted();
@@ -31,6 +32,7 @@ const CheckoutCard: React.FC = () => {
   const { price: formattedSubtotal } = usePrice({ amount: total });
   const { price: formattedDiscount } = usePrice({ amount: discount });
   const { price: formattedShipping } = usePrice({ amount: shippingFee });
+  const { price: formattedCOD } = usePrice({ amount: codFee }); // COD formatted
   const { price: formattedTotal } = usePrice({ amount: finalTotal });
 
   const handleApply = () => {
@@ -125,6 +127,7 @@ const CheckoutCard: React.FC = () => {
               </div>
             )}
           </div>
+
           <div className="space-y-2 mb-4">
             <div className="flex justify-between text-brand-dark">
               <span>Subtotal</span>
@@ -137,6 +140,7 @@ const CheckoutCard: React.FC = () => {
                 <span>- {formattedDiscount}</span>
               </div>
             )}
+
             <div className="flex justify-between text-brand-dark">
               <span>
                 Shipping{" "}
@@ -154,7 +158,15 @@ const CheckoutCard: React.FC = () => {
                 </span>
               )}
             </div>
+
+            {codFee > 0 && (
+              <div className="flex justify-between text-brand-dark font-medium">
+                <span>COD Fee</span>
+                <span>+ {formattedCOD}</span>
+              </div>
+            )}
           </div>
+
           <div className="flex justify-between font-bold text-lg pt-6 border-t border-border-base">
             <span>Total</span>
             <span>{formattedTotal}</span>

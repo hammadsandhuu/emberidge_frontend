@@ -12,6 +12,7 @@ export default function OrderInformation() {
   const params = useParams();
   const orderId = params?.orderId as string;
   const { data, isLoading } = useOrderQuery(orderId);
+  console.log("Order data:", data);
   if (isLoading) return <Loading />;
   const order = data?.order;
 

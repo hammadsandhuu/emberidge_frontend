@@ -34,6 +34,7 @@ export const useCart = () => {
       removeItem: state.removeItem,
       resetCart: state.resetCart,
       setCart: state.setCart,
+      codFee: state.codFee,
     }))
   );
 
@@ -56,7 +57,8 @@ export const useCart = () => {
       cartData.coupon ?? null,
       cartData.finalTotal ?? undefined,
       cartData.shippingFee ?? 0,
-      cartData.shippingMethod ?? "standard"
+      cartData.shippingMethod ?? "standard",
+      cartData.codFee ?? 0
     );
   }, [cartData]);
 
