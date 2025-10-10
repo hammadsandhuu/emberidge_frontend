@@ -1,18 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { CreditCard, HandCoins } from "lucide-react";
+import { useState, useMemo } from "react";
+import { CreditCard, HandCoins, Check } from "lucide-react";
 import Button from "@/components/shared/button";
 import { useRouter } from "next/navigation";
 import { useCreateOrderMutation } from "@/services/order/order-api";
 import { ROUTES } from "@/utils/routes";
 import toast from "react-hot-toast";
 import StripeCustomWrapper from "./StripePayment";
+import usePrice from "@/services/product/use-price";
 
 interface PaymentMethodSelectorProps {
   addressId: string;
   metadata?: object;
 }
+
+const COD_EXTRA_FEE = 2.0;
 
 const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   addressId,
@@ -22,6 +25,8 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   const { mutateAsync: createOrder } = useCreateOrderMutation();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  const { price: formattedCodFee } = usePrice({ amount: COD_EXTRA_FEE });
 
   const handleCODOrder = async () => {
     if (!addressId) {
@@ -34,7 +39,10 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
       const { order } = await createOrder({
         addressId,
         paymentMethod: "COD",
-        metadata,
+        metadata: {
+          ...metadata,
+          codCharge: COD_EXTRA_FEE,
+        },
       });
 
       toast.success("Order placed successfully (Cash on Delivery)");
@@ -54,28 +62,31 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         <button
           type="button"
           onClick={() => setMethod("stripe")}
-          className={`flex items-center gap-3 border rounded-xl p-4 transition-all duration-200 hover:shadow-md ${
+          className={`relative border rounded-xl shadow-sm p-4 cursor-pointer transition-all duration-200 flex items-start gap-3 ${
             method === "stripe"
-              ? "border-blue-500 bg-blue-50 ring-2 ring-blue-400"
-              : "border-gray-300 bg-white"
+              ? "border-primary-500 ring-2 ring-primary-500/30 bg-primary-500/5"
+              : "border-border hover:border-primary-500/40 bg-white"
           }`}
         >
+          {/* Selection Check Icon */}
+          {method === "stripe" && (
+            <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center shadow">
+              <Check className="w-3 h-3 text-white" />
+            </div>
+          )}
+
           <div
-            className={`p-2 rounded-full ${
+            className={`p-2 rounded-full flex-shrink-0 ${
               method === "stripe"
-                ? "bg-blue-100 text-blue-600"
+                ? "bg-primary-500 text-primary-600"
                 : "bg-gray-100 text-gray-600"
             }`}
           >
-            <CreditCard size={24} strokeWidth={1.5} />
+            <CreditCard size={20} strokeWidth={1.5} />
           </div>
-          <div className="text-left">
-            <h4 className="text-base font-semibold text-gray-800">
-              Pay with Card
-            </h4>
-            <p className="text-sm text-gray-500">
-              Secure online payment via Stripe
-            </p>
+          <div className="flex-1 text-left">
+            <h4 className="text-lg font-semibold mb-1">Pay with Card</h4>
+            <p className="text-sm">Secure online payment via Stripe.</p>
           </div>
         </button>
 
@@ -83,52 +94,54 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         <button
           type="button"
           onClick={() => setMethod("cod")}
-          className={`flex items-center gap-3 border rounded-xl p-4 transition-all duration-200 hover:shadow-md ${
+          className={`relative border rounded-xl shadow-sm p-4 cursor-pointer transition-all duration-200 flex items-start gap-3 ${
             method === "cod"
-              ? "border-green-500 bg-green-50 ring-2 ring-green-400"
-              : "border-gray-300 bg-white"
+              ? "border-primary-500 ring-2 ring-primary-500/30 bg-primary-500/5"
+              : "border-border hover:border-primary-500/40 bg-white"
           }`}
         >
+          {/* Selection Check Icon */}
+          {method === "cod" && (
+            <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center shadow">
+              <Check className="w-3 h-3 text-white" />
+            </div>
+          )}
+
           <div
-            className={`p-2 rounded-full ${
-              method === "cod"
-                ? "bg-green-100 text-green-600"
-                : "bg-gray-100 text-gray-600"
+            className={`p-2 rounded-full flex-shrink-0 ${
+              method === "cod" ? "bg-primary-500" : "bg-gray-100 text-gray-600"
             }`}
           >
-            <HandCoins size={24} strokeWidth={1.5} />
+            <HandCoins size={20} strokeWidth={1.5} />
           </div>
-          <div className="text-left">
-            <h4 className="text-base font-semibold text-gray-800">
-              Cash on Delivery
-            </h4>
-            <p className="text-sm text-gray-500">Pay when your order arrives</p>
+          <div className="flex-1 text-left">
+            <h4 className="text-lg font-semibold mb-1">Cash on Delivery</h4>
+            <p className="text-sm">Pay when your order arrives.</p>
           </div>
         </button>
       </div>
 
       {/* Render selected method */}
       {method === "stripe" && (
-        <div className="mt-6 border rounded-xl p-5 bg-[#0F172A] text-white">
+        <div className="mt-6 border rounded-xl p-5 bg-white shadow-sm">
           <StripeCustomWrapper addressId={addressId} metadata={metadata} />
         </div>
       )}
 
       {method === "cod" && (
-        <div className="mt-6 space-y-4">
-          {/* COD Information Paragraph */}
-          <p className="text-sm text-gray-600 leading-relaxed">
-            <strong>Note:</strong> With Cash on Delivery, you can pay for your
-            order when it arrives at your doorstep. Please make sure you have
-            the exact amount ready, as our delivery partners may not always
-            carry change. Once your order is confirmed, our team will process it
-            for shipment immediately.
+        <div className="mt-6 space-y-4 bg-white border border-border rounded-xl p-5 shadow-sm">
+          <p className="text-sm text-primary-500 leading-relaxed">
+            <strong>Note:</strong> Cash on Delivery includes an additional{" "}
+            <span className="text-red-600 font-medium">{formattedCodFee}</span>{" "}
+            handling charge. Please ensure you have the exact amount ready as
+            delivery personnel may not carry change.
           </p>
 
           <Button
             onClick={handleCODOrder}
             disabled={loading}
-            className="w-fit bg-green-600 hover:bg-green-700"
+            variant="primary"
+            className="w-fit"
           >
             {loading ? "Placing Order..." : "Confirm COD Order"}
           </Button>

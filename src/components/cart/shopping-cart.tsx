@@ -13,17 +13,14 @@ const ShoppingCart: React.FC = () => {
     total: subtotal,
     discount,
     finalTotal,
+    shippingFee,
+    shippingMethod,
     isEmpty,
     useCartActions,
   } = useCart();
-  console.log("Cart Items:", cartItems);
 
   const mounted = useIsMounted();
-  const { applyCoupon, removeCoupon, isApplyingCoupon, isRemovingCoupon } =
-    useCartActions();
-
   if (!mounted) return <Loading />;
-
   if (isEmpty) {
     return (
       <div className="flex flex-col items-center justify-center py-16 lg:py-30 bg-white rounded-md">
@@ -41,11 +38,9 @@ const ShoppingCart: React.FC = () => {
         <OrderSummary
           subtotal={subtotal}
           discount={discount}
+          shippingFee={shippingFee}
+          shippingMethod={shippingMethod}
           total={finalTotal}
-          onApplyCoupon={applyCoupon}
-          onRemoveCoupon={removeCoupon}
-          isApplying={isApplyingCoupon}
-          isRemoving={isRemovingCoupon}
         />
       </div>
     </div>

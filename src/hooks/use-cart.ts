@@ -27,6 +27,8 @@ export const useCart = () => {
       discount: state.discount,
       finalTotal: state.finalTotal,
       coupon: state.coupon,
+      shippingFee: state.shippingFee,
+      shippingMethod: state.shippingMethod,
       addItemWithQuantity: state.addItemWithQuantity,
       updateItem: state.updateItem,
       removeItem: state.removeItem,
@@ -52,7 +54,9 @@ export const useCart = () => {
       cartData.items ?? [],
       cartData.discount ?? 0,
       cartData.coupon ?? null,
-      cartData.finalTotal ?? undefined
+      cartData.finalTotal ?? undefined,
+      cartData.shippingFee ?? 0,
+      cartData.shippingMethod ?? "standard"
     );
   }, [cartData]);
 
@@ -121,11 +125,12 @@ export const useCart = () => {
           updatedCart.items,
           updatedCart.discount,
           updatedCart.coupon,
-          updatedCart.finalTotal
+          updatedCart.finalTotal,
+          updatedCart.shippingFee ?? 0,
+          updatedCart.shippingMethod ?? "standard"
         );
         toast.success(`Coupon "${code}" applied successfully!`);
       } catch (error: any) {
-        // Show API error message if available
         const msg = error?.response?.data?.message || "Failed to apply coupon";
         toast.error(msg);
       }
@@ -138,7 +143,9 @@ export const useCart = () => {
           updatedCart.items,
           updatedCart.discount,
           updatedCart.coupon,
-          updatedCart.finalTotal
+          updatedCart.finalTotal,
+          updatedCart.shippingFee ?? 0,
+          updatedCart.shippingMethod ?? "standard"
         );
         toast.success("Coupon removed successfully!");
       } catch (error: any) {

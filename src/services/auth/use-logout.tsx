@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { useUI } from "@/hooks/use-UI";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/utils/routes";
+import { useCartStore } from "@/stores/useCartStore";
 
 interface LogoutResponse {
   ok: boolean;
@@ -30,6 +31,9 @@ export const useLogoutMutation = () => {
       Cookies.remove("auth_token");
       unauthorize();
       queryClient.clear();
+      const { resetCart } = useCartStore.getState();
+      resetCart();
+
       toast.success(data?.message || "Logout successful!");
       router.push(ROUTES.HOME);
     },

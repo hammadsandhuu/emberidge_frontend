@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Plus,
   MapPin,
@@ -36,6 +36,16 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
   );
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  // ✅ Auto-select the default address when addresses are loaded
+  useEffect(() => {
+    if (addresses.length > 0 && !selectedAddressId) {
+      const defaultAddress = addresses.find((a: any) => a.isDefault);
+      if (defaultAddress) {
+        setSelectedAddressId(defaultAddress._id);
+      }
+    }
+  }, [addresses, selectedAddressId]);
+
   const handleAddressSelect = (id: string) => {
     setSelectedAddressId(id);
   };
@@ -55,7 +65,6 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
     });
   };
 
-  // helper: return icon based on label
   const getAddressIcon = (label: string) => {
     if (!label) return <Home className="w-4 h-4 text-primary-500" />;
     const normalized = label.toLowerCase();
@@ -75,14 +84,13 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
 
   return (
     <div className="w-full">
-      {/* Address List */}
       {addresses.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {addresses.map((address: any) => (
             <div
               key={address._id}
               onClick={() => handleAddressSelect(address._id)}
-              className={`relative border rounded-xl shadow-sm p-6 cursor-pointer transition-all duration-200 flex  flex-col justify-between ${
+              className={`relative border rounded-xl shadow-sm p-6 cursor-pointer transition-all duration-200 flex flex-col justify-between ${
                 selectedAddressId === address._id
                   ? "border-primary-500 ring-2 ring-primary-500/30 bg-primary-500/5"
                   : "border-border hover:border-primary-500/40"
@@ -93,6 +101,7 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                   <Check className="w-3.5 h-3.5 text-white" />
                 </div>
               )}
+
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   {getAddressIcon(address.label)}
@@ -107,7 +116,6 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                 </div>
 
                 <div className="flex items-center gap-1">
-                  {/* Edit */}
                   <IconButton
                     size="sm"
                     tooltip="Edit Address"
@@ -119,7 +127,6 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                     <Pencil className="w-4 h-4" />
                   </IconButton>
 
-                  {/* Delete */}
                   <IconButton
                     variant="destructive"
                     size="sm"
@@ -138,6 +145,7 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                   </IconButton>
                 </div>
               </div>
+
               <div className="mb-4 rounded-lg">
                 <h4 className="text-sm font-semibold text-card-foreground mb-2">
                   Contact Information
@@ -157,6 +165,7 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                   </div>
                 </div>
               </div>
+
               <div className="space-y-1">
                 <h4 className="text-sm font-semibold text-card-foreground">
                   Address Details
@@ -189,7 +198,6 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
           </button>
         </div>
       ) : (
-        /* No addresses found */
         <div className="text-center py-10 border border-dashed border-border rounded-xl">
           <div className="flex justify-center mb-4">
             <div className="p-3 bg-muted rounded-full">
@@ -213,7 +221,6 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
         </div>
       )}
 
-      {/* Action buttons */}
       {addresses.length > 0 && (
         <div className="flex items-center justify-end gap-3 mt-6">
           <Button

@@ -1,114 +1,69 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "@/components/shared/link";
 import { ROUTES } from "@/utils/routes";
-import Input from "../shared/form/input";
-import { Loader, Trash2 } from "lucide-react";
-import { useCartStore } from "@/stores/useCartStore";
 import usePrice from "@/services/product/use-price";
 
 interface OrderSummaryProps {
   subtotal: number;
   discount?: number;
+  shippingFee?: number;
+  shippingMethod?: string | null;
   total: number;
-  onApplyCoupon: (code: string) => Promise<void>;
-  onRemoveCoupon?: () => Promise<void>;
-  isApplying?: boolean;
-  isRemoving?: boolean;
 }
 
 export function OrderSummary({
   subtotal,
   discount = 0,
+  shippingFee = 0,
+  shippingMethod = "standard",
   total,
-  onApplyCoupon,
-  onRemoveCoupon,
-  isApplying = false,
-  isRemoving = false,
 }: OrderSummaryProps) {
-  const [coupon, setCoupon] = useState("");
-  const { coupon: appliedCoupon } = useCartStore();
+  const { price: formattedSubtotal } = usePrice({ amount: subtotal });
   const { price: formattedDiscount } = usePrice({ amount: discount });
+  const { price: formattedShipping } = usePrice({ amount: shippingFee });
   const { price: formattedTotal } = usePrice({ amount: total });
-
-  const handleApply = () => {
-    if (coupon.trim() && !appliedCoupon) {
-      onApplyCoupon(coupon.trim());
-      setCoupon("");
-    }
-  };
-
-  const handleRemove = () => {
-    if (onRemoveCoupon) onRemoveCoupon();
-  };
 
   return (
     <div className="p-5 md:p-8 bg-white rounded-lg border border-border-base">
       <h2 className="text-lg font-semibold text-brand-dark mb-5">
         Order Summary
       </h2>
-      <div className="space-y-3 mb-5">
-        <h3 className="text-brand-dark mb-2 font-medium">Coupon</h3>
-        {appliedCoupon ? (
-          <div className="flex justify-between items-center p-4 bg-green-50 rounded-sm">
-            <div className="space-y-2">
-              <span className="text-green-700 font-medium">
-                Applied: {appliedCoupon.code}
-              </span>
-              <p className="text-green-700 text-sm">
-                Discount:{" "}
-                {appliedCoupon.discountType === "percentage"
-                  ? `${appliedCoupon.discountValue}%`
-                  : `$${appliedCoupon.discountValue?.toFixed(2) ?? 0}`}
-              </p>
-            </div>
-            <button
-              className="text-red-600 hover:text-red-800 flex items-center justify-center"
-              onClick={handleRemove}
-              title="Remove coupon"
-              disabled={isRemoving}
-            >
-              {isRemoving ? (
-                <Loader className="w-5 h-5 animate-spin" />
-              ) : (
-                <Trash2 className="w-5 h-5" />
-              )}
-            </button>
-          </div>
-        ) : (
-          <div className="flex space-x-2">
-            <Input
-              name="coupon"
-              placeholder="Enter coupon code"
-              value={coupon}
-              onChange={(e) => setCoupon(e.target.value)}
-              className="flex-1"
-            />
-            <button
-              onClick={handleApply}
-              disabled={isApplying}
-              className="px-4 py-2 bg-black text-white rounded-md flex items-center justify-center gap-2"
-            >
-              {isApplying ? (
-                <Loader className="w-4 h-4 animate-spin" />
-              ) : (
-                "Apply"
-              )}
-            </button>
+
+      {/* 💰 Summary Details */}
+      <div className="space-y-2 mb-4">
+        <div className="flex justify-between text-brand-dark">
+          <span>Subtotal</span>
+          <span>{formattedSubtotal}</span>
+        </div>
+
+        {discount > 0 && (
+          <div className="flex justify-between text-green-600 font-medium">
+            <span>Discount</span>
+            <span>- {formattedDiscount}</span>
           </div>
         )}
-      </div>
-      {discount > 0 && (
-        <div className="flex justify-between text-green-600 font-medium mb-4">
-          <span>Discount</span>
-          <span>- {formattedDiscount}</span>
+
+        {/* 🚚 Shipping */}
+        <div className="flex justify-between text-brand-dark">
+          <span>
+            Shipping{" "}
+            {shippingMethod && (
+              <span className="text-sm text-gray-500">({shippingMethod})</span>
+            )}
+          </span>
+          <span>+ {formattedShipping}</span>
         </div>
-      )}
+      </div>
+
+      {/* 🧾 Final Total */}
       <div className="flex justify-between font-bold text-lg pt-6 border-t border-border-base">
         <span>Total</span>
         <span>{formattedTotal}</span>
       </div>
+
+      {/* 🛒 Checkout Button */}
       <div className="mt-4">
         <Link href={ROUTES.CHECKOUT} variant="button-black" className="w-full">
           <span>Proceed to Checkout</span>
