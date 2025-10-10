@@ -16,7 +16,6 @@ const ShoppingCart: React.FC = () => {
     shippingFee,
     shippingMethod,
     isEmpty,
-    useCartActions,
   } = useCart();
 
   const mounted = useIsMounted();

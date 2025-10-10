@@ -43,7 +43,6 @@ const useAddToCart = () => {
   return useMutation({
     mutationFn: addToCart,
     onSuccess: () => {
-      toast.success("Item added to cart");
       queryClient.invalidateQueries({ queryKey: [API_RESOURCES.CART] });
     },
     onError: () => {
@@ -74,7 +73,6 @@ const useUpdateCartItem = () => {
   return useMutation({
     mutationFn: updateCartItem,
     onSuccess: () => {
-      toast.success("Cart updated");
       queryClient.invalidateQueries({ queryKey: [API_RESOURCES.CART] });
     },
     onError: () => {
@@ -98,7 +96,6 @@ const useRemoveFromCart = () => {
   return useMutation({
     mutationFn: removeFromCart,
     onSuccess: () => {
-      toast.success("Item removed");
       queryClient.invalidateQueries({ queryKey: [API_RESOURCES.CART] });
     },
     onError: () => {
@@ -120,7 +117,6 @@ const useClearCart = () => {
   return useMutation({
     mutationFn: clearCart,
     onSuccess: () => {
-      toast.success("Cart cleared");
       queryClient.invalidateQueries({ queryKey: [API_RESOURCES.CART] });
     },
   });
@@ -141,7 +137,6 @@ const useApplyCoupon = () => {
   return useMutation({
     mutationFn: applyCoupon,
     onSuccess: () => {
-      toast.success("Coupon applied");
       queryClient.invalidateQueries({ queryKey: [API_RESOURCES.CART] });
     },
     onError: (error: any) => {
@@ -163,7 +158,6 @@ const useRemoveCoupon = () => {
   return useMutation({
     mutationFn: removeCoupon,
     onSuccess: () => {
-      toast.success("Coupon removed");
       queryClient.invalidateQueries({ queryKey: [API_RESOURCES.CART] });
     },
     onError: (error: any) => {

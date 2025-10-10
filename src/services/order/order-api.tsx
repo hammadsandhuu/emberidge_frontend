@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "@/services/utils/http";
 import { API_RESOURCES } from "@/services/utils/api-endpoints";
 
-// ---------------------- Types ----------------------
+// ---------------------- Attachment ----------------------
 export type Attachment = {
   id: string | number;
   thumbnail: string;
@@ -10,6 +10,7 @@ export type Attachment = {
   original2?: string;
 };
 
+// ---------------------- Order Item ----------------------
 export interface OrderItem {
   product: string; // product _id
   name: string;
@@ -18,6 +19,7 @@ export interface OrderItem {
   image?: Attachment | null;
 }
 
+// ---------------------- Shipping Address ----------------------
 export interface OrderAddress {
   _id: string;
   fullName: string;
@@ -33,7 +35,15 @@ export interface OrderAddress {
   isDefault?: boolean;
 }
 
+// ---------------------- Order ----------------------
+export interface OrderCoupon {
+  code: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+}
+
 export interface Order {
+  shippingMethod: any;
   _id: string;
   user: string;
   items: OrderItem[];
@@ -45,17 +55,19 @@ export interface Order {
   subtotal: number;
   shippingFee: number;
   discount: number;
-  coupon?: string | null;
+  codFee?: number;
+  coupon?: OrderCoupon | null;
   totalAmount: number;
-  metadata?: object;
+  metadata?: Record<string, any>;
   createdAt: string;
   updatedAt: string;
 }
 
+// ---------------------- Create Order Payload ----------------------
 export interface CreateOrderPayload {
   addressId: string;
   paymentMethod: "stripe" | "applepay" | "COD" | "cod";
-  metadata?: object;
+  metadata?: Record<string, any>;
 }
 
 // ---------------------- API Functions ----------------------
@@ -94,7 +106,9 @@ const useCreateOrderMutation = () => {
   return useMutation({
     mutationFn: createOrder,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [API_RESOURCES.ORDERS] });
+      queryClient.invalidateQueries({
+        queryKey: [API_RESOURCES.ORDERS, API_RESOURCES.CART],
+      });
     },
   });
 };

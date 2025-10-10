@@ -30,8 +30,6 @@ export function OrderSummary({
       <h2 className="text-lg font-semibold text-brand-dark mb-5">
         Order Summary
       </h2>
-
-      {/* 💰 Summary Details */}
       <div className="space-y-2 mb-4">
         <div className="flex justify-between text-brand-dark">
           <span>Subtotal</span>
@@ -44,9 +42,7 @@ export function OrderSummary({
             <span>- {formattedDiscount}</span>
           </div>
         )}
-
-        {/* 🚚 Shipping */}
-        <div className="flex justify-between text-brand-dark">
+        {/* <div className="flex justify-between text-brand-dark">
           <span>
             Shipping{" "}
             {shippingMethod && (
@@ -54,16 +50,12 @@ export function OrderSummary({
             )}
           </span>
           <span>+ {formattedShipping}</span>
-        </div>
+        </div> */}
       </div>
-
-      {/* 🧾 Final Total */}
       <div className="flex justify-between font-bold text-lg pt-6 border-t border-border-base">
         <span>Total</span>
         <span>{formattedTotal}</span>
       </div>
-
-      {/* 🛒 Checkout Button */}
       <div className="mt-4">
         <Link href={ROUTES.CHECKOUT} variant="button-black" className="w-full">
           <span>Proceed to Checkout</span>

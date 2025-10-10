@@ -20,7 +20,7 @@ const CheckoutCard: React.FC = () => {
     shippingFee = 0,
     shippingMethod = "standard",
     useCartActions,
-    codFee = 0, // <-- add codFee from cart
+    codFee = 0,
   } = useCart();
 
   const mounted = useIsMounted();
@@ -32,7 +32,7 @@ const CheckoutCard: React.FC = () => {
   const { price: formattedSubtotal } = usePrice({ amount: total });
   const { price: formattedDiscount } = usePrice({ amount: discount });
   const { price: formattedShipping } = usePrice({ amount: shippingFee });
-  const { price: formattedCOD } = usePrice({ amount: codFee }); // COD formatted
+  const { price: formattedCOD } = usePrice({ amount: codFee });
   const { price: formattedTotal } = usePrice({ amount: finalTotal });
 
   const handleApply = () => {
