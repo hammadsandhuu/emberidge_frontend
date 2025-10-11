@@ -16,6 +16,8 @@ const ShoppingCart: React.FC = () => {
     shippingFee,
     shippingMethod,
     isEmpty,
+    codFee,
+    paymentMethod,
   } = useCart();
 
   const mounted = useIsMounted();
@@ -36,6 +38,8 @@ const ShoppingCart: React.FC = () => {
       <div>
         <OrderSummary
           subtotal={subtotal}
+          paymentMethod={paymentMethod}
+          codFee={codFee}
           discount={discount}
           shippingFee={shippingFee}
           shippingMethod={shippingMethod}

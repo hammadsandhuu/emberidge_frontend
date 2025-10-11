@@ -35,6 +35,8 @@ export const useCart = () => {
       resetCart: state.resetCart,
       setCart: state.setCart,
       codFee: state.codFee,
+      paymentMethod: state.paymentMethod,
+      setPaymentMethod: state.setPaymentMethod,
     }))
   );
 

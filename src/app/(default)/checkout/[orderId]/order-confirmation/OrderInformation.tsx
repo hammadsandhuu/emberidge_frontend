@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import Loading from "@/components/shared/loading";
 import OrderDetails from "@/components/orders/order-details";
 import Link from "@/components/shared/link";
-import cn from "classnames";
 import { useOrderQuery } from "@/services/order/order-api";
 import {
   CheckCircle,
@@ -13,14 +12,13 @@ import {
   Phone,
   ShoppingBag,
   Package,
-  FileText,
+  LifeBuoy,
 } from "lucide-react";
 
 export default function OrderInformation() {
   const params = useParams();
   const orderId = params?.orderId as string;
   const { data, isLoading } = useOrderQuery(orderId);
-  console.log("Order Data:", data);
   const order = data?.order;
 
   if (isLoading) return <Loading />;
@@ -33,7 +31,7 @@ export default function OrderInformation() {
           {/* Success Header */}
           <div className="flex items-center gap-4">
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
             </div>
@@ -41,90 +39,91 @@ export default function OrderInformation() {
               <h2 className="text-base md:text-lg xl:text-[20px] font-semibold text-brand-dark">
                 Thank you {order?.shippingAddress?.fullName || "Customer"}!
               </h2>
-              <p className="text-green-600 font-medium mt-1">
+              <p className="text-primary-700 font-medium mt-1">
                 Your order has been confirmed
               </p>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mb-4">
-            An email confirmation has been sent to your email address. If you
-            have any questions, contact us:
+
+          <p className="text-sm text-gray-500">
+            An email confirmation has been sent to your email address.
           </p>
+
           {/* Order Details Cards */}
-          <div className="space-y-4 flex flex-col sm:flex-row sm:space-y-0 sm:space-x-4 md:space-x-6 lg:space-x-8">
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-border-base">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Order Number */}
+            <div className="group p-5 bg-gradient-to-br from-muted/30 to-muted/50 rounded-xl border border-border hover:border-accent transition-all hover:shadow-md">
               <div className="flex items-center gap-3">
-                <ShoppingBag className="w-5 h-5 text-gray-600" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">
+                <div className="p-4 bg-primary-500 rounded-full">
+                  <ShoppingBag className="w-5 h-5 text-accent" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                     Order Number
                   </p>
-                  <p className="text-lg font-semibold text-brand-dark">
+                  <p className="text-lg font-bold text-foreground truncate">
                     {order?.orderNumber}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-border-base">
+            {/* Tracking Number */}
+            <div className="group p-5 bg-gradient-to-br from-muted/30 to-muted/50 rounded-xl border border-border hover:border-accent transition-all hover:shadow-md">
               <div className="flex items-center gap-3">
-                <Package className="w-5 h-5 text-gray-600" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">
+                <div className="p-4 bg-primary-500 rounded-full">
+                  <Package className="w-5 h-5 text-accent" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                     Tracking Number
                   </p>
-                  <p className="text-lg font-semibold text-brand-dark">
-                    {order?.trackingNumber}
+                  <p className="text-lg font-bold text-foreground truncate">
+                    {order?.trackingNumber || "Not available"}
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Contact Information */}
+          {/* Need Help Box */}
           <div className="pt-6 border-t border-border-base">
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-blue-600" />
-                <Link
-                  href="mailto:sales@embridge.com"
-                  className="text-blue-600 hover:text-blue-800 hover:underline text-sm"
-                >
-                  sales@embridge.com
-                </Link>
+            <div className="p-5 rounded-xl border border-border-base bg-gradient-to-br from-muted/20 to-muted/40">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-blue-100 rounded-md">
+                  <LifeBuoy className="w-5 h-5 text-blue-600" />
+                </div>
+                <h3 className="text-base font-semibold text-brand-dark">
+                  Need Help?
+                </h3>
               </div>
 
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-blue-600" />
-                <Link
-                  href="tel:(1800)-000-6890"
-                  className="text-blue-600 hover:text-blue-800 hover:underline text-sm"
-                >
-                  (1800)-000-6890
-                </Link>
+              <p className="text-sm text-gray-600 mb-4">
+                Our support team is here to assist you with any questions or
+                issues related to your order.
+              </p>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Mail className="w-4 h-4 text-blue-600" />
+                  <Link
+                    href="mailto:sales@embridge.com"
+                    className="text-blue-600 hover:text-blue-800 hover:underline text-sm"
+                  >
+                    sales@embridge.com
+                  </Link>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Phone className="w-4 h-4 text-blue-600" />
+                  <Link
+                    href="tel:(1800)-000-6890"
+                    className="text-blue-600 hover:text-blue-800 hover:underline text-sm"
+                  >
+                    (1800)-000-6890
+                  </Link>
+                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="pt-6 border-t border-border-base">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/"
-                variant="button-black"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors font-medium text-sm flex-1 text-center"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                CONTINUE SHOPPING
-              </Link>
-
-              <Link
-                href="/orders"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors font-medium text-sm flex-1 text-center"
-              >
-                <FileText className="w-4 h-4" />
-                VIEW ALL ORDERS
-              </Link>
             </div>
           </div>
         </div>

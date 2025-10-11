@@ -2,10 +2,11 @@
 
 import usePrice from "@/services/product/use-price";
 import { Order, OrderItem } from "@/services/order/order-api";
-import { Printer } from "lucide-react";
+import { Printer, ShoppingBag } from "lucide-react";
 import React from "react";
 import Image from "next/image";
 import { productPlaceholder } from "@/assets/placeholders";
+import Link from "../shared/link";
 
 const OrderItemCard = ({ item }: { item: OrderItem }) => {
   const { price: itemTotal } = usePrice({
@@ -78,7 +79,7 @@ const OrderDetails: React.FC<{ order: Order; className?: string }> = ({
 
       {/* Coupon */}
       {order.coupon?.code && (
-        <div className="space-y-3 mb-5 pt-5 border-t border-border-base">
+        <div className="space-y-3 mb-5">
           <h3 className="text-brand-dark mb-2 font-medium">Coupon</h3>
           <div className="flex justify-between items-center p-4 rounded-lg border border-border-base">
             <div>
@@ -137,6 +138,19 @@ const OrderDetails: React.FC<{ order: Order; className?: string }> = ({
       <div className="flex justify-between font-bold text-lg pt-6 border-t border-border-base">
         <span>Total</span>
         <span>{formattedTotal}</span>
+      </div>
+      {/* Action Buttons */}
+      <div className="pt-6">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Link
+            href="/"
+            variant="button-black"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors font-medium text-sm flex-1 text-center"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            CONTINUE SHOPPING
+          </Link>
+        </div>
       </div>
     </div>
   );
