@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
         id="siteHeader"
         ref={siteHeaderRef}
         className={cn(
-          "header-one sticky-header sticky top-0 z-50 lg:relative w-full bg-fill-one",
+          "header-one sticky-header sticky top-0 z-50 lg:relative w-full bg-fill-base transition duration-200 ease-in-out",
           displayMobileSearch && "active-mobile-search",
           className
         )}
@@ -68,21 +68,17 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
             searchId="mobile-search"
             className="topbar-search hidden lg:max-w-[600px] absolute z-30 px-4 md:px-6 top-12 xl:top-1"
           />
-          <div className="top-bar text-13px text-gray-300 dark:text-gray-700 border-b border-brand-light/8">
+          <div className="top-bar text-13px text-brand-light border-b border-brand-light/8">
             <Container variant={"Large"}>
               <div className="h-12 flex justify-between items-center">
                 <Text
                   className="hidden md:block truncate m-0 text-13px"
-                  variant={"small"}
+                  variant={"medium"}
                 >
                   Free International Shipping. No Minimum Purchase Required*
                 </Text>
                 <div className="flex flex-shrink-0 smx-auto pace-s-5">
-                  <HeaderMenutop
-                    data={siteNavigation.topmenu}
-                    className="flex transition-all duration-200 ease-in-out"
-                    classNameLink="text-gray-300 dark:text-gray-700 hover:text-primary-500"
-                  />
+                  <HeaderMenutop data={siteNavigation.topmenu} />
                 </div>
               </div>
             </Container>
@@ -100,11 +96,7 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
                   </button>
                 </div>
                 <Logo variant={"dark"} className="logo ps-3 md:ps-0 lg:mx-0" />
-                <Search
-                  searchId="top-search"
-                  variant={"dark"}
-                  className="hidden lg:flex lg:max-w-[450px] xl:max-w-[650px] 2xl:max-w-[900px] lg:mx-10"
-                />
+                <Search className="hidden lg:flex lg:max-w-[450px] xl:max-w-[650px] 2xl:max-w-[900px] lg:mx-10" />
                 <div className="text-brand-light flex text-sm space-x-5 xl:space-x-10 lg:max-w-[33%] xl:min-w-[240px]">
                   <AuthDropdown />
                   <CartButton className="hidden lg:flex" />
@@ -112,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
               </div>
             </Container>
           </div>
-          <div className="hidden navbar lg:block bg-fill-one">
+          <div className="hidden navbar lg:block">
             <Container variant={"Large"}>
               <div className="flex justify-between items-center">
                 <Logo
@@ -124,17 +116,13 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
                   onMouseEnter={() => setToggleAllCategory(true)}
                   onMouseLeave={() => setToggleAllCategory(false)}
                 >
-                  <button className="text-brand-light rounded-t min-h-[50px] focus:outline-none w-full uppercase font-medium px-[18px] py-4 flex items-center bg-primary-500 hover:bg-primary-600 transition">
+                  <button className="rounded-t-md min-h-[50px] focus:outline-none w-full uppercase font-medium px-[18px] py-4 flex items-center transition bg-brand-light border-2 border-border-base  border-b-0 text-brand-muted">
                     <FiMenu className="text-2xl me-3" />
-                    Shop by Department
+                    <p className="mt-0.5">Shop by Department</p>
                   </button>
                   {toggleAllCategory && <CategoryDropdownNav />}
                 </div>
-                <MainMenu
-                  navigations={siteNavigation.menu as MainMenuType[]}
-                  className="flex transition-all duration-200 ease-in-out"
-                  classLink="md:text-brand-light group-hover:text-primary-500"
-                />
+                <MainMenu navigations={siteNavigation.menu as MainMenuType[]} />
                 {displaySearch && (
                   <div className="sticky-search w-full absolute top-0 left-0 px-4 flex items-center justify-center h-full">
                     <Search className="max-w-[780px] xl:max-w-[830px]" />

@@ -96,20 +96,38 @@ export default function AuthDropdown({ hideLabel }: UserDropdownProps) {
           >
             <div
               className={cn(
-                "cart-button w-11 h-11 flex justify-center items-center rounded-full border-2 group-hover:border-primary-500",
-                open ? "border-primary-500" : "border-brand-light/20"
+                "cart-button w-11 h-11 flex justify-center items-center rounded-full border-2 transition-colors duration-200",
+                open
+                  ? "border-brand-light/60 bg-brand-light/10"
+                  : "border-border-one group-hover:border-brand-light/60"
               )}
             >
-              <AccountIcon className="w-5 h-5 text-primary-500" />
+              <AccountIcon
+                className={cn(
+                  "w-5 h-5 transition-colors duration-200",
+                  open
+                    ? "text-brand-light/80"
+                    : "text-brand-light group-hover:text-brand-light/60"
+                )}
+              />
             </div>
             {!hideLabel && (
-              <span className="text-sm font-normal ms-2">My Account</span>
+              <span
+                className={cn(
+                  "text-sm font-normal ms-2 transition-colors duration-200",
+                  open
+                    ? "text-brand-light/80"
+                    : "group-hover:text-brand-light/60"
+                )}
+              >
+                My Account
+              </span>
             )}
           </PopoverButton>
 
           <PopoverPanel
             transition
-            className="absolute end-0 z-10 mt-4 w-70 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition duration-200 ease-in-out"
+            className="absolute end-0 z-10 mt-4 w-70 origin-top-right rounded-md bg-brand-light shadow-lg ring-1 ring-border-base/90 transition duration-200 ease-in-out"
           >
             <div className="pt-4">
               <UserProfile user={currentUser} />
@@ -123,7 +141,7 @@ export default function AuthDropdown({ hideLabel }: UserDropdownProps) {
                   />
                 ))}
               </div>
-              <div className="border-t border-gray-400 py-1">
+              <div className="border-t border-border-base py-1">
                 {footerMenu.map((item) => (
                   <MenuItem
                     key={item.label}
@@ -152,7 +170,7 @@ function MenuItem({
 }) {
   return (
     <button
-      className="flex items-center w-full px-4 py-3 text-sm text-body hover:bg-gray-50 hover:text-primary-500"
+      className="flex items-center w-full px-4 py-3 text-sm text-primary-500 hover:bg-background hover:text-brand-light transition-colors duration-200"
       onClick={onClick}
     >
       <span className="me-3">{icon}</span>
@@ -166,22 +184,27 @@ function UserProfile({
 }: {
   user?: { avatar?: string; name?: string; email?: string };
 }) {
+  const formattedName = user?.name
+    ? user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase()
+    : "Guest";
+  const initial = user?.name ? user.name.charAt(0).toUpperCase() : "?";
+
   return (
-    <div className="flex items-center gap-3 px-4 pb-4 border-b border-gray-400">
+    <div className="flex items-center gap-3 px-4 pb-4 border-b border-border-base">
       {user?.avatar ? (
         <img
           src={user.avatar}
-          alt={user?.name || "User"}
+          alt={formattedName}
           className="w-12 h-12 rounded-full object-cover"
         />
       ) : (
-        <div className="w-12 h-12 flex items-center justify-center rounded-full border bg-gray-200 text-gray-700 font-medium">
-          <AccountIcon className="w-6 h-6" />
+        <div className="w-12 h-12 flex items-center justify-center rounded-full border bg-brand-light text-brand-muted font-semibold text-lg">
+          {initial}
         </div>
       )}
-      <div>
-        <h3 className="font-medium text-brand-dark">{user?.name}</h3>
-        <p className="text-sm text-gray-500">{user?.email || "No email"}</p>
+      <div className="mt-1">
+        <h3 className="font-medium text-brand-dark">{formattedName}</h3>
+        <p className="text-sm text-brand-muted">{user?.email || "No email"}</p>
       </div>
     </div>
   );

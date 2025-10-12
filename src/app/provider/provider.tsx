@@ -13,7 +13,7 @@ function Providers({children, ...props}: React.ComponentProps<typeof NextThemesP
 	
 	return (
     <QueryClientProvider client={queryClientRef.current}>
-      <NextThemesProvider {...props}>{children}</NextThemesProvider>
+      {children}
     </QueryClientProvider>
   );
 }

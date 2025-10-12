@@ -15,15 +15,13 @@ const Link: React.FC<
       | "button-white"
       | "button-detail"
       | "btnFurni-detail"
-      | "button-small-border" // Added
-      | "button-small-primary"; // Added
+      | "button-small-border"
+      | "button-small-primary";
     title?: string;
   }
 > = ({ children, className, title, variant = "line", ...props }) => {
   const btnClassName =
     "rounded block uppercase font-medium px-5 py-4 md:py-3.5 lg:py-4 text-sm lg:text-15px leading-4 cursor-pointer transition-all ease-in-out duration-300 text-center";
-
-  // Added small button styles
   const btnSmallClassName =
     "rounded block uppercase font-medium px-4 py-2.5 text-xs leading-3 cursor-pointer transition-all ease-in-out duration-300 text-center";
 
@@ -31,7 +29,7 @@ const Link: React.FC<
     "group",
     {
       ["text-primary-500"]: variant === "base",
-      [`hover:text-primary-500 transition-all ease-in-out duration-500`]:
+      [`transition-all ease-in-out duration-500 hover:text-brand-light/80`]:
         variant === "line",
       [`text-black font-medium border border-gray-400 ${btnClassName} hover:border-primary-500 hover:text-primary-500`]:
         variant === "button-border",

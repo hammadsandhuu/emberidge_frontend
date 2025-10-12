@@ -33,12 +33,7 @@ export default function RootLayout({
       <body className={`${rubik.className}  antialiased bg-background`}>
         <NextTopLoader />
         <Toaster />
-        <Providers
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           {children}
           <ModalManaged />
           <DrawerManaged />

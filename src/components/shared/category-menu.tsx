@@ -17,7 +17,7 @@ function SidebarMenuItem({ className, item, depth = 0, parentSlug = "" }: any) {
   return (
     <li
       className={cn(
-        "flex flex-col transition",
+        "flex flex-col transition hover:bg-background",
         type !== "mega" ? "relative" : "",
         className ? className : "text-sm px-3.5 2xl:px-4"
       )}
@@ -27,7 +27,7 @@ function SidebarMenuItem({ className, item, depth = 0, parentSlug = "" }: any) {
         className={cn(
           "flex items-center w-full py-3 text-start outline-none focus:outline-none focus:ring-0",
           {
-            [`text-brand-dark border-b border-border-base hover:text-primary-500`]:
+            [`text-brand-muted border-b border-border-base hover:text-primary-500`]:
               depth === 0,
           }
         )}
@@ -56,7 +56,7 @@ function SidebarMenuItem({ className, item, depth = 0, parentSlug = "" }: any) {
             <div
               className={`dropdownMenu absolute top-0 z-10 invisible hidden w-full border opacity-0 md:block left-full bg-white border-border-base subMenu--level${depth} drop-shadow-dropDown`}
             >
-              <ul key="content" className="px-1.5 py-3">
+              <ul key="content" className="py-3">
                 {items.map((currentItem) => {
                   const childDepth = depth + 1;
                   return (
@@ -92,7 +92,7 @@ function SidebarMenu({ items, className, categoriesLimit }: any) {
   return (
     <ul
       className={cn(
-        "w-full bg-white relative border-t-0 border-2 rounded-b-md category-dropdown-menu border-primary-500",
+        "w-full bg-brand-light relative border-t-0 border-2 rounded-b-md category-dropdown-menu border-border-base",
         className
       )}
     >
