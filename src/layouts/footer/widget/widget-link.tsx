@@ -33,7 +33,7 @@ const WidgetLink: React.FC<Props> = ({ className, data }) => {
             <Link
               href={`${list.path ? list.path : ""}`}
               className={cn(
-                "leading-7 transition-colors duration-200 block hover:text-primary-500"
+                "leading-7 transition-colors duration-200 block text-brand-light/80 hover:text-brand-muted"
               )}
             >
               {list.title}

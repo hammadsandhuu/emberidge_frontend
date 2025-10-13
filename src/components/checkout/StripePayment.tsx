@@ -27,8 +27,8 @@ const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
       fontSize: "16px",
-      color: "#ffffff",
-      "::placeholder": { color: "#a0aec0" },
+      color: "#6b6b6b",
+      "::placeholder": { color: "#6b6b6b" },
     },
     invalid: { color: "#fa755a" },
   },
@@ -98,7 +98,7 @@ const CustomCardForm: React.FC<CustomCardFormProps> = ({
           value={cardName}
           onChange={(e) => setCardName(e.target.value)}
           placeholder="Enter cardholder name"
-          className="w-full border rounded-md p-3 bg-transparent text-brand-white placeholder-gray-400"
+          className="w-full border rounded-md p-3 bg-transparent text-brand-white placeholder-brand-muted"
         />
       </div>
 

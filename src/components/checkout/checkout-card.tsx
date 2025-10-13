@@ -57,7 +57,7 @@ const CheckoutCard: React.FC = () => {
     );
 
   return (
-    <div className="bg-white p-5 md:p-8 border rounded-lg border-border-base">
+    <div className="bg-white p-5 md:p-8 border rounded-lg">
       <h2 className="text-lg font-semibold text-brand-dark mb-5">
         Order Summary
       </h2>
@@ -67,7 +67,9 @@ const CheckoutCard: React.FC = () => {
         }`}
       >
         {isEmpty ? (
-          <p className="py-4 text-center text-gray-500">Your cart is empty.</p>
+          <p className="py-4 text-center text-brand-muted">
+            Your cart is empty.
+          </p>
         ) : (
           items.map((item, index) => (
             <CheckoutItem item={item} key={item.id ?? index} />
@@ -167,7 +169,7 @@ const CheckoutCard: React.FC = () => {
             )}
           </div>
 
-          <div className="flex justify-between font-bold text-lg pt-6 border-t border-border-base">
+          <div className="flex justify-between font-bold text-lg pt-6 border-t ">
             <span>Total</span>
             <span>{formattedTotal}</span>
           </div>

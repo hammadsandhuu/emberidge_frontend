@@ -81,15 +81,15 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
           <div
             className={`p-2 rounded-full flex-shrink-0 ${
               paymentMethod === "stripe"
-                ? "bg-primary-500 text-white"
-                : "bg-gray-100 text-gray-600"
+                ? "bg-primary-500 text-brand-light"
+                : "bg-background text-brand-muted"
             }`}
           >
             <CreditCard size={20} strokeWidth={1.5} />
           </div>
           <div className="flex-1 text-left">
             <h4 className="text-lg font-semibold mb-1">Pay with Card</h4>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-brand-muted">
               Secure and instant online payment via Stripe.
             </p>
           </div>

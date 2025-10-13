@@ -21,11 +21,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     <>
       <Link
         href={`${ROUTES.PRODUCT}/${slug}`}
-        className="text-brand-dark text-sm leading-5 line-clamp-2 mt-1 mb-2"
+        className="text-brand-dark text-sm leading-5 line-clamp-2 mt-1 mb-2 hover:text-brand-muted"
       >
         {name}
       </Link>
-      <div className="flex text-gray-500 space-x-2">
+      <div className="flex text-brand-muted space-x-2">
         <div className="flex items-center">
           {[...Array(5)].map((_, idx) => {
             const starValue = idx + 1;
@@ -34,10 +34,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             return (
               <div key={idx} className="relative inline-block mx-px">
                 <Star
-                  stroke="#DFE6ED"
+                  stroke="var(--color-brand-muted)"
                   fill="white"
                   size={12}
-                  className="relative"
                 />
                 {rating > 0 && (
                   <>

@@ -55,10 +55,10 @@ export default function OrderInformation() {
             <div className="group p-5 bg-gradient-to-br from-muted/30 to-muted/50 rounded-xl border border-border hover:border-accent transition-all hover:shadow-md">
               <div className="flex items-center gap-3">
                 <div className="p-4 bg-primary-500 rounded-full">
-                  <ShoppingBag className="w-5 h-5 text-accent" />
+                  <ShoppingBag className="w-5 h-5 text-brand-light" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  <p className="text-xs font-medium text-brand-muted uppercase tracking-wide">
                     Order Number
                   </p>
                   <p className="text-lg font-bold text-foreground truncate">
@@ -72,10 +72,10 @@ export default function OrderInformation() {
             <div className="group p-5 bg-gradient-to-br from-muted/30 to-muted/50 rounded-xl border border-border hover:border-accent transition-all hover:shadow-md">
               <div className="flex items-center gap-3">
                 <div className="p-4 bg-primary-500 rounded-full">
-                  <Package className="w-5 h-5 text-accent" />
+                  <Package className="w-5 h-5 text-brand-light" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  <p className="text-xs font-medium text-brand-muted uppercase tracking-wide">
                     Tracking Number
                   </p>
                   <p className="text-lg font-bold text-foreground truncate">
@@ -90,8 +90,8 @@ export default function OrderInformation() {
           <div className="pt-6 border-t border-border-base">
             <div className="p-5 rounded-xl border border-border-base bg-gradient-to-br from-muted/20 to-muted/40">
               <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-blue-100 rounded-md">
-                  <LifeBuoy className="w-5 h-5 text-blue-600" />
+                <div className="p-2 bg-primary-500 rounded-md">
+                  <LifeBuoy className="w-5 h-5 text-brand-light" />
                 </div>
                 <h3 className="text-base font-semibold text-brand-dark">
                   Need Help?
@@ -129,7 +129,7 @@ export default function OrderInformation() {
         </div>
 
         {/* Right Section */}
-        <div className="bg-white rounded-lg border border-border-base">
+        <div className="bg-white">
           {order ? <OrderDetails order={order} /> : <p>No order found.</p>}
         </div>
       </div>

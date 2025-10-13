@@ -51,7 +51,7 @@ const WidgetSignup: React.FC<Props> = ({ className }) => {
     >
       <Heading
         variant="mediumHeading"
-        className="mb-4 lg:mb-6 lg:pb-0.5t text-[24px] xl:text-[30px] text-brand-light"
+        className="mb-4 lg:mb-6 lg:pb-0.5t text-[24px] xl:text-[30px] text-primary-500"
       >
         Sign Up For Newsletter
       </Heading>
@@ -62,7 +62,7 @@ const WidgetSignup: React.FC<Props> = ({ className }) => {
         coupon on every Saturday.
       </Text>
 
-      <div className="mt-10 flex flex-col items-center justify-between form-subscribe before:bg-white/10 dark:before:bg-black/10">
+      <div className="mt-10 flex flex-col items-center justify-between form-subscribe before:bg-brand-light/50">
         <form
           className="flex relative z-10 max-w-[600px] lg:w-[600px]"
           onSubmit={handleSubmit(onSubmit)}

@@ -10,10 +10,7 @@ import { useParams } from "next/navigation";
 
 export default function OrderInformation() {
   const params = useParams();
-  const orderId = params?.orderId as string; // 👈 must match folder [orderId]
-
-  console.log("✅ Order ID from params:", orderId);
-
+  const orderId = params?.orderId as string; 
   const { data, isLoading } = useOrderQuery(orderId);
 
   if (isLoading) return <Loading />;

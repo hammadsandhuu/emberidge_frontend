@@ -35,8 +35,6 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
     null
   );
   const [deletingId, setDeletingId] = useState<string | null>(null);
-
-  // ✅ Auto-select the default address when addresses are loaded
   useEffect(() => {
     if (addresses.length > 0 && !selectedAddressId) {
       const defaultAddress = addresses.find((a: any) => a.isDefault);
@@ -109,7 +107,7 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ onComplete }) => {
                     {address.label || "Address"}
                   </span>
                   {address.isDefault && (
-                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-primary-500 text-brand-dark">
+                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-primary-500 text-brand-light">
                       Default
                     </span>
                   )}

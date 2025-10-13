@@ -36,7 +36,7 @@ const ProductImage: React.FC<ProductImageProps> = ({ product, outOfStock }) => {
 
       <div className="w-full h-full absolute top-1 z-10">
         {discount && (
-          <span className="text-[10px] font-medium text-brand-light uppercase inline-block bg-red-600 rounded-sm px-2.5 pt-1 pb-[3px] mx-1">
+          <span className="text-[10px] font-medium text-brand-light uppercase inline-block bg-label_out rounded-sm px-2.5 pt-1 pb-[3px] -mx-1">
             On Sale
           </span>
         )}

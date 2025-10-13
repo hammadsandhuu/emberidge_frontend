@@ -104,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ className, variant }) => {
               </div>
             </Container>
           </div>
-          <div className="hidden navbar lg:block">
+          <div className="hidden navbar lg:block bg-fill-base">
             <Container variant={"Large"}>
               <div className="flex justify-between items-center">
                 <Logo

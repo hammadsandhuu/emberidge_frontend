@@ -20,7 +20,7 @@ interface AboutProps {
 
 const WidgetAbout: React.FC<AboutProps> = ({ social, className }) => {
   return (
-    <div className={cn("pb-10 sm:pb-0 text-fill-footer", className)}>
+    <div className={cn("pb-10 sm:pb-0 text-brand-light/80", className)}>
       <div className="text-sm xl:max-w-[350px] mx-auto sm:ms-0 mb-3">
         <Logo
           href={ROUTES.HOME}
@@ -32,8 +32,8 @@ const WidgetAbout: React.FC<AboutProps> = ({ social, className }) => {
           Address: Acme Widgets 123 Widget Street Acmeville, AC 12345 United
           States of America
         </div>
-        <div className="mb-3">Phone: (1800)-000-6890</div>
-        <div className="mb-3">Email: yourexample@email.com</div>
+        <div className="mt-4">Phone: (1800)-000-6890</div>
+        <div className="mb-2">Email: sales@emberidge.com</div>
       </div>
 
       {social && (

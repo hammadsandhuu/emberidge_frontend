@@ -56,7 +56,7 @@ const CategoryBlock = ({ parentCat }: { parentCat: any }) => {
             ))}
           </Carousel>
         ) : (
-          <div className="flex justify-center items-center bg-white rounded py-5">
+          <div className="flex justify-center items-center rounded py-5">
             <p className="text-brand-dark">No products available</p>
           </div>
         )}

@@ -27,15 +27,15 @@ const ProductCard: React.FC<ProductProps> = ({
   return (
     <article
       className={cn(
-        "flex flex-col md:gap-2 product-card px-2 md:px-3 h-full relative bg-white",
-        removeWishlist && "border border-border-two rounded",
+        "flex flex-col md:gap-2 product-card px-2 md:px-3 h-full relative",
+        removeWishlist && "border border-border-base rounded",
         className,
         statusOutOfStock ? "card-image--nojump" : "card-image--jump"
       )}
     >
       <BtnRemoveWishlist product={product} removeWishlist={removeWishlist} />
-      <ProductImage product={product} outOfStock={statusOutOfStock} />
-      <div className="flex flex-col mb-1.5 overflow-hidden relative items-center text-center">
+      <div className="flex flex-col mb-1.5 overflow-hidden relative items-center border-border-base">
+        <ProductImage product={product} outOfStock={statusOutOfStock} />
         <ProductDetails product={product} />
         <ProductPricing product={product} />
         <ProductActions product={product} />

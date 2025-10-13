@@ -7,12 +7,12 @@
   --color-primary-900: #001e05;  /* Deep shadowed tone */
 
   /* ---------- 🧱 BASE & BODY COLORS ---------- */
-  --color-background: #cdc1b4;   /* Soft beige page background */
+  --color-background: #ffffff;   /* Soft beige page background */
   --color-body: #003d0c;         /* Default text color for paragraphs */
 
   /* ---------- 💼 BRAND COLORS ---------- */
   --color-brand: #003d0c;        /* Brand green (headings, key UI) */
-  --color-brand-dark: #002f08;   /* Strong heading / title color */
+  --color-brand-dark: #000000;   /* Strong heading / title color */
   --color-brand-light: #ffffff;  /* Text on dark green areas */
   --color-brand-muted: #6b6b6b;  /* Secondary text, captions */
   --color-brand-sale: #003d0c;   /* Accent tag */
