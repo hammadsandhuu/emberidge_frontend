@@ -148,7 +148,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ className, isPopup = true }) => {
             <Link
               href={ROUTES.REGISTER}
               onClick={handleSignUp}
-              className="pl-1 text-primary-500 hover:underline"
+              className="pl-1 text-primary-500 hover:text-brand-muted"
             >
               Create Account
             </Link>

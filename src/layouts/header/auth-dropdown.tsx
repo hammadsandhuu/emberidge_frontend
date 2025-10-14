@@ -46,13 +46,15 @@ export default function AuthDropdown({ hideLabel }: UserDropdownProps) {
       >
         <div
           className={cn(
-            "cart-button w-11 h-11 flex justify-center items-center rounded-full border-2 border-brand-light/20 group-hover:border-primary-500"
+            "cart-button w-11 h-11 flex justify-center items-center rounded-full border-2 border-brand-light/90 group-hover:border-brand-muted"
           )}
         >
-          <AccountIcon className="w-5 h-5 text-primary-500" />
+          <AccountIcon className="w-5 h-5 text-brand-light group-hover:text-brand-light/60" />
         </div>
         {!hideLabel && (
-          <span className="text-sm font-normal ms-2">Sign in</span>
+          <span className="text-sm font-normal ms-2 text-brand-light group-hover:text-brand-light/60">
+            Sign in
+          </span>
         )}
       </button>
     );
@@ -170,7 +172,7 @@ function MenuItem({
 }) {
   return (
     <button
-      className="flex items-center w-full px-4 py-3 text-sm text-primary-500 hover:bg-background hover:text-brand-light transition-colors duration-200"
+      className="flex items-center w-full px-4 py-3 text-sm text-primary-500 hover:bg-brand-muted hover:text-brand-light transition-colors duration-200"
       onClick={onClick}
     >
       <span className="me-3">{icon}</span>

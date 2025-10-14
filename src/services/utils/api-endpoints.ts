@@ -12,6 +12,9 @@ export const API_RESOURCES = {
   SALE_PRODUCTS: `${BASE_URL}/api/v1/products/on-sale`,
   RELATED_PRODUCTS: `${BASE_URL}/api/v1/products`,
 
+  // Deals & Offers
+  DEALS: `${BASE_URL}/api/v1/deals`,
+
   // User & Auth
   USER: `${BASE_URL}/api/v1/users/me`,
   ADDRESSES: `${BASE_URL}/api/v1/users/me/addresses`,

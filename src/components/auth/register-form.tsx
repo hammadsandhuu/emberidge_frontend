@@ -33,7 +33,7 @@ export default function RegisterForm({
       {isPopup && <CloseButton onClick={closeModal} />}
       <div className="flex w-full mx-auto overflow-hidden rounded-lg bg-white">
         <div className="w-full py-6 sm:py-10 px-4 sm:px-8 md:px-6 lg:px-8 xl:px-12 flex flex-col justify-center">
-          <div className="text-center mb-10 pt-2.5">
+          <div className="text-center mb-4 pt-2.5">
             <h4 className="text-xl font-semibold text-brand-dark sm:text-2xl sm:pb-3">
               Create an account
             </h4>
@@ -106,7 +106,7 @@ export default function RegisterForm({
                 <Link
                   href={ROUTES.LOGIN}
                   onClick={handleLogin}
-                  className="ltr:pl-1 text-primary-500 hover:underline"
+                  className="pl-1 text-primary-500 hover:text-brand-muted"
                 >
                   Log in Now
                 </Link>

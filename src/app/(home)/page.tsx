@@ -2,10 +2,8 @@ import Container from "@/components/shared/container";
 import HeroSliderBlock from "@/components/hero/hero-slider-block";
 import BannerGrid from "@/components/banner/banner-grid";
 import BestSidebarFeed from "@/components/product/feeds/best-seller-sidebar-feed";
-import LatestblogSidebar from "@/components/blog/latestblog-sidebar";
 import NewSidebarFeed from "@/components/product/feeds/new-sidebar-feed";
 import { homeThreeHeroCarousel as bannerHeroCarousel } from "@/components/banner/data";
-import { homeThreeHeroSlider as heroSlider } from "@/components/hero/data";
 import ServiceFeature from "@/components/common/service-featured";
 import ListingCategory from "@/components/product/listingtabs/listing-category";
 import SaleProductsFeed from "@/components/product/feeds/on-sales-feed";
@@ -19,12 +17,7 @@ export default async function Page() {
     <>
       <Container variant={"Large"}>
         <div className="grid gap-4 grid-cols-1 xl:gap-5 lg:grid-cols-[minmax(65%,_1fr)_1fr] 2xl:grid-cols-[minmax(68%,_1fr)_1fr]">
-          <HeroSliderBlock
-            heroBanner={heroSlider}
-            showHeroContent={false}
-            className={`lg:mb-7`}
-            contentClassName="p-7 sm:pb-24 xl:pb-32 sm:pt-16 xl:pt-24 xs:min-h-[150px] md:min-h-[320px] xl:min-h-[380px] 2xl:min-h-[448px]"
-          />
+          <HeroSliderBlock />
           <BannerGrid
             data={bannerHeroCarousel}
             grid={1}
